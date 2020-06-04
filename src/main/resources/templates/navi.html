@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Travel Match</title>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/png" th:href="@{/static/favicon.ico}"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</head>
+
+<div th:fragment="navigation(activeTab)">
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <!--        <a class="navbar-brand" href="#">Navbar</a>-->
+        <!--                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"-->
+        <!--                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
+        <!--                    <span class="navbar-toggler-icon"></span>-->
+        <!--                </button>-->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+<!--                <li class="nav-item" th:classappend="${activeTab =='Home' ? 'active' : ''}">-->
+<!--                    <a class="nav-link" th:href="@{/}">Главная</a>-->
+<!--                </li>-->
+<!--                &lt;!&ndash;                <li class="nav-item" th:classappend="${activeTab =='Shop' ? 'active' : ''}">&ndash;&gt;-->
+                <!--                    <a class="nav-link" th:href="@{/shop}">Магазин</a>-->
+                <!--                </li>-->
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item"
+                    th:classappend="${activeTab =='HotLine' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/hotline}">Горячая линия</a>
+                </li>
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item"
+                    th:classappend="${activeTab =='IDKReport' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/idkrep}">Неисправности ИДК</a>
+                </li>
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item"
+                    th:classappend="${activeTab =='NewCars' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/newcars}">СТ2630М</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item"
+                    th:classappend="${activeTab =='CustomsReport' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/customsrep}">Отчет для таможни</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item"
+                    th:classappend="${activeTab =='Parts' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/parts}">Отчет по запчастям</a>
+                </li>
+<!--                <li sec:authorize="hasRole('ADMIN')" class="nav-item"-->
+<!--                    th:classappend="${activeTab == 'AdminDashboard' ? 'active' : ''}">-->
+<!--                    <a class="nav-link" th:href="@{/admin}">Управление</a>-->
+<!--                </li>-->
+
+<!--                <li sec:authorize="isAuthenticated()" class="nav-item">-->
+<!--                    <form th:action="@{/logout}" method="POST">-->
+<!--                        <input type="submit" class="btn btn-danger" value="Выход"/>-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--                <li sec:authorize="isAnonymous()" class="nav-item">-->
+<!--                    <form class="align-middle" th:action="@{/authenticateTheUser}" method="POST">-->
+<!--                        <div class="input-group-prepend">-->
+<!--                            <input class="form-control" type="text" placeholder="Имя" name="username"-->
+<!--                                   aria-describedby="inputGroup-sizing-sm">-->
+<!--                            <input class="form-control" type="text" placeholder="Пароль" name="password"-->
+<!--                                   aria-describedby="inputGroup-sizing-sm">-->
+<!--                            <button class="btn btn-primary btn-sm" type="submit">Войти</button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </li>-->
+            </ul>
+        </div>
+    </nav>
+
+</div>
+
+<body>
+</body>
+</html>
