@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "roles")
-public class Role {
+@Table(name = "languages")
+public class Language {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -28,9 +28,4 @@ public class Role {
   @UpdateTimestamp
   @Column(name = "last_updated")
   private LocalDateTime lastUpdated;
-
-    public Role(String name) {
-    this.name = name;
-  }
-
 }

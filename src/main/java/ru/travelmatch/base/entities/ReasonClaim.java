@@ -8,11 +8,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * @Author Farida Gareeva
+ * Created 08/06/2020
+ * v1.0
+ * Класс - справочник жалоб на объявление (см.Advert)(н-р, не отвечает телефон, уже продано и т.д.)
+ */
+
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "roles")
-public class Role {
+@Table(name = "reason_claims")
+public class ReasonClaim {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -28,9 +35,4 @@ public class Role {
   @UpdateTimestamp
   @Column(name = "last_updated")
   private LocalDateTime lastUpdated;
-
-    public Role(String name) {
-    this.name = name;
-  }
-
 }
