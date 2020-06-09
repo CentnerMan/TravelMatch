@@ -72,7 +72,6 @@ public class MultipleSecurityConfig {
             http.csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/admin/records/**").hasAnyRole("ADMIN", "WRITER")
                     .antMatchers("/admin/users/**").hasRole("ADMIN")
                     .antMatchers("/profile/**").authenticated()
                     .anyRequest().permitAll()
