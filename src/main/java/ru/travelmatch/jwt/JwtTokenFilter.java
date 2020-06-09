@@ -11,11 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-/**
- * @author Stanislav Ryzhkov
- * created on 21.03.2020
- */
-
 public class JwtTokenFilter extends GenericFilterBean {
     private JwtTokenProvider tokenProvider;
 

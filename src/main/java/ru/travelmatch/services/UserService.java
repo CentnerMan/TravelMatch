@@ -1,6 +1,5 @@
 package ru.travelmatch.services;
 
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import ru.travelmatch.base.entities.User;

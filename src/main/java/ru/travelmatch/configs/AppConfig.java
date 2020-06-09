@@ -1,10 +1,3 @@
-/**
- * Конфигуратор приложения
- * @author
- * fix Dmitriy Ostrovskiy 18.03.2020
- * created on
- */
-
 package ru.travelmatch.configs;
 
 import org.springframework.context.annotation.Bean;

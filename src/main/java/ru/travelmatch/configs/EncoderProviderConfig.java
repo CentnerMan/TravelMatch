@@ -7,11 +7,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.travelmatch.services.UserService;
 
-/**
- * @author Stanislav Ryzhkov
- * created on 21.03.2020
- */
-
 @Configuration
 public class EncoderProviderConfig {
     private UserService userService;

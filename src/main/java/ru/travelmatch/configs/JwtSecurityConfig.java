@@ -14,17 +14,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import ru.travelmatch.jwt.JwtConfigurer;
 import ru.travelmatch.jwt.JwtTokenProvider;
 
-/**
- * @author Stanislav Ryzhkov
- * created on 21.03.2020
- */
-
 @Configuration
 @EnableWebSecurity
-public class MultipleSecurityConfig {
+public class JwtSecurityConfig {
 
     @Configuration
-    @Order(1)
     public static class JwtTokenWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private JwtTokenProvider tokenProvider;
 
@@ -57,40 +51,4 @@ public class MultipleSecurityConfig {
         }
     }
 
-    @Configuration
-    @Order(2)
-    public static class BasicWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-        private DaoAuthenticationProvider provider;
-
-        @Autowired
-        public void setProvider(DaoAuthenticationProvider provider) {
-            this.provider = provider;
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/admin/users/**").hasRole("ADMIN")
-                    .antMatchers("/profile/**").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .loginProcessingUrl("/authenticateTheUser")
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .deleteCookies("JSESSIONID")
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
-                    .permitAll().and().exceptionHandling().accessDeniedPage("/403");
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(provider);
-        }
-    }
 }

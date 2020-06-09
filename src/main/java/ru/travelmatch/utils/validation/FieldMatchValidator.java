@@ -1,10 +1,3 @@
-/**
- * Логика валидации
- * @author
- * fix Dmitriy Ostrovskiy 19.03.2020
- * created on
- */
-
 package ru.travelmatch.utils.validation;
 
 import org.springframework.beans.BeanWrapperImpl;

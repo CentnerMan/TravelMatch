@@ -1,6 +1,5 @@
 package ru.travelmatch.jwt;
 
-
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,11 +17,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-/**
- * @author Stanislav Ryzhkov
- * created on 21.03.2020
- */
 
 @Component
 public class JwtTokenProvider {

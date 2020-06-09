@@ -6,11 +6,6 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * @author Stanislav Ryzhkov
- * created on 21.03.2020
- */
-
 @Getter
 @RequiredArgsConstructor
 public class AuthDto {

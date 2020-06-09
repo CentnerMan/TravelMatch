@@ -1,10 +1,3 @@
-/**
- * Бизнес логика User
- * @author
- * fix Dmitriy Ostrovskiy 19.03.2020
- * created on
- */
-
 package ru.travelmatch.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,11 +73,6 @@ public class UserServiceImpl implements UserService {
      public List<User> findAll() {
         return userRepository.findAll();
     }
-
-//     return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-//             mapRolesToAuthorities(user.getRoles()));
-//   }
-
 
     @Override
     public boolean isUserExist(String username) {
