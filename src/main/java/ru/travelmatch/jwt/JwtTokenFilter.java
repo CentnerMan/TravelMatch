@@ -1,5 +1,13 @@
 package ru.travelmatch.jwt;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -29,7 +37,8 @@ public class JwtTokenFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

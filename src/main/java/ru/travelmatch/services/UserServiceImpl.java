@@ -1,5 +1,13 @@
 package ru.travelmatch.services;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -63,14 +71,14 @@ public class UserServiceImpl implements UserService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
     }
-  
+
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
-  
-  
+
+
     @Override
-     public List<User> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -80,14 +88,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-  public boolean isUsernameExist(String username) {
-    return userRepository.existsByUsername(username);
-  }
+    public boolean isUsernameExist(String username) {
+        return userRepository.existsByUsername(username);
+    }
 
-  @Override
-  public boolean isEmailExist(String email) {
-      return userRepository.existsByEmail(email);
-  }
+    @Override
+    public boolean isEmailExist(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
     @Override
     @Transactional
@@ -112,7 +120,7 @@ public class UserServiceImpl implements UserService {
     public User update(SystemUser systemUser) {
         return null;
     }
-  
+
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);

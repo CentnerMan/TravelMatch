@@ -1,5 +1,13 @@
 package ru.travelmatch.utils;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.travelmatch.utils.validation.FieldMatch;
