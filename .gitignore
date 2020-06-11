@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+flyway.conf
+private.properties
 
 ### NetBeans ###
 /nbproject/private/
