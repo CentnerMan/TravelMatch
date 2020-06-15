@@ -6,6 +6,7 @@ import ru.travelmatch.base.entities.User;
 import ru.travelmatch.services.UserService;
 
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,13 @@ import java.util.List;
  * @link https://github.com/Centnerman
  */
 
+
+/**
+ * Класс в состоянии тестирования
+ */
+
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping(value = "/api/v1/users")
 public class UsersRestController {
 
     private UserService userService;

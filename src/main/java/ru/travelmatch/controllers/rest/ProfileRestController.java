@@ -28,9 +28,9 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class ProfileRestController {
 
-    private AuthenticationManager authenticationManager;
-    private UserService userService;
-    private JwtTokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final JwtTokenProvider tokenProvider;
 
     @Autowired
     public ProfileRestController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider tokenProvider) {

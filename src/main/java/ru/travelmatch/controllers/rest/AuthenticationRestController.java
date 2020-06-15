@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/auth")
+@RequestMapping(value = "/api/v1/auth")
 @CrossOrigin(origins = "*")
 public class AuthenticationRestController {
     private AuthenticationManager authenticationManager;

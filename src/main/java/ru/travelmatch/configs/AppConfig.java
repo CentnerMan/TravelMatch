@@ -26,11 +26,6 @@ import java.util.Locale;
 @ComponentScan("ru.travelmatch")
 public class AppConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/image_repository/**").addResourceLocations("file:images/");
-//    }
-
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
