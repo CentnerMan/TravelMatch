@@ -9,6 +9,7 @@ package ru.travelmatch.services;
  */
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -114,6 +115,11 @@ public class UserServiceImpl implements UserService {
         user.setEmail(systemUser.getEmail());
         user.setRoles(Arrays.asList(roleRepository.findOneByName("USER")));
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findAll(Specification<User> specification) {
+        return userRepository.findAll(specification);
     }
 
     @Override

@@ -16,19 +16,18 @@ import java.time.LocalDateTime;
  * Created 08/06/2020
  * v1.0
  * В этой сущности хранятся данные о том, насколько хорошо пользователь владеет языками.
+ * Степень владения языком оценивается по 5-ти балльной шкале.
  * Эти данные помогут предложить пользователю только те статьи и объявления, которые
- * написаны на доступных ему языках. А также пользователь сможет подобрать MatchProfile
+ * написаны на доступных ему языках. А также пользователь сможет подобрать Activities
  * с подходящими языковыми свойствами.
  * Ключ уникальности - (User,Language)
  */
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "article_rating")
-@IdClass(LanguageProficiency.UserLanguageId.class)
-public class LanguageProficiency {
-
-    public enum LanguageSkill{NATIVE,EXCELLENT,GOOD,SATISFACTORILY,DIFFICULTY}
+@Table(name = "language_skills")
+@IdClass(LanguageSkill.UserLanguageId.class)
+public class LanguageSkill {
 
     @Id
     @Column(name = "language_id", nullable = false)
@@ -38,9 +37,8 @@ public class LanguageProficiency {
     @Column(name = "user_id", nullable = false)
     private Long user;
 
-    @Column(name = "skill")
-    @Enumerated(EnumType.STRING)
-    private LanguageSkill skill;
+    @Column(name = "value",nullable = false)
+    private int value;
 
     @CreationTimestamp
     @Column(name = "created")

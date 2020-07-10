@@ -31,7 +31,8 @@ public class User {
     private Long id;
 
     @Column(name = "phone_number", unique = true, nullable = false)
-    private String phoneNumber;
+    private String
+            phoneNumber;
 
     @Column(name = "username")
     private String username;
@@ -129,7 +130,7 @@ public class User {
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<LanguageProficiency> languages;
+    private List<LanguageSkill> languages;
 
     @ManyToMany
     @JoinTable(name = "users_roles",

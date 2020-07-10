@@ -8,6 +8,7 @@ package ru.travelmatch.services;
  * @link https://github.com/Centnerman
  */
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import ru.travelmatch.base.entities.User;
@@ -35,5 +36,5 @@ public interface UserService extends UserDetailsService {
 
     User save(SystemUser systemUser);
 
-
+    List<User> findAll(Specification<User> specification);
 }

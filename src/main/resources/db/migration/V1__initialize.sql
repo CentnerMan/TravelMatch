@@ -36,22 +36,6 @@ CREATE TABLE users_roles (
   REFERENCES roles (id)
 );
 
-INSERT INTO roles (name)
-VALUES
-('ROLE_ADMIN'), ('ROLE_USER');
-
-INSERT INTO users (username, password, first_name, last_name, email, birthday, phone_number, sex)
-VALUES
-('admin','$2a$10$93.GvO4rU88tUMM8DYqi9OIlStKWPyByqx9mQ9AZWCAmRilrC6X5i','Adminn','Adminoff','admin@gmail.com','1990-01-01','+77777777777','MALE'),
--- password=12345
-('user','$2a$10$C2yYw2Q5t1DSE48O9KG3wOFm8ermU6zIULjAMANWgwi5xZQgINK.u','Us','Er','user@mail.com','2000-01-01','+11111111111','MALE');
--- password=11111
-
-INSERT INTO users_roles (user_id, role_id)
-VALUES
-(1, 1),
-(1, 2);
-
 DROP TABLE IF EXISTS tags;
 CREATE TABLE tags (
   id                    bigserial,
@@ -60,10 +44,6 @@ CREATE TABLE tags (
   last_updated          timestamp NULL,
   PRIMARY KEY (id)
 );
-
-INSERT INTO tags (name)
-VALUES ('отели'),('пляжи'),('одежда'),('достопримечательности'),('национальная кухня'),('Париж'),('Франция'),('Италия'),
-('Коллизей'),('Милан'),('Эйфелева башня'),('Лувр'),('Дуомо'),('Рим');
 
 DROP TABLE IF EXISTS users_tags;
 CREATE TABLE users_tags (
@@ -84,8 +64,6 @@ CREATE TABLE currencies (
   last_updated          timestamp NULL,
   PRIMARY KEY (id)
 );
-INSERT INTO currencies (name)
-VALUES ('RUR'),('EURO'),('USD');
 
 DROP TABLE IF EXISTS languages;
 CREATE TABLE languages (
@@ -95,8 +73,20 @@ CREATE TABLE languages (
   last_updated          timestamp NULL,
   PRIMARY KEY (id)
 );
-INSERT INTO languages (name)
-VALUES ('english'),('русский'),('italiano'),('Español'),('Deutsche'),('français');
+
+DROP TABLE IF EXISTS language_skills;
+CREATE TABLE language_skills (
+  user_id               bigint NOT NULL,
+  language_id           bigint NOT NULL,
+  value                 integer NOT NULL CHECK (value>0 AND value <=5),
+  created               timestamp,
+  last_updated          timestamp,
+  PRIMARY KEY (user_id,language_id),
+  FOREIGN KEY(language_id)
+  REFERENCES languages (id),
+  FOREIGN KEY (user_id)
+  REFERENCES users (id)
+);
 
 DROP TABLE IF EXISTS countries;
 CREATE TABLE countries (
@@ -106,8 +96,6 @@ CREATE TABLE countries (
   last_updated          timestamp NULL,
   PRIMARY KEY (id)
 );
-INSERT INTO countries (name)
-VALUES ('Италия'),('Франция'),('Россия'),('Испания'),('Германия'),('Португалия'),('Греция');
 
 DROP TABLE IF EXISTS cities;
 CREATE TABLE cities (
@@ -120,9 +108,6 @@ CREATE TABLE cities (
   FOREIGN KEY (country_id)
   REFERENCES countries
 );
-
-INSERT INTO cities (name,country_id)
-VALUES ('Париж',2),('Рим',1),('Москва',3);
 
 DROP TABLE IF EXISTS article_categories;
 CREATE TABLE article_categories (
@@ -305,10 +290,6 @@ CREATE TABLE reason_claims (
   last_updated          timestamp NULL,
   PRIMARY KEY (id)
 );
-
-INSERT INTO reason_claims(name)
-VALUES ('Не отвечает телефон'),('Продано'),('Офис переехал'),('Закрыто на ремонт'),
-('Описание не соответствует действительности'),('Другое');
 
 DROP TABLE IF EXISTS advert_claims;
 CREATE TABLE advert_claims (

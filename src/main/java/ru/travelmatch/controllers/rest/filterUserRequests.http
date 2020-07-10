@@ -1,0 +1,133 @@
+ ### @Author Farida Gareeva
+ ### Created 08/07/2020
+ ### v1.0
+ ### Фильтры по сущности пользователь, по списку его тегов и списку языков
+
+
+#список всех пользователей без фильтров
+GET http://localhost:8199/tm/api/v1/filter/users
+Accept: application/json
+
+###список пользователей по id
+GET http://localhost:8199/tm/api/v1/filter/users?id=2
+Accept: application/json
+
+###ошибка в указании id
+GET http://localhost:8199/tm/api/v1/filter/users?id=error
+Accept: application/json
+
+###список пользователей не старше 40 лет
+GET http://localhost:8199/tm/api/v1/filter/users?age_max=40
+Accept: application/json
+
+###список пользователей не моложе 30 лет
+GET http://localhost:8199/tm/api/v1/filter/users?age_min=30
+Accept: application/json
+
+###список пользователей от 20 до 30 лет
+GET http://localhost:8199/tm/api/v1/filter/users?age_min=20&age_max=30
+Accept: application/json
+
+###ошибка в указании возраста
+GET http://localhost:8199/tm/api/v1/filter/users?age_min=error
+Accept: application/json
+
+###ошибка в указании возраста
+GET http://localhost:8199/tm/api/v1/filter/users?age_max=error
+Accept: application/json
+
+###ошибка в указании возраста
+GET http://localhost:8199/tm/api/v1/filter/users?age_min=error1&sex=error2
+Accept: application/json
+
+###список пользователей мужского пола
+GET http://localhost:8199/tm/api/v1/filter/users?sex=male
+Accept: application/json
+
+###список пользователей женского пола
+GET http://localhost:8199/tm/api/v1/filter/users?sex=female
+Accept: application/json
+
+###ошибка в указании пола
+GET http://localhost:8199/tm/api/v1/filter/users?sex=error
+Accept: application/json
+
+###список пользователей по вхождению слова в поле about
+GET http://localhost:8199/tm/api/v1/filter/users?about=beer
+Accept: application/json
+
+###список пользователей по вхождению слова в поле username
+GET http://localhost:8199/tm/api/v1/filter/users?username_contains=user
+Accept: application/json
+
+###список пользователей по точному соответствию username указанному значению
+GET http://localhost:8199/tm/api/v1/filter/users?username_equal=user
+Accept: application/json
+
+###список пользователей по вхождению слова в поле firstName
+GET http://localhost:8199/tm/api/v1/filter/users?firstname_contains=na
+Accept: application/json
+
+###список пользователей по точному соответствию firstName указанному слову
+GET http://localhost:8199/tm/api/v1/filter/users?firstname_equal=Zina
+Accept: application/json
+
+###список пользователей по вхождению слова в поле lastName
+GET http://localhost:8199/tm/api/v1/filter/users?lastname_contains=ova
+Accept: application/json
+
+###список пользователей по точному соответствию lastName указанному значению
+GET http://localhost:8199/tm/api/v1/filter/users?lastname_equal=Petrova
+Accept: application/json
+
+###список пользователей по вхождению слова в поле email
+GET http://localhost:8199/tm/api/v1/filter/users?email_contains=@mail.com
+Accept: application/json
+
+###список пользователей по точному соответствию email указанному значению
+GET http://localhost:8199/tm/api/v1/filter/users?email_equal=zina@mail.com
+Accept: application/json
+
+###список пользователей по вхождению слова в поле phoneNumber
+GET http://localhost:8199/tm/api/v1/filter/users?phone_number_contains=11111111114
+Accept: application/json
+
+###список пользователей по точному соответствию phoneNumber указанному значению
+#!!!если номер телефона начинается с символа +, то поиск на равенство не срабатывает
+GET http://localhost:8199/tm/api/v1/filter/users?phone_number_equal=12345678910
+Accept: application/json
+
+###список пользователей со значением поля statusActivity, установленным в точное соответствие
+GET http://localhost:8199/tm/api/v1/filter/users?status_activity=active
+Accept: application/json
+
+###ошибка в указании значения statusActivity
+GET http://localhost:8199/tm/api/v1/filter/users?status_activity=error
+Accept: application/json
+
+###список пользователей, к которым одновренно подвязаны все теги с id из списка
+GET http://localhost:8199/tm/api/v1/filter/users?all_tag_id=2,4,6
+Accept: application/json
+
+###ошибки разных отборов
+GET http://localhost:8199/tm/api/v1/filter/users?all_tag_id=4,6,error1,5,,error2&status_activity=error3&age_min=error4&sex=error5
+Accept: application/json
+
+###список пользователей, у которых есть степени владения любым языком равны или выше указанного значения
+GET http://localhost:8199/tm/api/v1/filter/users?language_skill_greater_or_equal=3
+Accept: application/json
+
+###список пользователей, которые владеют языками, указанными в списке, на уровне, заданном пользователем или выше этого уровня.
+###эти два параметра работают только в связке. Если указан только один параметр, то отборов никаких не будет.
+GET http://localhost:8199/tm/api/v1/filter/users?language_id=3,6&language_skill=5
+Accept: application/json
+
+###Здесь вывод всего списка пользователей, т.к. задан только один параметр language_skill, а он не работает без параметра language_id
+GET http://localhost:8199/tm/api/v1/filter/users?language_skill=5
+Accept: application/json
+###
+
+###ошибки в отборах по языкам.
+GET http://localhost:8199/tm/api/v1/filter/users?language_id=error1,error2,error3&language_skill=error4
+Accept: application/json
+###
