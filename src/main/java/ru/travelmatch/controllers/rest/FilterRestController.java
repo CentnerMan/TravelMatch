@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @Author Farida Gareeva
  * Created 01/07/2020
  * v1.0
- * REST контроллер для отборов по сущности User и его свойствам
+ * REST контроллер для отборов
  */
 
 @RestController
