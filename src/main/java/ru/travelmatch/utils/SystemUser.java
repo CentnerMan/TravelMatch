@@ -1,14 +1,17 @@
-/**
- * @author Ostrovskiy Dmitriy
- * @fix 11.07.2020
- * ProfilePersonalDto
- * Класс DTO для записи и изменения данных пользователя
- * @version v1.0
- */
 
 package ru.travelmatch.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @fix 11.07.2020 Ostrovskiy Dmitriy
+ * @version 1.0.1 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.travelmatch.base.entities.User;

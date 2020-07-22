@@ -1,6 +1,15 @@
 package ru.travelmatch.services;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -144,7 +153,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User isUserEmailAndPhoneExists(SystemUser systemUser) {
         return userRepository.findOneByEmailOrPhoneNumber(systemUser.getEmail(), systemUser.getPhoneNumber());
-    }
 
     @Override
     @Transactional
@@ -156,12 +164,18 @@ public class UserServiceImpl implements UserService {
         if (systemUser.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         }
+
         Collection<Role> rolesAll = roleRepository.findAll();
         Role role = roleRepository.findOneByName("ROLE_USER");
         Collection<Role> roles = Arrays.asList(role);
         user.setRoles(roles);
         User userGet = userRepository.save(user);
         return userGet;
+    }
+
+    @Override
+    public List<User> findAll(Specification<User> specification) {
+        return userRepository.findAll(specification);
     }
 
     @Override

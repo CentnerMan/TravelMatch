@@ -1,5 +1,13 @@
 package ru.travelmatch.configs;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,27 +25,23 @@ import java.util.Locale;
 @PropertySource("classpath:private.properties")
 @ComponentScan("ru.travelmatch")
 public class AppConfig implements WebMvcConfigurer {
-  @Override
-  public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/image_repository/**").addResourceLocations("file:images/");
-  }
 
-  @Bean
-  public LocaleResolver localeResolver() {
-    SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-    sessionLocaleResolver.setDefaultLocale(new Locale("ru"));
-    return sessionLocaleResolver;
-  }
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+        sessionLocaleResolver.setDefaultLocale(new Locale("ru"));
+        return sessionLocaleResolver;
+    }
 
-  @Bean
-  public LocaleChangeInterceptor localeChangeInterceptor() {
-    LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-    localeChangeInterceptor.setParamName("lang");
-    return localeChangeInterceptor;
-  }
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        return localeChangeInterceptor;
+    }
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(localeChangeInterceptor());
-  }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
 }

@@ -11,5 +11,6 @@ import ru.travelmatch.dto.ProfilePersonalDto;
 
 public class UserProfileServiceImpl implements UserProfileService {
 
-    private ProfilePersonalDto profileGetDto;
+    private ProfileGetDto profileGetDto;
 }
+
