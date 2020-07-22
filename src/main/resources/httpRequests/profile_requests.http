@@ -1,0 +1,120 @@
+#Стартовый запрос без приватых данных
+GET http://localhost:8199/tm/api/v1/profile
+
+###
+#Запрос на показ профиля по id без авторизации
+GET http://localhost:8199/tm/api/v1/profile/1
+
+###
+###Регистрация пользователя (отправка логин/пароля)(Проверка на соответствие паролей не проходит)
+POST http://localhost:8199/tm/api/v1/profile/register
+#POST http://localhost:8188/api/v0/auth
+Content-Type:  application/json
+Accept: application/json
+
+{
+  "phoneNumber": "12345",
+  "username": "user11",
+  "password": "11111",
+  "matchingPassword": "1111",
+  "firstName": "User11",
+  "email": "dsfsdfs"
+}
+
+###
+#Регистрация пользователя user11 (отправка логин/пароля)
+POST http://localhost:8199/tm/api/v1/profile/register
+#POST http://localhost:8188/api/v0/auth
+Content-Type:  application/json
+Accept: application/json
+
+{
+  "phoneNumber": "12345",
+  "username": "user11",
+  "password": "11111",
+  "matchingPassword": "11111",
+  "birthday": "2020-07-11",
+  "firstName": "firstName",
+  "email": "email1@mail.ru"
+}
+
+###
+#Регистрация пользователя user12 (отправка логин/пароля)
+POST http://localhost:8199/tm/api/v1/profile/register
+#POST http://localhost:8188/api/v0/auth
+Content-Type:  application/json
+Accept: application/json
+
+{
+  "phoneNumber": "12345678",
+  "username": "user123",
+  "password": "11111",
+  "matchingPassword": "11111",
+  "birthday": "2020-07-11",
+  "firstName": "firstName",
+  "email": "email123@mail.ru"
+}
+
+###
+###Валидация пользователя (отправка логин/пароля для входа,пароль меньше 4 не валидный)
+POST http://localhost:8199/tm/api/v1/auth
+#POST http://localhost:8188/api/v0/auth
+Content-Type: application/json
+
+{
+  "username": "user11",
+  "password": "111"
+}
+
+###
+###
+###Авторизация пользователя (отправка логин/пароля для входа)
+POST http://localhost:8199/tm/api/v1/auth
+#POST http://localhost:8188/api/v0/auth
+Content-Type: application/json
+
+{
+  "username": "user11",
+  "password": "11111"
+}
+
+###
+###
+#Запрос на показ профиля по id после авторизации
+GET http://localhost:8199/tm/api/v1/profile/3
+###
+
+#Авторизация админа (отправка логин/пароля для входа)
+POST http://localhost:8199/tm/api/v1/auth
+Content-Type: application/json
+
+{ "username": "admin",
+  "password": "12345"
+}
+
+###
+###Измнение данных пользователя user
+PUT http://localhost:8199/tm/api/v1/profile/7
+Content-Type: application/json
+
+{
+  "id": "7",
+  "phoneNumber": "123456",
+  "username": "user11",
+  "password": "11111",
+  "matchingPassword": "11111",
+  "birthday": "2020-07-11",
+  "firstName": "firstName",
+  "email": "email12@mail.ru"
+}
+
+###
+POST http://localhost:8199/tm/api/v1/auth
+#POST http://localhost:8188/api/v0/auth
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "11111"
+}
+###

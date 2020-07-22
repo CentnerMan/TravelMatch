@@ -29,8 +29,12 @@ public class Role {
   @Column(name = "last_updated")
   private LocalDateTime lastUpdated;
 
-    public Role(String name) {
+  public Role(String name) {
     this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 
 }
