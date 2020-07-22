@@ -11,19 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import ru.travelmatch.base.entities.Role;
 import ru.travelmatch.base.entities.User;
 import ru.travelmatch.dto.FileDto;
 import ru.travelmatch.dto.ProfileFreeGetDto;
 import ru.travelmatch.dto.ProfilePersonalDto;
 import ru.travelmatch.exception.ValidationErrorBuilder;
 import ru.travelmatch.jwt.JwtTokenProvider;
-import ru.travelmatch.services.UserService;
 import ru.travelmatch.services.UserServiceImpl;
 import ru.travelmatch.utils.SystemUser;
 
@@ -144,5 +139,4 @@ public class ProfileRestController {
         }
         return new ResponseEntity<>("Bad Requests!", HttpStatus.BAD_REQUEST);
     }
-
 }

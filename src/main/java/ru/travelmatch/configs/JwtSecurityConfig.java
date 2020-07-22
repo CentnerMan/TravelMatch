@@ -90,8 +90,4 @@ public class JwtSecurityConfig {
             auth.authenticationProvider(provider);
         }
     }
-
-
-
-
 }
