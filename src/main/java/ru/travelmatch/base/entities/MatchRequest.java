@@ -30,7 +30,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "match_request")
+@Table(name = "match_requests")
 public class MatchRequest {
 
     public enum StatusRequest{NEW,ACCEPTED,REFUSED}

@@ -18,23 +18,26 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    User findById(Long id);
-
     boolean isUserExist(String username);
-
+    boolean isUsernameExist(String username);
+    boolean isEmailExist(String email);
+    boolean isPhoneExist(String phone);
+  
+    User isUserEmailAndPhoneExists(SystemUser systemUser);
+  
+    User findById(Long id);
+    User findByUsername(String username);
+    User findByPhone(String phone);
+    User findByEmail(String email);   
+  
+    User save(SystemUser systemUser);
     User update(SystemUser systemUser);
-
-    List<User> findAll();
-
     void delete(Long id);
 
-    User findByUsername(String username);
-
-    boolean isUsernameExist(String username);
-
-    boolean isEmailExist(String email);
-
-    User save(SystemUser systemUser);
-
+    List<User> findAll();
     List<User> findAll(Specification<User> specification);
+  
+    List<String> isExists(SystemUser systemUser);
+    List<String> repeatExist(SystemUser systemUser);
+    
 }

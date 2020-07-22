@@ -24,9 +24,7 @@ import ru.travelmatch.base.repo.UserRepository;
 import ru.travelmatch.base.repo.RoleRepository;
 import ru.travelmatch.utils.SystemUser;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +32,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder passwordEncoder;
+
+    private final String USER_EXIST = "User with this name already exists!";
+    private final String PHONE_EXIST = "Phone already exists!";
+    private final String EMAIL_EXIST = "Email already exists!";
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -53,19 +55,31 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User findByUsername(String username) {
-        return userRepository.findOneByUsername(username);
+        return userRepository.findUserByUsername(username).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public User  findByPhone(String phone) {
+        return userRepository.findOneByPhoneNumber(phone).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public User  findByEmail(String email) {
+        return userRepository.findOneByEmail(email).orElse(null);
     }
 
     @Override
     @Transactional
     public User findById(Long id) {
-        return userRepository.findOneById(id);
+        return userRepository.findOneById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findOneByUsername(userName);
+        User user = userRepository.findUserByUsername(userName).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -99,22 +113,64 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isPhoneExist(String phone) {
+        return userRepository.existsByPhoneNumber(phone);
+    }
+
+    @Override
+    @Transactional
+    public List<String> isExists(SystemUser systemUser) {
+        List<String> response = new ArrayList<>();
+        if (findByUsername(systemUser.getUsername())!=null) response.add(USER_EXIST);
+        if (isPhoneExist(systemUser.getPhoneNumber())) response.add(PHONE_EXIST);
+        if (isEmailExist(systemUser.getEmail())) response.add(EMAIL_EXIST);
+        return  response.isEmpty()? null : response;
+    }
+
+    /**
+     * Метод проверяет повтор данных в БД у других пользователей
+     * вводимые данные могут повторяться с данными только самого пользователя(для update)
+     * @return String если есть повтор
+     * @return null если нет повторов в БД
+     */
+    @Override
+    @Transactional
+    public List<String> repeatExist(SystemUser systemUser) {
+        String username = systemUser.getUsername();
+        User user = findByUsername(username);
+        List<String> response = new ArrayList<>();
+        if (user!=null) {
+            User userWithName = findByUsername(systemUser.getUsername());
+            User userWithPhone = findByPhone(systemUser.getPhoneNumber());
+            User userWithEmail = findByEmail(systemUser.getEmail());
+            if (userWithName != null && !userWithName.equals(user)) response.add(USER_EXIST);
+            if (userWithPhone != null && !userWithPhone.equals(user)) response.add(PHONE_EXIST);
+            if (userWithEmail != null && !userWithEmail.equals(user)) response.add(EMAIL_EXIST);
+        }
+        return  response.isEmpty()? null : response;
+    }
+
+    @Override
+    public User isUserEmailAndPhoneExists(SystemUser systemUser) {
+        return userRepository.findOneByEmailOrPhoneNumber(systemUser.getEmail(), systemUser.getPhoneNumber());
+
+    @Override
     @Transactional
     public User save(SystemUser systemUser) {
-        User user = new User();
         if (findByUsername(systemUser.getUsername()) != null) {
             throw new RuntimeException("User with username " + systemUser.getUsername() + " is already exist");
         }
-        user.setUsername(systemUser.getUsername());
-
+        User user = new User(systemUser);
         if (systemUser.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         }
-        user.setFirstName(systemUser.getFirstName());
-        user.setLastName(systemUser.getLastName());
-        user.setEmail(systemUser.getEmail());
-        user.setRoles(Arrays.asList(roleRepository.findOneByName("USER")));
-        return userRepository.save(user);
+
+        Collection<Role> rolesAll = roleRepository.findAll();
+        Role role = roleRepository.findOneByName("ROLE_USER");
+        Collection<Role> roles = Arrays.asList(role);
+        user.setRoles(roles);
+        User userGet = userRepository.save(user);
+        return userGet;
     }
 
     @Override
@@ -124,11 +180,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(SystemUser systemUser) {
-        return null;
+        User user = findById(systemUser.getId());
+        try {
+            if (systemUser.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
+            }
+            user.setAll(systemUser,null);
+            user = userRepository.save(user);
+        } catch (Exception e) {
+            return null;
+        }
+        return user;
     }
 
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserServiceImpl that = (UserServiceImpl) o;
+        return Objects.equals(userRepository, that.userRepository);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userRepository);
     }
 }

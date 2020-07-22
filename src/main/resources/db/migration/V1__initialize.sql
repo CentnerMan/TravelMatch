@@ -346,10 +346,10 @@ CREATE TABLE match_requests (
 
 DROP TABLE IF EXISTS favorite_match_profiles;
 CREATE TABLE favorite_match_profiles (
-  march_profile_id     bigint NOT NULL,
+  match_profile_id     bigint NOT NULL,
   user_id              bigint NOT NULL,
-  PRIMARY KEY (march_profile_id, user_id),
-  FOREIGN KEY (march_profile_id)
+  PRIMARY KEY (match_profile_id, user_id),
+  FOREIGN KEY (match_profile_id)
   REFERENCES match_profiles (id),
   FOREIGN KEY (user_id)
   REFERENCES users (id)

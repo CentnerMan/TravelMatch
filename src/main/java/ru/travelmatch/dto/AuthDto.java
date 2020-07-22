@@ -18,11 +18,11 @@ import javax.validation.constraints.Size;
 @RequiredArgsConstructor
 public class AuthDto {
 
-    @NotNull(message = "Заполните все поля")
-    @Size(min = 4, max = 100, message = "Имя пользователя от 4 до 100 символов")
+    @NotNull(message = "Field must not be empty!")
+    @Size(min = 4, max = 100, message = "Too short <4!")
     private final String username;
 
-    @NotNull(message = "Заполните все поля")
-    @Size(min = 4, max = 100, message = "Пароль от 4 до 100 символов")
+    @NotNull(message = "Field must not be empty!")
+    @Size(min = 4, max = 100, message = "Too short <4!")
     private final String password;
 }
