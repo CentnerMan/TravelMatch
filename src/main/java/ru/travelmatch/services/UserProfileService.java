@@ -7,9 +7,6 @@
 
 package ru.travelmatch.services;
 
-import ru.travelmatch.base.entities.User;
-import ru.travelmatch.dto.ProfileGetDto;
-
 public interface UserProfileService {
 
 //    ProfileGetDto findProfile(User user);
