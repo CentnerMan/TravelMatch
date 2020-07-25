@@ -1,11 +1,16 @@
-package ru.travelmatch.base.repo;
+package ru.travelmatch.services;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import ru.travelmatch.base.entities.Article;
 
 import java.util.List;
 
-public interface ArticleRepository extends JpaRepository<Article,Long> {
+/**
+ * @Author Farida Gareeva
+ * Created 19.07.2020
+ * v1.0
+ */
+
+public interface ArticleService {
     List<Article> findAll(Specification<Article> specification);
 }
