@@ -153,6 +153,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User isUserEmailAndPhoneExists(SystemUser systemUser) {
         return userRepository.findOneByEmailOrPhoneNumber(systemUser.getEmail(), systemUser.getPhoneNumber());
+    }
 
     @Override
     @Transactional
