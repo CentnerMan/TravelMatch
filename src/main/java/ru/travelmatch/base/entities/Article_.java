@@ -23,8 +23,7 @@ public class Article_ {
     public static volatile SingularAttribute<Article,City> city;
     public static volatile SingularAttribute<Article,Language> language;
     public static volatile ListAttribute<Article,List<Comment>> comments;
-    public static volatile ListAttribute<Article,List<ArticleLike>> likes;
+    public static volatile ListAttribute<Article,List<ArticleLikeRating>> likes;
     public static volatile ListAttribute<Article,List<Tag>> tags;
-    public static volatile ListAttribute<Article,List<ArticleRating>> ratings;
 }
 

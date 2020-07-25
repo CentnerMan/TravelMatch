@@ -90,80 +90,11 @@ INSERT INTO article_categories(
 	(4, 1),(4, 2),(4, 3)
 	;
 
-	INSERT INTO travelmatch.article_likes(
-	article_id, user_id,value)
-	VALUES (1, 1,1),
-	(2, 2,1),(2,3,-1),
-	(3, 3,1),(3,4,1),
-	(4, 1,-1),(4, 2,-1),(4, 3,1)
+	INSERT INTO travelmatch.article_likes_ratings(
+	article_id, user_id,like_dislike,rating)
+	VALUES (1, 1,-1,1),(1, 2,-1,2),(1, 3,0,3),(1, 4,0,4),(1,5,1,5),
+	(2, 2,-1,2),(2,3,0,3),(2, 4,1,4),(2,5,1,5),
+	(3, 3,1,5),(3,4,1,5),(3, 5,1,5),(3,6,0,4),
+	(4, 1,-1,2),(4, 2,-1,2),(4, 5,-1,1),(4, 6,-1,1)
 	;
 
-	INSERT INTO travelmatch.article_rating(
-	article_id, user_id,value)
-	VALUES (1, 1,1),(1, 2,2),(1, 3,3),(1, 4,4),(1,5,5),
-	(2, 2,2),(2,3,3),(2, 4,4),(2,5,5),
-	(3, 3,5),(3,4,5),(3, 5,5),(3,6,4),
-	(4, 1,2),(4, 2,2)
-	;
--- запрос для определения количества поставленных оценок для рейтинга статей
-select
-        distinct article0_.id as id1_7_,
-		ratings1_.article_id as article_id1,
-		sum(case
-            when ratings1_.article_id is null then 0
-            else 1
-        end) as countValues,
-        article0_.author_id as author_i6_7_,
-        article0_.category_id as category7_7_,
-        article0_.city_id as city_id8_7_,
-        article0_.created as created2_7_,
-        article0_.language_id as language9_7_,
-        article0_.last_updated as last_upd3_7_,
-        article0_.text as text4_7_,
-        article0_.title as title5_7_
-    from
-        travelmatch.articles article0_
-    left outer join
-        travelmatch.article_rating ratings1_
-            on article0_.id=ratings1_.article_id
-    group by
-        ratings1_.article_id ,
-        article0_.id
- ;
-
---  запросы, чтобы наладить комбинированный запрос по рейтингам и лайкам
- SELECT article_id,
-avg(value) as rating
-	FROM travelmatch.article_rating
-	group by(article_id)
-	order by article_id;
-
-	SELECT article_id,
-sum(case when value=1 then 1 else 0 end) as likes,
-sum(case when value=-1 then 1 else 0 end) as dislikes
-	FROM travelmatch.article_likes
-
-	group by(article_id)
-	order by article_id;
-
-	    select
-        distinct article0_.id as article_id,
-		 sum(case
-            when coalesce(likes1_.value, 0)=1 then 1
-            else 0
-        end) as countLikes,
-        avg(coalesce(ratings2_.value, 0)) as rating
-
-    from
-        travelmatch.articles article0_
-    left outer join
-        travelmatch.article_likes likes1_
-            on article0_.id=likes1_.article_id
-    left outer join
-        travelmatch.article_rating ratings2_
-            on article0_.id=ratings2_.article_id
-    group by
-        ratings2_.article_id ,
-        article0_.id
-    order by
-        article0_.id asc;

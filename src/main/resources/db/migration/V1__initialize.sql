@@ -11,8 +11,8 @@ CREATE TABLE users (
   created               timestamp NULL,
   last_updated          timestamp NULL,
   phone_number          VARCHAR (12) NOT NULL UNIQUE,
-  sex                   VARCHAR (6) NOT NULL CHECK (sex in ('MALE','FEMALE')),
-  status_activity       VARCHAR (8),
+  sex                   VARCHAR (6) NOT NULL DEFAULT 'MALE' CONSTRAINT sex_value CHECK (sex in ('MALE','FEMALE')),
+  status_activity       VARCHAR (8) DEFAULT 'ACTIVE',
   PRIMARY KEY (id)
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE users_roles (
 DROP TABLE IF EXISTS tags;
 CREATE TABLE tags (
   id                    bigserial,
-  name                  VARCHAR(50) NOT NULL,
+  name                  VARCHAR(50) NOT NULL UNIQUE,
   created               timestamp NULL,
   last_updated          timestamp NULL,
   PRIMARY KEY (id)
@@ -78,7 +78,7 @@ DROP TABLE IF EXISTS language_skills;
 CREATE TABLE language_skills (
   user_id               bigint NOT NULL,
   language_id           bigint NOT NULL,
-  value                 integer NOT NULL CHECK (value>0 AND value <=5),
+  value                 integer NOT NULL DEFAULT 0 CONSTRAINT language_skill_value CHECK (value>0 AND value <=5),
   created               timestamp,
   last_updated          timestamp,
   PRIMARY KEY (user_id,language_id),
@@ -112,7 +112,7 @@ CREATE TABLE cities (
 DROP TABLE IF EXISTS article_categories;
 CREATE TABLE article_categories (
   id                    bigserial,
-  name                  VARCHAR(100) NOT NULL,
+  name                  VARCHAR(100) NOT NULL UNIQUE,
   created               timestamp,
   last_updated          timestamp,
   PRIMARY KEY (id)
@@ -137,11 +137,12 @@ CREATE TABLE articles (
 );
 
 
-DROP TABLE IF EXISTS article_likes;
-CREATE TABLE article_likes (
+DROP TABLE IF EXISTS article_likes_ratings;
+CREATE TABLE article_likes_ratings (
   article_id            bigint NOT NULL,
   user_id               bigint NOT NULL,
-  value                 integer NOT NULL,
+  like_dislike          integer NOT NULL DEFAULT 0 CONSTRAINT like_dislike_value CHECK (like_dislike in (-1,0,1)),
+  rating                integer NOT NULL DEFAULT 0 CONSTRAINT rating_value CHECK (rating>=0 and rating<=5),
   created               timestamp,
   last_updated          timestamp,
   PRIMARY KEY (article_id,user_id),
@@ -180,20 +181,6 @@ CREATE TABLE articles_tags (
   REFERENCES tags (id)
 );
 
-DROP TABLE IF EXISTS article_rating;
-CREATE TABLE article_rating (
-    article_id            bigint NOT NULL,
-    user_id               bigint NOT NULL,
-    value                 integer NOT NULL,
-    created               timestamp,
-    last_updated          timestamp,
-    PRIMARY KEY (article_id,user_id),
-    FOREIGN KEY(article_id)
-    REFERENCES articles (id),
-    FOREIGN KEY (user_id)
-    REFERENCES users (id)
-);
-
 DROP TABLE IF EXISTS favorite_articles;
 CREATE TABLE favorite_articles (
   article_id           bigint NOT NULL,
@@ -220,7 +207,7 @@ CREATE TABLE advert_categories (
   name                  VARCHAR(100) NOT NULL UNIQUE,
   created               timestamp,
   last_updated          timestamp,
-  product_type          VARCHAR (7) NOT NULL CHECK (product_type in ('PRODUCT','SERVICE')),
+  product_type          VARCHAR (7) NOT NULL CONSTRAINT advert_categories_product_type CHECK (product_type in ('PRODUCT','SERVICE')),
   PRIMARY KEY (id)
 );
 
@@ -237,11 +224,11 @@ CREATE TABLE adverts (
     last_updated          timestamp,
     language_id           bigint NULL,
     price                 bigint NULL,
-    product_type          VARCHAR (7) NOT NULL CHECK (product_type in ('PRODUCT','SERVICE')),
-    product_condition     VARCHAR (4) NULL CHECK (product_condition in ('NEW','USED')),
+    product_type          VARCHAR (7) NOT NULL CONSTRAINT adverts_product_type CHECK (product_type in ('PRODUCT','SERVICE')),
+    product_condition     VARCHAR (4) NULL CONSTRAINT adverts_product_condition CHECK (product_condition in ('NEW','USED')),
     title                 VARCHAR(255),
     text                  VARCHAR(10000),
-    type                  VARCHAR(4) NOT NULL CHECK (type in ('BUY','SALE')),
+    type                  VARCHAR(4) NOT NULL CONSTRAINT adverts_type CHECK (type in ('BUY','SALE')),
     user_id               bigint NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
@@ -300,7 +287,7 @@ CREATE TABLE advert_claims (
   text                  VARCHAR(255) NULL,
   user_id               bigint NOT NULL,
   reason_claim_id       bigint NOT NULL,
-  status                VARCHAR (6) NOT NULL CHECK (status in ('CLOSED','NEW')),
+  status                VARCHAR (6) NOT NULL default 'NEW' CONSTRAINT advert_claims_status CHECK (status in ('CLOSED','NEW')),
   PRIMARY KEY (id),
   FOREIGN KEY (advert_id) REFERENCES adverts(id),
   FOREIGN KEY (user_id) REFERENCES users(id),
