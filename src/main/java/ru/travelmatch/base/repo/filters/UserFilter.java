@@ -85,14 +85,6 @@ public class UserFilter {
             specification = specification.and(UserSpecification.allTagIdIn(request.getParameter("all_tag_id"), errorJoiner));
         }
 
-//        if (request.getParameter("language_skill_equal") != null && !request.getParameter("language_skill_equal").isEmpty()) {
-//            specification = specification.and(UserSpecification.languageSkillEq(request.getParameter("language_skill_equal"), errorJoiner));
-//        }
-//
-//        if (request.getParameter("language_skill_greater_or_equal") != null && !request.getParameter("language_skill_greater_or_equal").isEmpty()) {
-//            specification = specification.and(UserSpecification.languageSkillGreaterThanOrEqualTo(request.getParameter("language_skill_greater_or_equal"), errorJoiner));
-//        }
-
         if (request.getParameter("language_id") != null
                 && !request.getParameter("language_id").isEmpty()
                 && request.getParameter("language_skill") != null
@@ -102,11 +94,5 @@ public class UserFilter {
                     UserSpecification.languageIdInAndSkillGreaterOrEqual(request.getParameter("language_id"), request.getParameter("language_skill"), errorJoiner));
         }
 
-//        Long[] cats = {1L, 2L};
-//        Specification<Product> specCat = Specification.where(null);
-//        for (int i = 0; i < cats.length; i++) {
-//            specCat = specCat.or(ProductSpecifications.categoryId(Long.valueOf(request.getParameter("catId"))));
-//        }
-//        specification = specification.and(specCat);
     }
 }
