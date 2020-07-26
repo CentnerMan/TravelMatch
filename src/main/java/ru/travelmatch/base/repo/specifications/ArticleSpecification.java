@@ -2,6 +2,7 @@ package ru.travelmatch.base.repo.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
 import ru.travelmatch.base.entities.*;
+import ru.travelmatch.base.repo.filters.ArticleFilter;
 
 import javax.persistence.criteria.*;
 import javax.persistence.criteria.CriteriaBuilder.Coalesce;
@@ -23,12 +24,19 @@ import java.util.stream.Stream;
  * 1. по полям сущности Article
  * 2. по списку тегов с условием И, т.е. в отбор должны попадать только
  * те статьи, у которых есть все теги, указанные в списке
- * 3. по количеству лайков и дизлайков
- * 4. по количеству выставленных оценок для рейтинга (из таблицы ArticleRating)
- * 5. по рейтингу (среднее арифметическое оценок из таблицы ArticleRating)
+ * 3. по количеству лайков и дизлайков (из таблицы ArticleLikeRating)
+ * 4. по количеству выставленных оценок для рейтинга (из таблицы ArticleLikeRating)
+ * 5. по рейтингу (среднее арифметическое оценок из таблицы ArticleLikeRating)
  */
 
 public class ArticleSpecification {
+    private static final ArticleFilter.ArticleValue LIKE = ArticleFilter.ArticleValue.LIKE;
+    private static final ArticleFilter.ArticleValue DISLIKE = ArticleFilter.ArticleValue.DISLIKE;
+    private static final ArticleFilter.ArticleValue RATING_COUNT = ArticleFilter.ArticleValue.RATING_COUNT;
+    private static final ArticleFilter.ArticleValue RATING_AVG = ArticleFilter.ArticleValue.RATING_AVG;
+    public static final ArticleFilter.ComparisonOperations EQUAL = ArticleFilter.ComparisonOperations.EQUAL;
+    public static final ArticleFilter.ComparisonOperations GREATER = ArticleFilter.ComparisonOperations.GREATER;
+    public static final ArticleFilter.ComparisonOperations LESS = ArticleFilter.ComparisonOperations.LESS;
 
     public static Specification<Article> idEq(String idString, StringJoiner errorJoiner) {
         StringJoiner idError = new StringJoiner("");
@@ -42,11 +50,16 @@ public class ArticleSpecification {
         };
     }
 
-    public static Specification<Article> authorEq(String idString, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> authorEq(String idString,
+                                                  StringJoiner errorJoiner,
+                                                  List<SingularAttribute> orderAttributesList) {
         return getArticleSpecificationByIdOfObjectField(idString, errorJoiner, "author", orderAttributesList);
     }
 
-    private static Specification<Article> getArticleSpecificationByIdOfObjectField(String idString, StringJoiner errorJoiner, String fieldName, List<SingularAttribute> orderAttributesList) {
+    private static Specification<Article> getArticleSpecificationByIdOfObjectField(String idString,
+                                                                                   StringJoiner errorJoiner,
+                                                                                   String fieldName,
+                                                                                   List<SingularAttribute> orderAttributesList) {
         StringJoiner idError = new StringJoiner("");
         Long id = convertStringToLong(idString, idError);
         if (id == null) {
@@ -59,46 +72,64 @@ public class ArticleSpecification {
         };
     }
 
-    private static void addOrderBy(List<SingularAttribute> orderAttributesList, Root<Article> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    private static void addOrderBy(List<SingularAttribute> orderAttributesList,
+                                   Root<Article> root,
+                                   CriteriaQuery<?> criteriaQuery,
+                                   CriteriaBuilder criteriaBuilder) {
         List<Order> orderList = new ArrayList<>(orderAttributesList.size());
         orderAttributesList.forEach(attr -> orderList.add(criteriaBuilder.desc(root.get(attr))));
         criteriaQuery.orderBy(orderList);
     }
 
-    public static Specification<Article> categoryEq(String idString, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> categoryEq(String idString,
+                                                    StringJoiner errorJoiner,
+                                                    List<SingularAttribute> orderAttributesList) {
         return getArticleSpecificationByIdOfObjectField(idString, errorJoiner, "category", orderAttributesList);
     }
 
-    public static Specification<Article> cityEq(String idString, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> cityEq(String idString,
+                                                StringJoiner errorJoiner,
+                                                List<SingularAttribute> orderAttributesList) {
         return getArticleSpecificationByIdOfObjectField(idString, errorJoiner, "city", orderAttributesList);
     }
 
-    public static Specification<Article> languageEq(String idString, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> languageEq(String idString,
+                                                    StringJoiner errorJoiner,
+                                                    List<SingularAttribute> orderAttributesList) {
         return getArticleSpecificationByIdOfObjectField(idString, errorJoiner, "language", orderAttributesList);
     }
 
-    public static Specification<Article> textContains(String word, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> textContains(String word,
+                                                      StringJoiner errorJoiner,
+                                                      List<SingularAttribute> orderAttributesList) {
         return (Specification<Article>) (root, criteriaQuery, criteriaBuilder) -> {
             addOrderBy(orderAttributesList, root, criteriaQuery, criteriaBuilder);
             return criteriaBuilder.like(root.get("text"), "%" + word + "%");
         };
     }
 
-    public static Specification<Article> titleContains(String word, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> titleContains(String word,
+                                                       StringJoiner errorJoiner,
+                                                       List<SingularAttribute> orderAttributesList) {
         return (Specification<Article>) (root, criteriaQuery, criteriaBuilder) -> {
             addOrderBy(orderAttributesList, root, criteriaQuery, criteriaBuilder);
             return criteriaBuilder.like(root.get("title"), "%" + word + "%");
         };
     }
 
-    public static Specification<Article> titleEq(String word, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> titleEq(String word,
+                                                 StringJoiner errorJoiner,
+                                                 List<SingularAttribute> orderAttributesList) {
         return (Specification<Article>) (root, criteriaQuery, criteriaBuilder) -> {
             addOrderBy(orderAttributesList, root, criteriaQuery, criteriaBuilder);
             return criteriaBuilder.equal(root.get("title"), word);
         };
     }
 
-    public static Specification<Article> dateEq(String dateString, StringJoiner errorJoiner, String fieldName, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> dateEq(String dateString,
+                                                StringJoiner errorJoiner,
+                                                String fieldName,
+                                                List<SingularAttribute> orderAttributesList) {
         LocalDateTime date = convertStringToDateTime(dateString, errorJoiner, fieldName);
         if (date == null) {
             return Specification.where(null);
@@ -109,7 +140,10 @@ public class ArticleSpecification {
         };
     }
 
-    public static Specification<Article> dateGreaterThan(String dateString, StringJoiner errorJoiner, String fieldName, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> dateGreaterThan(String dateString,
+                                                         StringJoiner errorJoiner,
+                                                         String fieldName,
+                                                         List<SingularAttribute> orderAttributesList) {
         LocalDateTime date = convertStringToDateTime(dateString, errorJoiner, fieldName);
         if (date == null) {
             return Specification.where(null);
@@ -120,7 +154,10 @@ public class ArticleSpecification {
         };
     }
 
-    public static Specification<Article> dateLessThan(String dateString, StringJoiner errorJoiner, String fieldName, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> dateLessThan(String dateString,
+                                                      StringJoiner errorJoiner,
+                                                      String fieldName,
+                                                      List<SingularAttribute> orderAttributesList) {
         LocalDateTime date = convertStringToDateTime(dateString, errorJoiner, fieldName);
         if (date == null) {
             return Specification.where(null);
@@ -131,7 +168,9 @@ public class ArticleSpecification {
         };
     }
 
-    private static LocalDateTime convertStringToDateTime(String dateString, StringJoiner errorJoiner, String fieldName) {
+    private static LocalDateTime convertStringToDateTime(String dateString,
+                                                         StringJoiner errorJoiner,
+                                                         String fieldName) {
         LocalDateTime date = null;
         try {
             date = LocalDateTime.parse(dateString);
@@ -143,16 +182,6 @@ public class ArticleSpecification {
         return date;
     }
 
-    private static int convertStringToInt(String ageMinString, StringJoiner errorJoiner) {
-        int age = -1;
-        try {
-            age = Integer.parseInt(ageMinString);
-        } catch (NumberFormatException ex) {
-            errorJoiner.add("Value '" + ageMinString + "' could't convert to Integer");
-        }
-        return age;
-    }
-
     private static Long convertStringToLong(String idString, StringJoiner errorList) {
         try {
             return Long.parseLong(idString);
@@ -162,7 +191,9 @@ public class ArticleSpecification {
         return null;
     }
 
-    public static Specification<Article> allTagIdIn(String concatTags, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList) {
+    public static Specification<Article> allTagIdIn(String concatTags,
+                                                    StringJoiner errorJoiner,
+                                                    List<SingularAttribute> orderAttributesList) {
         StringJoiner invalidLongJoiner = new StringJoiner(",");
         List<Long> arrayTags = Stream.of(concatTags.split(","))
                 .map(idString -> convertStringToLong(idString, invalidLongJoiner))
@@ -185,24 +216,27 @@ public class ArticleSpecification {
         };
     }
 
-    public static Specification<Article> likesDislikesComparison(String countLikesString, StringJoiner errorJoiner, List<SingularAttribute> orderAttributesList, int likeOrDislike, String comparisonString) {
+    public static Specification<Article> likesDislikesComparison(String countLikesString,
+                                                                 StringJoiner errorJoiner,
+                                                                 List<SingularAttribute> orderAttributesList,
+                                                                 ArticleFilter.ArticleValue likeOrDislike,
+                                                                 ArticleFilter.ComparisonOperations comparisonString) {
         //проверка и преобразование строки countLikes в Long (не int, так как вычисляем сумму по таблице, где Long id)
         StringJoiner countError = new StringJoiner("");
         Long countLikes = convertStringToLong(countLikesString, countError);
         if (countLikes == null) {
-            errorJoiner.add("Invalid value of count "
-                    + (likeOrDislike == 1 ? "likes" : "dislikes")
-                    + ": '" + countError.toString() + "' couldn't convert to Long");
+            errorJoiner.add("Invalid value of count '" + likeOrDislike.getTitle() + ": '"
+                    + countError.toString() + "' couldn't convert to Long");
             return Specification.where(null);
         }
 
         return (Specification<Article>) (root, criteriaQuery, criteriaBuilder) -> {
-            Join<Article, ArticleLike> likesJoin;
+            Join<Article, ArticleLikeRating> likesJoin;
             //Поищем, нет ли уже в запросе join с таблицей ArticleLike.
             //Если есть, то второй join добавлять нельзя, так как выдается неверный результат
             List likeJoinList = root.getJoins()
                     .stream()
-                    .filter(articleJoin -> articleJoin.getJavaType() == ArticleLike.class)
+                    .filter(articleJoin -> articleJoin.getJavaType() == ArticleLikeRating.class)
                     .collect(Collectors.toList());
 
             if (likeJoinList.size() == 0) {
@@ -210,33 +244,71 @@ public class ArticleSpecification {
                 likesJoin = root.join("likes", JoinType.LEFT);
             } else {
                 //иначе вытянем готовый join
-                likesJoin = (Join<Article, ArticleLike>) likeJoinList.get(0);
+                likesJoin = (Join<Article, ArticleLikeRating>) likeJoinList.get(0);
             }
 
+
             Coalesce coalesce = criteriaBuilder.coalesce();
-            coalesce.value(likesJoin.get("value"));
+            coalesce.value(likesJoin.get(likeOrDislike.getPath()));
             coalesce.value(0);
+
+            //добавляем поле с общим количеством ненулевых оценок для рейтингов статьи.
+            //Эти оценки нам нужны, чтобы можно было вычислить рейтинг статьи
+            // (общую сумму оценок для рейтинга делим на количество ненулевых оценок)
+            Coalesce coalesceTotalRatingValueCount = criteriaBuilder.coalesce();
+            coalesce.value(likesJoin.get(RATING_COUNT.getPath()));
+            coalesce.value(0);
+
 
             Expression<Long> likeCountExpression = criteriaBuilder.<Long>selectCase()
                     .when(criteriaBuilder.equal(coalesce, 1), 1L)
                     .otherwise(0L);
+
             Expression<Long> dislikeCountExpression = criteriaBuilder.<Long>selectCase()
                     .when(criteriaBuilder.equal(coalesce, -1), 1L)
                     .otherwise(0L);
+
+            Expression<Long> ratingValueCountExpression = criteriaBuilder.<Long>selectCase()
+                    .when(criteriaBuilder.equal(coalesce, 0).not(), 1L)
+                    .otherwise(0L);
+
+            Expression<Long> ratingExpression = coalesce.<Long>as(Integer.class);
+
+            Expression<Long> actualExpression = null;
+            switch (likeOrDislike){
+                case LIKE:
+                    actualExpression = criteriaBuilder.sum(likeCountExpression);
+                    break;
+                case DISLIKE:
+                    actualExpression = criteriaBuilder.sum(dislikeCountExpression);
+                    break;
+                case RATING_COUNT:
+                    actualExpression = criteriaBuilder.sum(ratingValueCountExpression);
+                    break;
+//                case RATING_AVG:
+//                    Expression<Double> actualExpression1 = criteriaBuilder.<Double>selectCase()
+//                            .when(criteriaBuilder.equal(criteriaBuilder.sum(ratingValueCountExpression), 0L),0d)
+//                            .otherwise(criteriaBuilder.sum(ratingExpression)/criteriaBuilder.sum(ratingValueCountExpression));
+//                    break;
+                default:
+                    errorJoiner.add("Illegal argument of method likesDislikesComparison in ArticleSpecification.class." +
+                            " Invalid value of ArticleFilter.ArticleValue argument. Call programmer for help.");
+            }
+
 
             criteriaQuery
                     .distinct(true)
                     .groupBy(root.get(Article_.id));
             Predicate newHaving = null;
-            if (comparisonString.equals(">=")) {
-                newHaving = criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.sum(likeOrDislike == 1 ? likeCountExpression : dislikeCountExpression), countLikes);
-            } else if (comparisonString.equals("<=")) {
-                newHaving = criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.sum(likeOrDislike == 1 ? likeCountExpression : dislikeCountExpression), countLikes);
-            } else if (comparisonString.equals("=")) {
-                newHaving = criteriaBuilder.equal(criteriaBuilder.sum(likeOrDislike == 1 ? likeCountExpression : dislikeCountExpression), countLikes);
+            if (comparisonString == GREATER) {
+                newHaving = criteriaBuilder.greaterThanOrEqualTo(actualExpression, countLikes);
+            } else if (comparisonString == LESS) {
+                newHaving = criteriaBuilder.lessThanOrEqualTo(actualExpression, countLikes);
+            } else if (comparisonString == EQUAL) {
+                newHaving = criteriaBuilder.equal(actualExpression, countLikes);
             } else {
                 errorJoiner.add("Illegal argument of method likesDislikesComparison in ArticleSpecification.class." +
-                        " Call programmer for help.");
+                        " Invalid value of ArticleFilter.ComparisonOperations argument. Call programmer for help.");
             }
 
             //Вытягиваем существующие условия having.

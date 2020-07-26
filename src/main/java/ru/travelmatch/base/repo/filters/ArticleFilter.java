@@ -18,6 +18,32 @@ import java.util.StringJoiner;
  */
 public class ArticleFilter {
 
+    public static enum ComparisonOperations {EQUAL, GREATER, LESS}
+
+    public static enum ArticleValue {
+
+        LIKE("like", "likeDislike"),
+        DISLIKE("dislike", "likeDislike"),
+        RATING_COUNT("count of values for article rating", "rating"),
+        RATING_AVG("average rating of article", "rating");
+
+        private String title;
+        private String path;
+
+        private ArticleValue(String title, String path) {
+            this.title = title;
+            this.path = path;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
+
     private Specification<Article> specification;
 
     public List<SingularAttribute> orderList;
@@ -35,6 +61,7 @@ public class ArticleFilter {
     }
 
     public ArticleFilter(HttpServletRequest request, StringJoiner errorJoiner) {
+
         specification = Specification.where(null);
         orderList = new ArrayList<>();
         orderList.add(Article_.created);
@@ -100,51 +127,63 @@ public class ArticleFilter {
         }
 
         if (request.getParameter("likes_equal") != null && !request.getParameter("likes_equal").isEmpty()) {
-            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("likes_equal"), errorJoiner, orderList, 1, "="));
+            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("likes_equal"),
+                    errorJoiner, orderList, ArticleValue.LIKE, ComparisonOperations.EQUAL));
         }
 
         if (request.getParameter("dislikes_equal") != null && !request.getParameter("dislikes_equal").isEmpty()) {
-            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("dislikes_equal"), errorJoiner, orderList, -1, "="));
+            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("dislikes_equal"),
+                    errorJoiner, orderList, ArticleValue.DISLIKE, ComparisonOperations.EQUAL));
         }
 
         if (request.getParameter("likes_greaterOrEqual") != null && !request.getParameter("likes_greaterOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("likes_greaterOrEqual"), errorJoiner, orderList, 1, ">="));
+            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("likes_greaterOrEqual"),
+                    errorJoiner, orderList, ArticleValue.LIKE, ComparisonOperations.GREATER));
         }
 
         if (request.getParameter("likes_lessOrEqual") != null && !request.getParameter("likes_lessOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("likes_lessOrEqual"), errorJoiner, orderList, 1, "<="));
+            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("likes_lessOrEqual"),
+                    errorJoiner, orderList, ArticleValue.LIKE, ComparisonOperations.LESS));
         }
 
         if (request.getParameter("dislikes_greaterOrEqual") != null && !request.getParameter("dislikes_greaterOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("dislikes_greaterOrEqual"), errorJoiner, orderList, -1, ">="));
+            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("dislikes_greaterOrEqual"),
+                    errorJoiner, orderList, ArticleValue.DISLIKE, ComparisonOperations.GREATER));
         }
 
         if (request.getParameter("dislikes_lessOrEqual") != null && !request.getParameter("dislikes_lessOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("dislikes_lessOrEqual"), errorJoiner, orderList, -1, "<="));
+            specification = specification.and(ArticleSpecification.likesDislikesComparison(request.getParameter("dislikes_lessOrEqual"),
+                    errorJoiner, orderList, ArticleValue.DISLIKE, ComparisonOperations.LESS));
         }
 
         if (request.getParameter("rating_value_count_greaterOrEqual") != null && !request.getParameter("rating_value_count_greaterOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_value_count_greaterOrEqual"), errorJoiner, orderList, ">=","count"));
+            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_value_count_greaterOrEqual"),
+                    errorJoiner, orderList, ">=", "count"));
         }
 
         if (request.getParameter("rating_value_count_lessOrEqual") != null && !request.getParameter("rating_value_count_lessOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_value_count_lessOrEqual"), errorJoiner, orderList, "<=","count"));
+            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_value_count_lessOrEqual"),
+                    errorJoiner, orderList, "<=", "count"));
         }
 
         if (request.getParameter("rating_value_count_equal") != null && !request.getParameter("rating_value_count_equal").isEmpty()) {
-            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_value_count_equal"), errorJoiner, orderList, "=","count"));
+            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_value_count_equal"),
+                    errorJoiner, orderList, "=", "count"));
         }
 
         if (request.getParameter("rating_greaterOrEqual") != null && !request.getParameter("rating_greaterOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_greaterOrEqual"), errorJoiner, orderList, ">=","average"));
+            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_greaterOrEqual"),
+                    errorJoiner, orderList, ">=", "average"));
         }
 
         if (request.getParameter("rating_lessOrEqual") != null && !request.getParameter("rating_lessOrEqual").isEmpty()) {
-            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_lessOrEqual"), errorJoiner, orderList, "<=","average"));
+            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_lessOrEqual"),
+                    errorJoiner, orderList, "<=", "average"));
         }
 
         if (request.getParameter("rating_equal") != null && !request.getParameter("rating_equal").isEmpty()) {
-            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_equal"), errorJoiner, orderList, "=","average"));
+            specification = specification.and(ArticleSpecification.ratingValueCountComparison(request.getParameter("rating_equal"),
+                    errorJoiner, orderList, "=", "average"));
         }
         //TODO добавить варианты отбора в списках
 
