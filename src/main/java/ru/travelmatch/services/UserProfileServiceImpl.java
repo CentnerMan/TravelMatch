@@ -7,7 +7,7 @@
 
 package ru.travelmatch.services;
 
-import ru.travelmatch.dto.ProfilePersonalDto;
+import ru.travelmatch.dto.ProfileGetDto;
 
 public class UserProfileServiceImpl implements UserProfileService {
 
