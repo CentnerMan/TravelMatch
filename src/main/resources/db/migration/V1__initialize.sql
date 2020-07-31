@@ -141,8 +141,8 @@ DROP TABLE IF EXISTS article_likes_ratings;
 CREATE TABLE article_likes_ratings (
   article_id            bigint NOT NULL,
   user_id               bigint NOT NULL,
-  like_dislike          integer NOT NULL DEFAULT 0 CONSTRAINT like_dislike_value CHECK (like_dislike in (-1,0,1)),
-  rating                integer NOT NULL DEFAULT 0 CONSTRAINT rating_value CHECK (rating>=0 and rating<=5),
+  like_dislike          integer CONSTRAINT like_dislike_value CHECK (like_dislike in (-1,1)),
+  rating                integer CONSTRAINT rating_value CHECK (rating>=1 and rating<=5),
   created               timestamp,
   last_updated          timestamp,
   PRIMARY KEY (article_id,user_id),

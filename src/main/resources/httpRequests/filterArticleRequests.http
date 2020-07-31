@@ -7,8 +7,35 @@
  ###      по количеству оценок для рейтинга,
  ###      по рейтингу (среднее значение оценки)
 
-#список всех статей без фильтров
+#-------------------------------------------------------------
+###список всех статей без фильтров
+###без дополнительных параметров выводятся только первые 20 статей, попавшие в выборку.
+###Именно 20, т.к. это число элементов на web-странице по умолчанию
 GET http://localhost:8199/tm/api/v1/filter/articles
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей с первой страницы, на странице по 3 элемента
+GET http://localhost:8199/tm/api/v1/filter/articles?page_number=1&page_size=3
+Accept: application/json
+
+#-------------------------------------------------------------
+###ошибки ввода номера страницы и количества элементов на web-странице
+GET http://localhost:8199/tm/api/v1/filter/articles?page_number=0&page_size=4g
+Accept: application/json
+
+#-------------------------------------------------------------
+###выбор направления сортировки статей
+###Этот запрос без параметра order_by_properties не имеет смысла
+GET http://localhost:8199/tm/api/v1/filter/articles?order_direction=desc
+Accept: application/json
+
+#-------------------------------------------------------------
+###выбор полей для сортировки статей
+###order_by_properties - может быть указано одно из значений (id,title,text,category,author,created,lastUpdated,city,language),
+###либо через запятую,регистронезависимый. Причем для ссылочных типов сортировка осуществляется по id.
+###Если не указан параметр order_direction, то используется направление по умолчанию asc
+GET http://localhost:8199/tm/api/v1/filter/articles?order_by_properties=id,category,TITLE&order_direction=desc
 Accept: application/json
 
 #-------------------------------------------------------------
@@ -22,7 +49,7 @@ Accept: application/json
 
 #-------------------------------------------------------------
 ###список статей по id автора
-GET http://localhost:8199/tm/api/v1/filter/articles?author_id=1
+GET http://localhost:8199/tm/api/v1/filter/articles?author_id=1&order_by_properties=id,category
 Accept: application/json
 
 ###ошибка в указании id автора
@@ -109,7 +136,7 @@ Accept: application/json
 #-------------------------------------------------------------
 #ЗАПРОСЫ ПО ТЕГАМ
 ###список статей, к которым одновренно подвязаны все теги с id из списка
-GET http://localhost:8199/tm/api/v1/filter/articles?all_tag_id=1,2,3
+GET http://localhost:8199/tm/api/v1/filter/articles?tags_id=1,2,3
 Accept: application/json
 
 #-------------------------------------------------------------
@@ -154,9 +181,8 @@ Accept: application/json
 GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_greaterOrEqual=1&dislikes_lessOrEqual=2&likes_lessOrEqual=5
 Accept: application/json
 
-###список статей, у которых количество дизлайков принадлежит отрезку и есть еще условие на теги
-###TODO такой запрос не работает, т.к. соединение таблиц для лайков и дизлайков должно быть по разным условиям value (1 или -1)
-GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_greaterOrEqual=1&dislikes_lessOrEqual=2&all_tag_id=1,2,3
+###список статей, у которых МНОГО разных условий (лайки, дислайки, теги, рейтинги, количество оценок, заголовок)
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_greaterOrEqual=0&dislikes_greaterOrEqual=0&dislikes_lessOrEqual=5&tags_id=1,2,3&rating_greaterOrEqual=0&rating_value_count_greaterOrEqual=3&title_contains=TITLE
 Accept: application/json
 
 #-------------------------------------------------------------
