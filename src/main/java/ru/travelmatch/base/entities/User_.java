@@ -40,4 +40,5 @@ public class User_ {
     public static volatile ListAttribute<User, List<Tag>> tags;
     public static volatile ListAttribute<User, List<LanguageSkill>> languages;
     public static volatile BagPersistentAttribute<User, Collection<Role>> roles;
+    public static volatile ListAttribute<User, List<Award>> awards;
 }

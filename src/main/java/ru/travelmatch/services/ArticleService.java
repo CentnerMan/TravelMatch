@@ -1,9 +1,9 @@
 package ru.travelmatch.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import ru.travelmatch.base.entities.Article;
-
-import java.util.List;
 
 /**
  * @Author Farida Gareeva
@@ -12,5 +12,5 @@ import java.util.List;
  */
 
 public interface ArticleService {
-    List<Article> findAll(Specification<Article> specification);
+    Page<Article> findAll(Specification<Article> specification, PageRequest pageRequest);
 }
