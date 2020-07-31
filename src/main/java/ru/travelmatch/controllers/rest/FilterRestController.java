@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/filter")
-@Api("Set of endpoints for select operations")
+@Api("Set of endpoints for select operations.")
 public class FilterRestController {
 
     private UserService userService;
@@ -49,7 +49,7 @@ public class FilterRestController {
     }
 
     @GetMapping("users")
-    @ApiOperation("Return list of Users, selected by some conditions")
+    @ApiOperation("Return list of Users, selected by some conditions. DON'T TEST! HAS ERRORS!")
     public ResponseEntity<List<UserSimpleDTO>> getSomeUsers(HttpServletRequest request, HttpServletResponse response) {
         StringJoiner errorJoiner = new StringJoiner("; ");
         UserFilter filter = new UserFilter(request, errorJoiner);
@@ -82,28 +82,28 @@ public class FilterRestController {
 //     * @param category_id                       - Long, id категории статьи {@link ru.travelmatch.base.entities.ArticleCategory},
 //     *                                          связанная сущность ManyToOne, поиск на точное соответствие
 //     * @param city_id                           - Long, id города {@link ru.travelmatch.base.entities.City}, связанная сущность ManyToOne,
-//     *                                          поиск на точное соответствие
-//     * @param language_id                       - Long, id языка народ мира {@link ru.travelmatch.base.entities.Language}, связанная сущность
-//     *                                          ManyToOne, поиск на точное соответствие
-//     * @param text                              - String, text, поле, регистронезависимый поиск по вхождению фразы в текст статьи
-//     * @param title_equal                       - String, title, поле, регистронезависимый поиск на точное соответствие заголовка статьи
-//     * @param title_contains                    - String, title, поле, регистронезависимый поиск на вхождение фразы в заголовок статьи
-//     * @param created_equal                     - LocalDateTime, created, поле, поиск на точное соответствие по дате создания статьи (н-р, 2020-03-03T00:00:00)
-//     * @param created_before                    - LocalDateTime, created, поле, поиск статей, созданных раньше или точно в эту же дату (н-р, 2020-03-03T00:00:00)
-//     * @param created_after                     - LocalDateTime, created, поле, поиск статей, созданных после или точно в эту же дату (н-р, 2020-03-03T00:00:00)
-//     * @param updated_equal                     - LocalDateTime, created, поле, поиск на точное соответствие по дате создания статьи (н-р, 2020-03-03T00:00:00)
-//     * @param updated_before                    - LocalDateTime, created, поле, поиск статей, созданных раньше или точно в эту же дату (н-р, 2020-03-03T00:00:00)
-//     * @param updated_after                     - LocalDateTime, created, поле, поиск статей, созданных после или точно в эту же дату (н-р, 2020-03-03T00:00:00)
-//     * @param likes_equal                       - Long, количество лайков на точное равенство, вычисляется по полю likeDislike = 1 из таблицы
-//     *                                          лайков и рейтингов {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
-//     * @param likes_greaterOrEqual              - Long, количество лайков, большее либо равное указанному значению,
-//     *                                          вычисляется как количество строк, где likeDislike = 1 из таблицы лайков и рейтингов
-//     *                                          {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
-//     * @param likes_lessOrEqual                 - Long, количество лайков, меньшее либо равное указанному значению,
-//     *                                          вычисляется как количество строк, где likeDislike = 1 из таблицы лайков и рейтингов
-//     *                                          {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
-//     * @param dislikes_equal                    - Long, количество дизлайков на точное равенство, вычисляется как количество строк,
-//     *                                          где likeDislike = -1 из таблицы лайков и рейтингов
+    //     *                                          поиск на точное соответствие
+    //     * @param language_id                       - Long, id языка народ мира {@link ru.travelmatch.base.entities.Language}, связанная сущность
+    //     *                                          ManyToOne, поиск на точное соответствие
+    //     * @param text                              - String, text, поле, регистронезависимый поиск по вхождению фразы в текст статьи
+    //     * @param title_equal                       - String, title, поле, регистронезависимый поиск на точное соответствие заголовка статьи
+    //     * @param title_contains                    - String, title, поле, регистронезависимый поиск на вхождение фразы в заголовок статьи
+    //     * @param created_equal                     - LocalDateTime, created, поле, поиск на точное соответствие по дате создания статьи (н-р, 2020-03-03T00:00:00)
+    //     * @param created_before                    - LocalDateTime, created, поле, поиск статей, созданных раньше или точно в эту же дату (н-р, 2020-03-03T00:00:00)
+    //     * @param created_after                     - LocalDateTime, created, поле, поиск статей, созданных после или точно в эту же дату (н-р, 2020-03-03T00:00:00)
+    //     * @param updated_equal                     - LocalDateTime, lastUpdated, поле, поиск на точное соответствие по дате последнего обновления статьи статьи (н-р, 2020-03-03T00:00:00)
+    //     * @param updated_before                    - LocalDateTime, lastUpdated, поле, поиск статей, дате последнего обновления которых раньше или точно в эту же дату (н-р, 2020-03-03T00:00:00)
+    //     * @param updated_after                     - LocalDateTime, lastUpdated, поле, поиск статей, дате последнего обновления после или точно в эту же дату (н-р, 2020-03-03T00:00:00)
+    //     * @param likes_equal                       - Long, количество лайков на точное равенство, вычисляется по полю likeDislike = 1 из таблицы
+    //     *                                          лайков и рейтингов {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
+    //     * @param likes_greaterOrEqual              - Long, количество лайков, большее либо равное указанному значению,
+    //     *                                          вычисляется как количество строк, где likeDislike = 1 из таблицы лайков и рейтингов
+    //     *                                          {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
+    //     * @param likes_lessOrEqual                 - Long, количество лайков, меньшее либо равное указанному значению,
+    //     *                                          вычисляется как количество строк, где likeDislike = 1 из таблицы лайков и рейтингов
+    //     *                                          {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
+    //     * @param dislikes_equal                    - Long, количество дизлайков на точное равенство, вычисляется как количество строк,
+    //     *                                          где likeDislike = -1 из таблицы лайков и рейтингов
 //     *                                          {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany
 //     * @param dislikes_greaterOrEqual           - Long, количество дизлайков, большее либо равное указанному значению,
 //     *                                          вычисляется как количество строк, где likeDislike = -1 из таблицы лайков и рейтингов
@@ -141,37 +141,123 @@ public class FilterRestController {
     @GetMapping("articles")
     @ApiOperation("Return list of Articles, selected by some conditions")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page_number", defaultValue = "1", required = false, dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "page_size", defaultValue = "20", required = false, dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = "order_direction", defaultValue = "ASC", required = false, dataTypeClass = String.class, allowEmptyValue = false),
-            @ApiImplicitParam(name = "order_by_properties", required = false, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "id", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "author_id", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "category_id", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "city_id", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "language_id", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "text", required = false, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "title_equal", required = false, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "title_contains", required = false, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "created_equal", required = false, dataTypeClass = LocalDateTime.class),
-            @ApiImplicitParam(name = "created_before", required = false, dataTypeClass = LocalDateTime.class),
-            @ApiImplicitParam(name = "created_after", required = false, dataTypeClass = LocalDateTime.class),
-            @ApiImplicitParam(name = "updated_equal", required = false, dataTypeClass = LocalDateTime.class),
-            @ApiImplicitParam(name = "updated_before", required = false, dataTypeClass = LocalDateTime.class),
-            @ApiImplicitParam(name = "updated_after", required = false, dataTypeClass = LocalDateTime.class),
-            @ApiImplicitParam(name = "likes_equal", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "likes_greaterOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "likes_lessOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "dislikes_equal", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "dislikes_greaterOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "dislikes_lessOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "rating_value_count_equal", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "rating_value_count_greaterOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "rating_value_count_lessOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "rating_equal", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "rating_greaterOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "rating_lessOrEqual", required = false, dataTypeClass = Long.class),
-            @ApiImplicitParam(name = "tags_id", required = false, dataTypeClass = String.class)
+            @ApiImplicitParam(name = "page_number",
+                    value = "Integer, номер страницы, отсчет с 1. Значение по умолчанию 1",
+                    defaultValue = "1", required = false, dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "page_size",
+                    value = "Integer, количество элементов на странице, значение по умолчанию = 20",
+                    defaultValue = "20", required = false, dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = "order_direction",
+                    value = "String, направление сортировки, возможные значения ASC и DESC. Значение по умолчанию ASC. регистронезависимые",
+                    defaultValue = "ASC", required = false, dataTypeClass = String.class, allowEmptyValue = false),
+            @ApiImplicitParam(name = "order_by_properties",
+                    value = "String, список полей для сортировки, регистр не важен.\n" +
+                            "Сортировать можно по полям сущности {@link Article}, с типом не List:\n" +
+                            "id,title,text,category,author,created,lastUpdated,city,language\n" +
+                            "Причем сортировка по ссылочным типам (н-р, Category, City) производится по id", required = false, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "id",
+                    value = "Long, id статьи, полe, поиск на точное соответствие", required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "author_id",
+                    value = "Long, id пользователя {@link ru.travelmatch.base.entities.User}, связанная сущность ManyToOne,\n" +
+                            "поиск на точное соответствие", required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "category_id",
+                    value = "Long, id категории статьи {@link ru.travelmatch.base.entities.ArticleCategory},\n" +
+                            "связанная сущность ManyToOne, поиск на точное соответствие", required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "city_id",
+                    value = "Long, id города {@link ru.travelmatch.base.entities.City}, связанная сущность ManyToOne,\n" +
+                            "поиск на точное соответствие", required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "language_id",
+                    value = "Long, id языка народ мира {@link ru.travelmatch.base.entities.Language}, связанная сущность\n" +
+                            "ManyToOne, поиск на точное соответствие", required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "text",
+                    value = "String, text, поле, регистронезависимый поиск по вхождению фразы в текст статьи", required = false, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "title_equal",
+                    value = "String, title, поле, регистронезависимый поиск на точное соответствие заголовка статьи", required = false, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "title_contains",
+                    value = "String, title, поле, регистронезависимый поиск на вхождение фразы в заголовок статьи", required = false, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "created_equal",
+                    value = "LocalDateTime, created, поле, поиск на точное соответствие по дате создания статьи (н-р, 2020-03-03T00:00:00)", required = false, dataTypeClass = LocalDateTime.class),
+            @ApiImplicitParam(name = "created_before",
+                    value = "LocalDateTime, created, поле, поиск статей, созданных раньше или точно в эту же дату (н-р, 2020-03-03T00:00:00)", required = false, dataTypeClass = LocalDateTime.class),
+            @ApiImplicitParam(name = "created_after",
+                    value = "LocalDateTime, created, поле, поиск статей, созданных после или точно в эту же дату (н-р, 2020-03-03T00:00:00)", required = false, dataTypeClass = LocalDateTime.class),
+            @ApiImplicitParam(name = "updated_equal",
+                    value = "LocalDateTime, lastUpdated, поле, поиск на точное соответствие по дате последнего обновления статьи статьи (н-р, 2020-03-03T00:00:00)",
+                    required = false, dataTypeClass = LocalDateTime.class),
+            @ApiImplicitParam(name = "updated_before",
+                    value = "LocalDateTime, lastUpdated, поле, поиск статей по дате последнего обновления которых раньше или точно в эту же дату (н-р, 2020-03-03T00:00:00)",
+                    required = false, dataTypeClass = LocalDateTime.class),
+            @ApiImplicitParam(name = "updated_after",
+                    value = "LocalDateTime, lastUpdated, поле, поиск статей по дате последнего обновления после или точно в эту же дату (н-р, 2020-03-03T00:00:00)",
+                    required = false, dataTypeClass = LocalDateTime.class),
+            @ApiImplicitParam(name = "likes_equal",
+                    value = "Long, количество лайков на точное равенство, вычисляется как количество строк, где likeDislike = 1 из таблицы\n" +
+                            "лайков и рейтингов {@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "likes_greaterOrEqual",
+                    value = "Long, количество лайков, большее либо равное указанному значению,\n" +
+                            "вычисляется как количество строк, где likeDislike = 1 из таблицы лайков и рейтингов,\n"+
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "likes_lessOrEqual",
+                    value = "Long, количество лайков, меньшее либо равное указанному значению,\n" +
+                            "вычисляется как количество строк, где likeDislike = 1 из таблицы лайков и рейтингов,\n"+
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "dislikes_equal",
+                    value = "Long, количество дизлайков на точное равенство, вычисляется как количество строк,\n" +
+                            "где likeDislike = -1 из таблицы лайков и рейтингов,\n"+
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "dislikes_greaterOrEqual",
+                    value = "Long, количество дизлайков, большее либо равное указанному значению,\n" +
+                            "вычисляется как количество строк, где likeDislike = -1 из таблицы лайков и рейтингов,\n"+
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "dislikes_lessOrEqual",
+                    value = "Long, количество дизлайков, меньшее либо равное указанному значению,\n" +
+                            "вычисляется как количество строк, где likeDislike = -1 из таблицы лайков и рейтингов\n" +
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "rating_value_count_equal",
+                    value = "Long, количество полученных оценок, отличных от 0 и null, на точное равенство,\n" +
+                            "вычисляется как количество строк, где rating не null и не 0, из таблицы лайков и рейтингов\n" +
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating}, связанная сущность OneToMany\n",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "rating_value_count_greaterOrEqual",
+                    value = "Long, количество полученных оценок, отличных от 0 и null, большее либо равное указанному\n" +
+                            "значению, вычисляется как количество строк, где rating не null и не 0, из таблицы лайков\n" +
+                            "и рейтингов {@link ru.travelmatch.base.entities.ArticleLikeRating},\n" +
+                            "связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "rating_value_count_lessOrEqual",
+                    value = "Long, количество полученных оценок, отличных от 0 и null, меньшее либо равное указанному\n" +
+                            "значению, вычисляется как количество строк, где rating не null и не 0, из таблицы лайков\n" +
+                            "и рейтингов {@link ru.travelmatch.base.entities.ArticleLikeRating},\n" +
+                            "связанная сущность OneToMany",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "rating_equal",
+                    value = "Long, средняя оценка на точное соответствие,\n" +
+                            "вычисляется как среднее по полю rating из таблицы лайков и рейтингов\n" +
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating},связанная сущность OneToMany.\n" +
+                            "В расчет принимаются только значения, отличные от null и 0.",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "rating_greaterOrEqual",
+                    value = "Long, средняя оценка на точное соответствие,\n" +
+                            "вычисляется как среднее по полю rating из таблицы лайков и рейтингов\n" +
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating},связанная сущность OneToMany.\n" +
+                            "В расчет принимаются только значения, отличные от null и 0.",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "rating_lessOrEqual",
+                    value = "Long, средняя оценка, меньшая либо равная указанному значению,\n" +
+                            "вычисляется как среднее по полю rating из таблицы лайков и рейтингов\n" +
+                            "{@link ru.travelmatch.base.entities.ArticleLikeRating},связанная сущность OneToMany.\n" +
+                            "В расчет принимаются только значения, отличные от null и 0.",
+                    required = false, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "tags_id",
+                    value = "String, список id тегов {@link ru.travelmatch.base.entities.Tag}, которые должны быть подвязаны к статье.\n" +
+                            "Причем в отбор должны попадать лишь те статьи, к которым подвязан весь список тегов.",
+                    required = false, dataTypeClass = String.class)
     }
     )
     public ResponseEntity<List<ArticleSimpleDTO>> getSomeArticles(HttpServletRequest request, HttpServletResponse response) {
