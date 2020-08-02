@@ -14,7 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.travelmatch.base.entities.User;
-import ru.travelmatch.dto.FileDto;
+import ru.travelmatch.dto.FileUploadResponceDto;
 import ru.travelmatch.dto.ProfileFreeGetDto;
 import ru.travelmatch.dto.ProfilePersonalDto;
 import ru.travelmatch.exception.ValidationErrorBuilder;
@@ -23,9 +23,7 @@ import ru.travelmatch.services.UserServiceImpl;
 import ru.travelmatch.utils.SystemUser;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -116,7 +114,7 @@ public class ProfileRestController {
     }
 
     @PostMapping("{id}/upload")
-    public ResponseEntity<?> saveFile(@Valid @RequestBody FileDto fileDto, Errors errors, Principal principal,
+    public ResponseEntity<?> saveFile(@Valid @RequestBody FileUploadResponceDto fileUploadResponceDto, Errors errors, Principal principal,
                                       @PathVariable(name = "id") Long id,
                                       @RequestHeader(value = "Authorization", required = false) String header) {
         if (errors.hasErrors()) {
