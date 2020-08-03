@@ -3,6 +3,10 @@
  ### v1.0
  ### Фильтры по сущности пользователь, по списку его тегов и списку языков
 
+#настройки для фильтрa пользователей
+GET http://localhost:8199/tm/api/v1/filter/users/settings
+Accept: application/json
+
 #список всех пользователей без фильтров
 GET http://localhost:8199/tm/api/v1/filter/users
 Accept: application/json

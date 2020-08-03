@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.travelmatch.base.repo.filters.ArticleFilter;
+import ru.travelmatch.base.repo.filters.ArticleFilterSettings;
 import ru.travelmatch.base.repo.filters.UserFilter;
+import ru.travelmatch.base.repo.filters.UserFilterSettings;
 import ru.travelmatch.dto.ArticleSimpleDTO;
 import ru.travelmatch.dto.UserSimpleDTO;
 import ru.travelmatch.services.ArticleService;
@@ -42,10 +44,19 @@ public class FilterRestController {
 
     private ArticleService articleService;
 
+    private UserFilterSettings userFilterSettings;
+
+    private ArticleFilterSettings articleFilterSettings;
+
     @Autowired
-    public FilterRestController(UserService userService, ArticleService articleService) {
+    public FilterRestController(UserService userService,
+                                ArticleService articleService,
+                                UserFilterSettings userFilterSettings,
+                                ArticleFilterSettings articleFilterSettings) {
         this.userService = userService;
         this.articleService = articleService;
+        this.userFilterSettings = userFilterSettings;
+        this.articleFilterSettings = articleFilterSettings;
     }
 
     @GetMapping("users")
@@ -261,5 +272,15 @@ public class FilterRestController {
                         .map(ArticleSimpleDTO::new)
                         .collect(Collectors.toList()));
     }
+    @ApiOperation("Return settings for User filter")
+    @GetMapping("/users/settings")
+    public ResponseEntity<UserFilterSettings> getUserFilterSettings(){
+        return ResponseEntity.ok(userFilterSettings);
+    }
 
+    @ApiOperation("Return settings for Article filter")
+    @GetMapping("/articles/settings")
+    public ResponseEntity<ArticleFilterSettings> getArticleFilterSettings(){
+        return ResponseEntity.ok(articleFilterSettings);
+    }
 }
