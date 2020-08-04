@@ -9,6 +9,7 @@ import ru.travelmatch.base.repo.ArticleCategoryRepository;
 import ru.travelmatch.base.repo.CityRepository;
 import ru.travelmatch.base.repo.LanguageRepository;
 import ru.travelmatch.base.repo.TagRepository;
+import ru.travelmatch.base.repo.specifications.UserSpecification;
 import ru.travelmatch.dto.*;
 import ru.travelmatch.services.UserService;
 
@@ -21,6 +22,13 @@ import java.util.stream.Collectors;
  * Created 03.08.2020
  * v1.0
  * Класс для передачи настроек фильтра по статьям на front-end
+ * Фильтр передает следующие настройки:
+ *      authors - список авторов статей (id, firstname,lastname), отсортированный по lastname и firstname
+ *          Авторы - это заполненные значения полей author в {@link ru.travelmatch.base.entities.Article};
+ *      categories - отсортированный список из {@link ru.travelmatch.base.entities.ArticleCategory};
+ *      cities - отсортированный список из {@link ru.travelmatch.base.entities.City};
+ *      languages - список из {@link ru.travelmatch.base.entities.Language}
+ *      tags - отсортированный список по названию из {@link ru.travelmatch.base.entities.Tag}
  */
 @Data
 @Component
@@ -61,20 +69,20 @@ public class ArticleFilterSettings {
 
   @PostConstruct
   private void init() {
-//TODO отобрать только авторов из статей
-    //this.authors = userService.
-
+    this.authors = userService.findAll(UserSpecification.getAuthorsOfArticles()).stream()
+            .map(AuthorDTO::new)
+            .collect(Collectors.toList());
     this.categories = articleCategoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream()
-            .map(category -> new ArticleCategoryDTO(category))
+            .map(ArticleCategoryDTO::new)
             .collect(Collectors.toList());
     this.cities = cityRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream()
-            .map(city -> new CityDTO(city))
+            .map(CityDTO::new)
             .collect(Collectors.toList());
     this.languages = languageRepository.findAll().stream()
-            .map(language -> new LanguageDTO(language))
+            .map(LanguageDTO::new)
             .collect(Collectors.toList());
     this.tags = tagRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream()
-            .map(tag -> new TagDTO(tag))
+            .map(TagDTO::new)
             .collect(Collectors.toList());
   }
 }

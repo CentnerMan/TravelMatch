@@ -24,6 +24,12 @@ import java.util.stream.Collectors;
  * Created 03.08.2020
  * Класс для передачи настроек фильтра пользователей для front-end.
  * v1.0
+ * Фильтр передает следующие настройки:
+ *      sex - список возможных полов
+ *      statusActivity - список возможных состояний пользователя (автивен, забанен и т.п.)
+ *      awards - отсортированный список возможных наград из {@link ru.travelmatch.base.entities.Award}
+ *      languages - список из {@link ru.travelmatch.base.entities.Language}
+ *      tags - отсортированный список по названию из {@link ru.travelmatch.base.entities.Tag}
  */
 @Data
 @Component
@@ -54,19 +60,19 @@ public class UserFilterSettings implements Serializable {
     @PostConstruct
     private void init() {
         this.sex = Arrays.stream(User.Sex.values())
-                .map(sex -> sex.name())
+                .map(Enum::name)
                 .collect(Collectors.toList());
         this.statusActivity = Arrays.stream(User.StatusActivity.values())
-                .map(statusActivity -> statusActivity.name())
+                .map(Enum::name)
                 .collect(Collectors.toList());
         this.awards = awardRepository.findAll(Sort.by(Sort.Direction.ASC, "title")).stream()
-                .map(award -> new AwardDTO(award))
+                .map(AwardDTO::new)
                 .collect(Collectors.toList());
         this.languages = languageRepository.findAll().stream()
-                .map(language -> new LanguageDTO(language))
+                .map(LanguageDTO::new)
                 .collect(Collectors.toList());
         this.tags = tagRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream()
-                .map(tag -> new TagDTO(tag))
+                .map(TagDTO::new)
                 .collect(Collectors.toList());
     }
 }
