@@ -44,6 +44,7 @@ public class ProfileFreeGetDto {
     private List<MatchProfile> myMatchProfiles;
     private List<MatchRequest> myMatchRequests;
     private List<Article> myArticles;
+    private List<Article> articles;
     private List<Tag> tags;
 
     public ProfileFreeGetDto(User user) {
@@ -64,6 +65,7 @@ public class ProfileFreeGetDto {
         this.myMatchProfiles = user.getMyMatchProfiles();
         this.myMatchRequests = user.getMyMatchRequests();
         this.myArticles = user.getMyArticles();
+        this.articles = user.getArticles();
         this.tags = user.getTags();
     }
 }
