@@ -17,15 +17,15 @@ import java.time.LocalDateTime;
  * v1.0
  * сущность для хранения лайков статей авторизованных пользователей
  * ключ уникальности - (article,user)
- * value принимает значения +1 (в случае лайка), -1 (в случае дизлайка).
+ * likeDislike принимает значения +1 (в случае лайка), -1 (в случае дизлайка).
  */
 
 @NoArgsConstructor
 @Entity
-@Table(name = "article_likes")
+@Table(name = "article_likes_ratings")
 @Data
-@IdClass(ArticleLike.ArticleLikeId.class)
-public class ArticleLike {
+@IdClass(ArticleLikeRating.ArticleLikeRatingId.class)
+public class ArticleLikeRating {
 
     @Id
     @Column(name = "article_id", nullable = false)
@@ -35,8 +35,11 @@ public class ArticleLike {
     @Column(name = "user_id", nullable = false)
     private Long user;
 
-    @Column(name = "value")
-    private int value;
+    @Column(name = "like_dislike")
+    private int likeDislike;
+
+    @Column(name = "rating")
+    private int rating;
 
     @CreationTimestamp
     @Column(name = "created")
@@ -49,7 +52,7 @@ public class ArticleLike {
     @EqualsAndHashCode
     @Access(value = AccessType.FIELD)
     @Setter
-    public static class ArticleLikeId implements Serializable {
+    public static class ArticleLikeRatingId implements Serializable {
         private Long article;
         private Long user;
     }

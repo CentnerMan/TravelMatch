@@ -26,7 +26,7 @@ INSERT INTO tags (name)
 VALUES ('отели'),('пляжи'),('одежда'),('достопримечательности'),('национальная кухня'),('Париж'),('Франция'),('Италия'),
 ('Коллизей'),('Милан'),('Эйфелева башня'),('Лувр'),('Дуомо'),('Рим');
 
-INSERT INTO users_tags (user_id, tag_id)
+INSERT INTO travelmatch.users_tags (user_id, tag_id)
 VALUES
 (1,1), (1,3),(1,5),(1,7),(1,9),
 (2,2), (2,4),(2,6),(1,8),
@@ -59,9 +59,43 @@ VALUES
 (5,1,4),(5,2,5),(5,6,5),
 (6,1,3),(6,2,5),(6,6,4);
 -- запрос для просмотра тегов пользователей
--- select users.id,users.username, tags.name, tags.id as tag_id from travelmatch.users as users
--- 	inner join travelmatch.users_tags as users_tags
--- 	on users_tags.user_id = users.id
--- 	inner join travelmatch.tags as tags
--- 	on users_tags.tag_id = tags.id
--- 	order by tags.name, users.id;
+select users.id,users.username, tags.name, tags.id as tag_id from travelmatch.users as users
+	inner join travelmatch.users_tags as users_tags
+	on users_tags.user_id = users.id
+	inner join travelmatch.tags as tags
+	on users_tags.tag_id = tags.id
+	order by tags.name, users.id;
+
+INSERT INTO article_categories(
+	name, created, last_updated)
+	VALUES ('Camping', '2020-07-19', '2020-07-19'),
+	('Diving', '2020-07-19', '2020-07-19'),
+	('Hostels', '2020-07-19', '2020-07-19'),
+	('Fishing', '2020-07-19', '2020-07-19');
+
+	INSERT INTO articles(
+	author_id, city_id, created, last_updated, language_id, title, text, category_id)
+	VALUES
+	(1, 1, '2020-01-01', '2020-01-01',1,'title1','text1', 1),
+	(2, 2, '2020-02-02', '2020-02-02',2,'title2','text2', 2),
+	(3, 3, '2020-03-03', '2020-03-03',3,'title3','text3', 3),
+	(1, 1, '2020-04-04', '2020-04-04',4,'title4','text4', 1),
+	(6, 2, '2019-09-04', '2019-09-10',1,'title5','text5', 3);
+
+	INSERT INTO travelmatch.articles_tags(
+	article_id, tag_id)
+	VALUES (1, 1),
+	(2, 2),(2,3),
+	(3, 3),(3,4),
+	(4, 1),(4, 2),(4, 3)
+	;
+
+	INSERT INTO travelmatch.article_likes_ratings(
+	article_id, user_id,like_dislike,rating)
+	VALUES (1, 1,-1,1),(1, 2,-1,null),(1, 3,null ,3),(1, 4,null ,4),(1,5,1,5),
+	(2, 2,-1,2),(2,3,null,3),(2, 4,1,4),(2,5,1,5),(2, 1,null ,2),(2,6,-1,null),
+	(3, 3,1,5),(3,4,1,5),(3, 5,1,5),(3,6,null ,4),
+	(4, 1,-1,2),(4, 2,-1,2),(4, 5,-1,1),(4, 6,-1,1),
+	(5,1,null,null)
+	;
+

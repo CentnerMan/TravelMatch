@@ -1,5 +1,13 @@
 package ru.travelmatch.dto;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

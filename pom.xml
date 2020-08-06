@@ -42,54 +42,55 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>2.2.5.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>2.2.5.RELEASE</version>
-        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring5 -->
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring5</artifactId>
-            <version>3.0.11.RELEASE</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+<!--            <version>2.2.5.RELEASE</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-            <version>3.0.4.RELEASE</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring5 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf</groupId>-->
+<!--            <artifactId>thymeleaf-spring5</artifactId>-->
+<!--            <version>3.0.11.RELEASE</version>-->
+<!--        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-java8time -->
-        <!--        Modern server-side Java template engine for both web and standalone environments-->
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-java8time</artifactId>
-            <version>3.0.4.RELEASE</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf.extras</groupId>-->
+<!--            <artifactId>thymeleaf-extras-springsecurity5</artifactId>-->
+<!--            <version>3.0.4.RELEASE</version>-->
+<!--        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-conditionalcomments -->
-        <!--        XML/XHTML/HTML5 template engine for Java-->
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-conditionalcomments</artifactId>
-            <version>2.1.2.RELEASE</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-java8time &ndash;&gt;-->
+<!--        &lt;!&ndash;        Modern server-side Java template engine for both web and standalone environments&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf.extras</groupId>-->
+<!--            <artifactId>thymeleaf-extras-java8time</artifactId>-->
+<!--            <version>3.0.4.RELEASE</version>-->
+<!--        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/com.github.mxab.thymeleaf.extras/thymeleaf-extras-data-attribute -->
-        <!--        Thymeleaf Data Dialect that helps to easier write data-* attributes. Instead of th:attr="data-msg='#{my.msg}'" it is possible to do data:msg="#{my.msg}"-->
-        <dependency>
-            <groupId>com.github.mxab.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-data-attribute</artifactId>
-            <version>2.0.1</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-conditionalcomments &ndash;&gt;-->
+<!--        &lt;!&ndash;        XML/XHTML/HTML5 template engine for Java&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf.extras</groupId>-->
+<!--            <artifactId>thymeleaf-extras-conditionalcomments</artifactId>-->
+<!--            <version>2.1.2.RELEASE</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>nz.net.ultraq.thymeleaf</groupId>
-            <artifactId>thymeleaf-layout-dialect</artifactId>
-            <version>2.4.1</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.github.mxab.thymeleaf.extras/thymeleaf-extras-data-attribute &ndash;&gt;-->
+<!--        &lt;!&ndash;        Thymeleaf Data Dialect that helps to easier write data-* attributes. Instead of th:attr="data-msg='#{my.msg}'" it is possible to do data:msg="#{my.msg}"&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.mxab.thymeleaf.extras</groupId>-->
+<!--            <artifactId>thymeleaf-extras-data-attribute</artifactId>-->
+<!--            <version>2.0.1</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>nz.net.ultraq.thymeleaf</groupId>-->
+<!--            <artifactId>thymeleaf-layout-dialect</artifactId>-->
+<!--            <version>2.4.1</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -139,35 +140,35 @@
             <version>2.2.5.RELEASE</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>3.4.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.webjars</groupId>-->
+<!--            <artifactId>jquery</artifactId>-->
+<!--            <version>3.4.1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery-easing</artifactId>
-            <version>1.4.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.webjars</groupId>-->
+<!--            <artifactId>jquery-easing</artifactId>-->
+<!--            <version>1.4.1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery.scrollTo</artifactId>
-            <version>2.1.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.webjars</groupId>-->
+<!--            <artifactId>jquery.scrollTo</artifactId>-->
+<!--            <version>2.1.1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>font-awesome</artifactId>
-            <version>3.2.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.webjars</groupId>-->
+<!--            <artifactId>font-awesome</artifactId>-->
+<!--            <version>3.2.1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>4.3.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.webjars</groupId>-->
+<!--            <artifactId>bootstrap</artifactId>-->
+<!--            <version>4.3.1</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -200,13 +201,13 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-testing -->
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-testing</artifactId>
-            <version>3.0.4.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-testing &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf</groupId>-->
+<!--            <artifactId>thymeleaf-testing</artifactId>-->
+<!--            <version>3.0.4.RELEASE</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.h2database</groupId>
@@ -219,6 +220,25 @@
         <!--            <artifactId>core-js</artifactId>-->
         <!--            <version>3.6.4</version>-->
         <!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-core -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>1.19.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
     </dependencies>
 
 

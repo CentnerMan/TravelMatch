@@ -117,9 +117,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 
-//    //список ссылок на фотографии пользователя
-// не получилось, hibernate ругается:
-//    org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: Use of @OneToMany or @ManyToMany targeting an unmapped class: ru.travelmatch.base.entities.User.pictURLs[java.lang.String]
+//    список ссылок на фотографии пользователя
+//    не получилось, hibernate ругается:
+//    org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory'
+//    defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]:
+//    Invocation of init method failed; nested exception is org.hibernate.AnnotationException:
+//    Use of @OneToMany or @ManyToMany targeting an unmapped class: ru.travelmatch.base.entities.User.pictURLs[java.lang.String]
+
 //    @OneToMany
 //    @JoinTable(name = "users_pictURLs",
 //            joinColumns = @JoinColumn(name = "user_id"),
@@ -130,6 +134,10 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<LanguageSkill> languages;
+
+    //статьи, автором которых является данный пользователь
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles;
 
     @ManyToMany
     @JoinTable(name = "users_roles",

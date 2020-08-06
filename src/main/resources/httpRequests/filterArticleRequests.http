@@ -1,0 +1,247 @@
+ ### Author Farida Gareeva
+ ### Created 20/07/2020
+ ### v1.0
+ ### Фильтры по сущности Article,
+ ###      по списку еe тегов,
+ ###      по количеству лайков и дизлайков,
+ ###      по количеству оценок для рейтинга,
+ ###      по рейтингу (среднее значение оценки)
+
+#-------------------------------------------------------------
+###настройки для фильтрa статей
+GET http://localhost:8199/tm/api/v1/filter/articles/settings
+Accept: application/json
+
+#-------------------------------------------------------------
+###список всех статей без фильтров
+###без дополнительных параметров выводятся только первые 20 статей, попавшие в выборку.
+###Именно 20, т.к. это число элементов на web-странице по умолчанию
+GET http://localhost:8199/tm/api/v1/filter/articles
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей с первой страницы, на странице по 3 элемента
+GET http://localhost:8199/tm/api/v1/filter/articles?page_number=1&page_size=3
+Accept: application/json
+
+#-------------------------------------------------------------
+###ошибки ввода номера страницы и количества элементов на web-странице
+GET http://localhost:8199/tm/api/v1/filter/articles?page_number=0&page_size=4g
+Accept: application/json
+
+#-------------------------------------------------------------
+###выбор направления сортировки статей
+###Этот запрос без параметра order_by_properties не имеет смысла
+GET http://localhost:8199/tm/api/v1/filter/articles?order_direction=desc
+Accept: application/json
+
+#-------------------------------------------------------------
+###выбор полей для сортировки статей
+###order_by_properties - может быть указано одно из значений (id,title,text,category,author,created,lastUpdated,city,language),
+###либо через запятую,регистронезависимый. Причем для ссылочных типов сортировка осуществляется по id.
+###Если не указан параметр order_direction, то используется направление по умолчанию asc
+GET http://localhost:8199/tm/api/v1/filter/articles?order_by_properties=id,category,TITLE&order_direction=desc
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по id
+GET http://localhost:8199/tm/api/v1/filter/articles?id=2
+Accept: application/json
+
+###ошибка в указании id статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?id=error
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по id автора
+GET http://localhost:8199/tm/api/v1/filter/articles?author_id=1&order_by_properties=id,category
+Accept: application/json
+
+###ошибка в указании id автора
+GET http://localhost:8199/tm/api/v1/filter/articles?author_id=error
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по id категории статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?category_id=3
+Accept: application/json
+
+###ошибка в указании id категории статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?category_id=error
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по id города статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?city_id=3
+Accept: application/json
+
+###ошибка в указании id города статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?city_id=error
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по id языка, на котором написана статья
+GET http://localhost:8199/tm/api/v1/filter/articles?language_id=2
+Accept: application/json
+
+###ошибка в указании id статьи, на котором написана статья
+GET http://localhost:8199/tm/api/v1/filter/articles?language_id=error
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по вхождению строки в текст статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?text=text3
+Accept: application/json
+
+#-------------------------------------------------------------
+###список статей по точному соответствию заголовка статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?title_equal=title1
+Accept: application/json
+
+###список статей по вхождению строки в заголовок статьи
+GET http://localhost:8199/tm/api/v1/filter/articles?title_contains=title
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО ДАТЕ СОЗДАНИЯ СТАТЬИ
+###список статей по точному соответствию дате создания (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?created_equal=2020-03-03T00:00:00
+Accept: application/json
+
+###ошибка в указании даты создания (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?created_equal=2020-03-03
+Accept: application/json
+
+###список статей, созданных до указанной даты (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?created_before=2020-03-03T00:00:00
+Accept: application/json
+
+###список статей, созданных после указанной даты (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?created_after=2020-03-03T00:00:00
+Accept: application/json
+
+###список статей, созданных в указанном интервале (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?created_after=2020-01-31T23:59:59&created_before=2020-03-03T00:00:00
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО ДАТЕ ОБНОВЛЕНИЯ СТАТЬИ
+###список статей по точному соответствию даты обновления (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?updated_equal=2020-03-03T00:00:00
+Accept: application/json
+
+###список статей, обновленных до указанной даты (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?updated_before=2020-03-03T00:00:00
+Accept: application/json
+
+###список статей, обновленных после указанной даты (с точностью до секунды)
+GET http://localhost:8199/tm/api/v1/filter/articles?updated_after=2020-03-03T00:00:00
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО ТЕГАМ
+###список статей, к которым одновренно подвязаны все теги с id из списка
+GET http://localhost:8199/tm/api/v1/filter/articles?tags_id=1,2,3
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО КОЛИЧЕСТВУ ЛАЙКОВ
+###список статей, у которых количество лайков равно указанному число
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_equal=2
+Accept: application/json
+
+###список статей, у которых количество лайков больше или равно, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_greaterOrEqual=1
+Accept: application/json
+
+###список статей, у которых количество лайков меньше или равно, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_lessOrEqual=1
+Accept: application/json
+
+###список статей, у которых количество лайков принадлежит отрезку
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_greaterOrEqual=1&likes_lessOrEqual=5
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО КОЛИЧЕСТВУ ДИЗЛАЙКОВ
+###список статей, у которых количество дизлайков равно указанному число
+GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_equal=2
+Accept: application/json
+
+###список статей, у которых количество дизлайков больше или равно, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_greaterOrEqual=2
+Accept: application/json
+
+###список статей, у которых количество дизлайков меньше или равно, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_lessOrEqual=1
+Accept: application/json
+
+###список статей, у которых количество дизлайков принадлежит отрезку
+GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_greaterOrEqual=1&dislikes_lessOrEqual=2
+Accept: application/json
+
+#-------------------------------------------------------------
+#КОМБИНИРОВАННЫЕ ЗАПРОСЫ ПО КОЛИЧЕСТВУ ЛАЙКОВ И ДИЗЛАЙКОВ
+###список статей, у которых количество дизлайков принадлежит отрезку и есть еще условие на лайки
+GET http://localhost:8199/tm/api/v1/filter/articles?dislikes_greaterOrEqual=1&dislikes_lessOrEqual=2&likes_lessOrEqual=5
+Accept: application/json
+
+###список статей, у которых МНОГО разных условий (лайки, дислайки, теги, рейтинги, количество оценок, заголовок)
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_greaterOrEqual=0&dislikes_greaterOrEqual=0&dislikes_lessOrEqual=5&tags_id=1,2,3&rating_greaterOrEqual=0&rating_value_count_greaterOrEqual=3&title_contains=TITLE
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО КОЛИЧЕСТВУ ОЦЕНОК ДЛЯ РЕЙТИНГА
+###список статей, у которых количество оценок для рейтинга равно указанному числу
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_value_count_equal=0
+Accept: application/json
+
+###список статей, у которых количество оценок для рейтинга больше или равно, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_value_count_greaterOrEqual=5
+Accept: application/json
+
+###список статей, у которых количество оценок для рейтинга меньше или равно, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_value_count_lessOrEqual=3
+Accept: application/json
+
+###список статей, у которых количество оценок для рейтинга лежит в заданном отрезке
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_value_count_lessOrEqual=5&rating_value_count_greaterOrEqual=3
+Accept: application/json
+
+#-------------------------------------------------------------
+#ЗАПРОСЫ ПО РЕЙТИНГУ СТАТЬИ
+###список статей, у которых рейтинг равен указанному числу
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_equal=0
+Accept: application/json
+
+###список статей, у которых рейтинг больше или равен, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_greaterOrEqual=4
+Accept: application/json
+
+###список статей, у которых рейтинг меньше или равен, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_lessOrEqual=2
+Accept: application/json
+
+###список статей, у которых значение рейтинга лежит в заданном отрезке
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_greaterOrEqual=3&rating_lessOrEqual=5
+Accept: application/json
+
+#-------------------------------------------------------------
+#КОМБИНИРОВАННЫЕ ЗАПРОСЫ ПО РЕЙТИНГУ СТАТЬИ И ЛАЙКАМ
+###список статей, у которых рейтинг равен указанному числу
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_equal=0&likes_equal=0
+Accept: application/json
+
+###список статей, у которых рейтинг больше или равен, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_greaterOrEqual=4
+Accept: application/json
+
+###список статей, у которых рейтинг меньше или равен, чем указанное число
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_lessOrEqual=2
+Accept: application/json
+
+###список статей, у которых значение рейтинга лежит в заданном отрезке
+GET http://localhost:8199/tm/api/v1/filter/articles?rating_greaterOrEqual=3&rating_lessOrEqual=5
+Accept: application/json
+
+

@@ -71,18 +71,12 @@ public class Article {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ArticleLike> likes;
+    private List<ArticleLikeRating> likes;
 
     @ManyToMany
     @JoinTable(name = "articles_tags",
             joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
-
-    @OneToMany(mappedBy = "article",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<ArticleRating> ratings;
 
 }
