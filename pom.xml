@@ -15,7 +15,7 @@
     <name>travelmatch</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
@@ -208,6 +208,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars.npm/core-js -->
         <!--        <dependency>-->
         <!--            <groupId>org.webjars.npm</groupId>-->
