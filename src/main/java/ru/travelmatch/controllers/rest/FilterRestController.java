@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -38,26 +39,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/filter")
 @Api("Set of endpoints for select operations.")
+@AllArgsConstructor
 public class FilterRestController {
-
     private UserService userService;
-
     private ArticleService articleService;
-
     private UserFilterSettings userFilterSettings;
-
     private ArticleFilterSettings articleFilterSettings;
-
-    @Autowired
-    public FilterRestController(UserService userService,
-                                ArticleService articleService,
-                                UserFilterSettings userFilterSettings,
-                                ArticleFilterSettings articleFilterSettings) {
-        this.userService = userService;
-        this.articleService = articleService;
-        this.userFilterSettings = userFilterSettings;
-        this.articleFilterSettings = articleFilterSettings;
-    }
 
     @GetMapping("users")
     @ApiOperation("Return list of Users, selected by some conditions. DON'T TEST! HAS ERRORS!")

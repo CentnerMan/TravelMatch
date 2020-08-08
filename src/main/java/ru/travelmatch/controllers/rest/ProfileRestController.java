@@ -7,6 +7,7 @@
 
 package ru.travelmatch.controllers.rest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +32,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/v1/profile")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class ProfileRestController {
-
     private AuthenticationManager authenticationManager;
     private UserServiceImpl userService;
     private JwtTokenProvider tokenProvider;
-
-    @Autowired
-    public ProfileRestController(AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider tokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
-        this.tokenProvider = tokenProvider;
-    }
 
     /**
      * Метод возвращает профиль пользователя по id пользователя
@@ -64,6 +58,12 @@ public class ProfileRestController {
             return new ResponseEntity<ProfileFreeGetDto>(freeGetDto, HttpStatus.OK);
         }
         return new ResponseEntity<ProfilePersonalDto>(getUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/current")
+    public User getCurrentUserProfile(Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        return user;
     }
 
     /**

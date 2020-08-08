@@ -1,5 +1,6 @@
 package ru.travelmatch.controllers.rest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +19,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/advcategory")
+@AllArgsConstructor
 public class AdvertCategoryRestController {
-
     private AdvertCategoryService advertCategoryService;
-
-    @Autowired
-    public void setAdvertCategoryService(AdvertCategoryService advertCategoryService) {
-        this.advertCategoryService=advertCategoryService;
-    }
 
     @GetMapping
     public List<AdvertCategory> getAdverts() throws Exception {
         try {
             List<AdvertCategory> advertCategoriesList = advertCategoryService.findAll();
             return advertCategoriesList;
-
         } catch (Exception e) {
             throw new Exception("Something wrong");
         }

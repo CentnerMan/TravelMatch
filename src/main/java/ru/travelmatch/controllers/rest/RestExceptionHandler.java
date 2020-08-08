@@ -23,15 +23,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
     protected ResponseEntity<SimpleException> handleInvalidAuth(AuthenticationException e) {
-        return new ResponseEntity<>(new SimpleException("Неправильное имя пользователя или пароль"),
-                HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<SimpleException> handleInvalidAuth2(BadCredentialsException e) {
         return new ResponseEntity<>(new SimpleException("Неправильное имя пользователя или пароль"),
                 HttpStatus.BAD_REQUEST);
     }
