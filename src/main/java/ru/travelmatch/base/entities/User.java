@@ -131,6 +131,10 @@ public class User {
             orphanRemoval = true)
     private List<LanguageSkill> languages;
 
+    //статьи, автором которых является данный пользователь
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles;
+
     @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -15,7 +15,7 @@
     <name>travelmatch</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
@@ -209,6 +209,11 @@
 <!--            <scope>test</scope>-->
 <!--        </dependency>-->
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars.npm/core-js -->
         <!--        <dependency>-->
         <!--            <groupId>org.webjars.npm</groupId>-->
@@ -221,6 +226,17 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-core</artifactId>
             <version>1.19.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
         </dependency>
 
     </dependencies>

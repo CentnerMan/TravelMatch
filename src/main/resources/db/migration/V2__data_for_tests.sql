@@ -26,7 +26,7 @@ INSERT INTO tags (name)
 VALUES ('отели'),('пляжи'),('одежда'),('достопримечательности'),('национальная кухня'),('Париж'),('Франция'),('Италия'),
 ('Коллизей'),('Милан'),('Эйфелева башня'),('Лувр'),('Дуомо'),('Рим');
 
-INSERT INTO travelmatch.users_tags (user_id, tag_id)
+INSERT INTO users_tags (user_id, tag_id)
 VALUES
 (1,1), (1,3),(1,5),(1,7),(1,9),
 (2,2), (2,4),(2,6),(1,8),
@@ -59,12 +59,12 @@ VALUES
 (5,1,4),(5,2,5),(5,6,5),
 (6,1,3),(6,2,5),(6,6,4);
 -- запрос для просмотра тегов пользователей
-select users.id,users.username, tags.name, tags.id as tag_id from travelmatch.users as users
-	inner join travelmatch.users_tags as users_tags
-	on users_tags.user_id = users.id
-	inner join travelmatch.tags as tags
-	on users_tags.tag_id = tags.id
-	order by tags.name, users.id;
+-- select users.id,users.username, tags.name, tags.id as tag_id from travelmatch.users as users
+-- 	inner join travelmatch.users_tags as users_tags
+-- 	on users_tags.user_id = users.id
+-- 	inner join travelmatch.tags as tags
+-- 	on users_tags.tag_id = tags.id
+-- 	order by tags.name, users.id;
 
 INSERT INTO article_categories(
 	name, created, last_updated)
@@ -82,7 +82,7 @@ INSERT INTO article_categories(
 	(1, 1, '2020-04-04', '2020-04-04',4,'title4','text4', 1),
 	(6, 2, '2019-09-04', '2019-09-10',1,'title5','text5', 3);
 
-	INSERT INTO travelmatch.articles_tags(
+	INSERT INTO articles_tags(
 	article_id, tag_id)
 	VALUES (1, 1),
 	(2, 2),(2,3),
@@ -90,80 +90,21 @@ INSERT INTO article_categories(
 	(4, 1),(4, 2),(4, 3)
 	;
 
-	INSERT INTO travelmatch.article_likes(
-	article_id, user_id,value)
-	VALUES (1, 1,1),
-	(2, 2,1),(2,3,-1),
-	(3, 3,1),(3,4,1),
-	(4, 1,-1),(4, 2,-1),(4, 3,1)
+	INSERT INTO article_likes_ratings(
+	article_id, user_id,like_dislike,rating)
+	VALUES (1, 1,-1,1),(1, 2,-1,null),(1, 3,null ,3),(1, 4,null ,4),(1,5,1,5),
+	(2, 2,-1,2),(2,3,null,3),(2, 4,1,4),(2,5,1,5),(2, 1,null ,2),(2,6,-1,null),
+	(3, 3,1,5),(3,4,1,5),(3, 5,1,5),(3,6,null ,4),
+	(4, 1,-1,2),(4, 2,-1,2),(4, 5,-1,1),(4, 6,-1,1),
+	(5,1,null,null)
 	;
 
-	INSERT INTO travelmatch.article_rating(
-	article_id, user_id,value)
-	VALUES (1, 1,1),(1, 2,2),(1, 3,3),(1, 4,4),(1,5,5),
-	(2, 2,2),(2,3,3),(2, 4,4),(2,5,5),
-	(3, 3,5),(3,4,5),(3, 5,5),(3,6,4),
-	(4, 1,2),(4, 2,2)
-	;
--- запрос для определения количества поставленных оценок для рейтинга статей
-select
-        distinct article0_.id as id1_7_,
-		ratings1_.article_id as article_id1,
-		sum(case
-            when ratings1_.article_id is null then 0
-            else 1
-        end) as countValues,
-        article0_.author_id as author_i6_7_,
-        article0_.category_id as category7_7_,
-        article0_.city_id as city_id8_7_,
-        article0_.created as created2_7_,
-        article0_.language_id as language9_7_,
-        article0_.last_updated as last_upd3_7_,
-        article0_.text as text4_7_,
-        article0_.title as title5_7_
-    from
-        travelmatch.articles article0_
-    left outer join
-        travelmatch.article_rating ratings1_
-            on article0_.id=ratings1_.article_id
-    group by
-        ratings1_.article_id ,
-        article0_.id
- ;
+insert into advert_categories (name, product_type)
+values ('Other', 'PRODUCT');
 
---  запросы, чтобы наладить комбинированный запрос по рейтингам и лайкам
- SELECT article_id,
-avg(value) as rating
-	FROM travelmatch.article_rating
-	group by(article_id)
-	order by article_id;
-
-	SELECT article_id,
-sum(case when value=1 then 1 else 0 end) as likes,
-sum(case when value=-1 then 1 else 0 end) as dislikes
-	FROM travelmatch.article_likes
-
-	group by(article_id)
-	order by article_id;
-
-	    select
-        distinct article0_.id as article_id,
-		 sum(case
-            when coalesce(likes1_.value, 0)=1 then 1
-            else 0
-        end) as countLikes,
-        avg(coalesce(ratings2_.value, 0)) as rating
-
-    from
-        travelmatch.articles article0_
-    left outer join
-        travelmatch.article_likes likes1_
-            on article0_.id=likes1_.article_id
-    left outer join
-        travelmatch.article_rating ratings2_
-            on article0_.id=ratings2_.article_id
-    group by
-        ratings2_.article_id ,
-        article0_.id
-    order by
-        article0_.id asc;
+insert into adverts (begin_date, end_date, category_id, city_id, currency_id, created, is_actual, last_updated,
+                     language_id, price, product_type, product_condition, title, text, type, user_id)
+values (null, null, 1, null, 1, null, true, null, null, 100, 'PRODUCT', 'NEW', 'Java book',
+        'Best of the best java book', 'BUY', 1),
+       (null, null, 1, null, 1, null, true, null, null, 200, 'PRODUCT', 'NEW', 'Php book', 'Php book', 'BUY', 1),
+       (null, null, 1, null, 1, null, true, null, null, 300, 'PRODUCT', 'NEW', 'C# book', 'Book', 'BUY', 1);

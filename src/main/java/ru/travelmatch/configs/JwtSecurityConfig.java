@@ -1,5 +1,13 @@
 package ru.travelmatch.configs;
 
+/**
+ * GeekBrains Java, TravelMatch.
+ *
+ * @author Anatoly Lebedev
+ * @version 1.0.0 11.06.2020
+ * @link https://github.com/Centnerman
+ */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +22,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import ru.travelmatch.jwt.JwtConfigurer;
 import ru.travelmatch.jwt.JwtTokenProvider;
 
-@Configuration
 @EnableWebSecurity
 public class JwtSecurityConfig {
 
@@ -90,8 +97,5 @@ public class JwtSecurityConfig {
             auth.authenticationProvider(provider);
         }
     }
-
-
-
-
 }
+

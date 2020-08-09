@@ -1,0 +1,55 @@
+<!doctype html>
+<html ng-app="app" ng-controller="advCategoryController">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <!--	<script src="doc.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<h1>Категории объявлений</h1> <!--Write here your object name-->
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+    <tr>
+        <!--fill your object fields-->
+        <th>Ид</th>
+        <th>Наименование</th>
+        <th>Тип продукта</th>
+        <th>Дата создания</th>
+        <th>Дата изменения</th>
+        <!---->
+        <th>Actions</th>
+    </tr>
+    <tbody ng-repeat="p in advCategoryArray">
+    <tr>
+        <!--fill your object fields-->
+        <td>{{p.id}}</td>
+        <td><input type="text" ng-model="p.name"  /></td>
+        <td><input type="text" ng-model="p.productType"  /></td>
+        <td><input type="text" ng-model="p.created"  /></td>
+        <td><input type="text" ng-model="p.lastUpdated"  /></td>
+        <!---->
+        <td><a class="btn btn-outline-warning" href="" ng-click="save($index)">Сохранить</a></td>
+        <td><a class="btn btn-outline-warning" href="" ng-click="delete($index)">Удалить</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Добавить новую</h2>
+<form name="addObject" novalidate ng-submit="submitNew()">
+    <!--fill your object fields-->
+    <label for="nameCr">Наименование</label>
+    <input type="text" ng-model="advCategoryNew.name" id="nameCr">
+    <label for="productTypeCr">Тип продукта</label>
+    <input type="text" ng-model="advCategoryNew.productType" id="productTypeCr">
+    <label for="createdCr">Дата создания</label>
+    <input type="text" ng-model="advCategoryNew.created" id="createdCr">
+    <label for="lastUpdatedCr">Дата изменения</label>
+    <input type="text" ng-model="advCategoryNew.lastUpdated" id="lastUpdatedCr">
+    <!---->
+    <button type="submit">Сохранить</button>
+</form>
+</body>
+
+</html>
