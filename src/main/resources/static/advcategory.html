@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="Api" ng-controller="ApiCtrl">
+<html ng-app="app" ng-controller="advCategoryController">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <!--	<script src="doc.js"></script>-->
@@ -9,19 +9,19 @@
 </head>
 <body>
 
-<h1>Advertisement Categories</h1> <!--Write here your object name-->
+<h1>Категории объявлений</h1> <!--Write here your object name-->
 <table class="table table-hover" cellpadding="0" cellspacing="0">
     <tr>
         <!--fill your object fields-->
-        <th>Id</th>
-        <th>Name</th>
-        <th>Product Type</th>
-        <th>Created</th>
-        <th>Last Updated</th>
+        <th>Ид</th>
+        <th>Наименование</th>
+        <th>Тип продукта</th>
+        <th>Дата создания</th>
+        <th>Дата изменения</th>
         <!---->
         <th>Actions</th>
     </tr>
-    <tbody ng-repeat="p in ApiArray">
+    <tbody ng-repeat="p in advCategoryArray">
     <tr>
         <!--fill your object fields-->
         <td>{{p.id}}</td>
@@ -30,67 +30,26 @@
         <td><input type="text" ng-model="p.created"  /></td>
         <td><input type="text" ng-model="p.lastUpdated"  /></td>
         <!---->
-        <td><a href="" ng-click="save($index)">Save</a></td>
-        <td><a href="" ng-click="delete($index)">Delete</a></td>
+        <td><a class="btn btn-outline-warning" href="" ng-click="save($index)">Сохранить</a></td>
+        <td><a class="btn btn-outline-warning" href="" ng-click="delete($index)">Удалить</a></td>
     </tr>
     </tbody>
 </table>
 
-<h2>Add new</h2>
+<h2>Добавить новую</h2>
 <form name="addObject" novalidate ng-submit="submitNew()">
     <!--fill your object fields-->
-    <label for="nameCr">Name</label>
-    <input type="text" ng-model="objNew.name" id="nameCr">
-    <label for="productTypeCr">Product type</label>
-    <input type="text" ng-model="objNew.productType" id="productTypeCr">
-    <label for="createdCr">Created date</label>
-    <input type="text" ng-model="objNew.created" id="createdCr">
-    <label for="lastUpdatedCr">Last updated date</label>
-    <input type="text" ng-model="objNew.lastUpdated" id="lastUpdatedCr">
+    <label for="nameCr">Наименование</label>
+    <input type="text" ng-model="advCategoryNew.name" id="nameCr">
+    <label for="productTypeCr">Тип продукта</label>
+    <input type="text" ng-model="advCategoryNew.productType" id="productTypeCr">
+    <label for="createdCr">Дата создания</label>
+    <input type="text" ng-model="advCategoryNew.created" id="createdCr">
+    <label for="lastUpdatedCr">Дата изменения</label>
+    <input type="text" ng-model="advCategoryNew.lastUpdated" id="lastUpdatedCr">
     <!---->
-    <button type="submit">Save New</button>
+    <button type="submit">Сохранить</button>
 </form>
 </body>
 
-<script>
-    var app = angular.module('Api', []);
-
-    var apiPath="http://localhost:8199/tm/api/v1/advcategory"; <!--Write your API path-->
-
-    app.controller('ApiCtrl', function($scope, $http) {
-        fillTable = function() {
-            $http.get(apiPath)
-                .then(function(response) {
-                    $scope.ApiArray = response.data;
-                });
-        };
-
-        fillTable();
-
-        $scope.submitNew = function() {
-            $http.post(apiPath, $scope.objNew)
-                .then(function(response) {
-                    $scope.ApiArray.push(response.data);
-                });
-        };
-
-        $scope.delete = function(index) {
-            var del = $scope.ApiArray[index];
-
-            $http.delete(apiPath+"/"+del.id)
-                .then(function(success) {
-                    $scope.ApiArray.splice(index, 1);
-                });
-        };
-
-        $scope.save = function(index) {
-            var sav = $scope.ApiArray[index];
-
-            $http.put(apiPath,sav)
-                .then(function(success) {
-                });
-        };
-
-    });
-</script>
 </html>

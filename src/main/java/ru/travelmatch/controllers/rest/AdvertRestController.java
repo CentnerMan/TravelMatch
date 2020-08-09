@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.travelmatch.base.entities.Advert;
 import ru.travelmatch.base.repo.filters.ArticleFilter;
 import ru.travelmatch.base.repo.filters.ArticleFilterSettings;
 import ru.travelmatch.base.repo.filters.UserFilter;
@@ -41,5 +41,25 @@ public class AdvertRestController {
     @ApiOperation("Return list of adverts")
     public List<AdvertDto> getAdvertsList() {
         return advertService.getAllDtos();
+    }
+
+    @GetMapping("/{id}")
+    public Advert getAdvertById(@PathVariable Long id) throws Exception {
+        Advert advert=advertService.findById(id);
+        return advert;
+    }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Advert addAdvert(@RequestBody Advert advert) throws Exception {
+        //advert.setUserId(1L);
+        //     advert.setUserId(userService.findByUsername(principal.getName()).getId());
+        advertService.save(advert);
+        return advert;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        advertService.deleteById(id);
     }
 }

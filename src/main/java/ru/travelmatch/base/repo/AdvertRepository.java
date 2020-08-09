@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface AdvertRepository extends JpaRepository<Advert, Long> {
     List<AdvertDto> findAllBy();
+    Advert findAdvertById(Long id);
+    Advert save(Advert advert);
 }

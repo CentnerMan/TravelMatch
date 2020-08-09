@@ -41,13 +41,11 @@ public class AdvertCategory {
     @Enumerated(EnumType.STRING)
     private Advert.ProductType productType;
 
-    /*
     @JsonBackReference
     @OneToMany(mappedBy = "category",
             cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST}
     )
     private List<Advert> adverts;
-     */
 
     @CreationTimestamp
     @Column(name = "created")
