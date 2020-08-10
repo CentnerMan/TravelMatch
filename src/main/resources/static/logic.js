@@ -1,4 +1,5 @@
 var app = angular.module('app', ['ngRoute']);
+var contextPath = 'http://localhost:8189/travel'
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -37,7 +38,7 @@ app.controller('usersController', function ($scope, $http, globalFactory) {
     $scope.globalFactory = globalFactory;
 
     fillTable = function () {
-        $http.get("http://localhost:8189/travel/api/v1/users")
+        $http.get(contextPath + '/api/v1/users')
             .then(function (response) {
                 $scope.UsersList = response.data;
             });
@@ -51,7 +52,7 @@ app.controller('profileController', function ($scope, $http) {
 });
 
 app.controller('advertsController', function ($scope, $http) {
-    const advPath="http://localhost:8189/tm/api/v1/adverts";
+    const advPath = contextPath + '/api/v1/adverts';
 
     fillTable = function () {
         $http.get(advPath)
@@ -62,15 +63,13 @@ app.controller('advertsController', function ($scope, $http) {
 
     fillTable();
 
-
-
     $scope.submitNew = function() {
         $http.post(advPath, $scope.advNew)
             .then(function(response) {
                 $scope.AdvertsList.push(response.data);
             });
 
-        window.location.href = 'http://localhost:8189/tm/index.html#!/adverts';
+        window.location.href = contextPath + '/index.html#!/adverts';
         window.location.reload(true);
     };
 
@@ -96,10 +95,8 @@ app.controller('advertsController', function ($scope, $http) {
     };
 });
 
-
-
 app.controller('advCategoryController', function($scope, $http) {
-    const advCategoryPath="http://localhost:8189/tm/api/v1/advcategory";
+    const advCategoryPath = contextPath + '/api/v1/advcategory';
 
     fillTable = function() {
         $http.get(advCategoryPath)
@@ -120,7 +117,7 @@ app.controller('advCategoryController', function($scope, $http) {
     $scope.delete = function(index) {
         var del = $scope.advCategoryArray[index];
 
-        $http.delete(advCategoryPath+"/"+del.id)
+        $http.delete(advCategoryPath + "/" + del.id)
             .then(function(success) {
                 $scope.advCategoryArray.splice(index, 1);
             });
@@ -135,7 +132,6 @@ app.controller('advCategoryController', function($scope, $http) {
     };
 
 });
-
 
 app.factory('globalFactory', function() {
     return {
