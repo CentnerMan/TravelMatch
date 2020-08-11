@@ -32,6 +32,11 @@ app.config(function ($routeProvider) {
             controller: 'advertsController'
         })
 
+        .when('/adverts_edit_form', {
+            templateUrl: 'adverts_edit_form.html',
+            controller: 'advertsController'
+        })
+
 });
 
 app.controller('usersController', function ($scope, $http, globalFactory) {
@@ -64,11 +69,11 @@ app.controller('advertsController', function ($scope, $http) {
     fillTable();
 
     $scope.submitNew = function() {
-        $http.post(contextPath + '/api/v1/adverts', $scope.advNew).then(function(response) {
+        $http.post(advertsPath, $scope.advNew).then(function(response) {
             console.log(response);
         });
-        // window.location.href = contextPath + '/index.html#!/adverts';
-        // window.location.reload(true);
+        window.location.href = contextPath + '/index.html#!/adverts';
+        window.location.reload(true);
     };
 
     $scope.delete = function(index) {
@@ -86,9 +91,10 @@ app.controller('advertsController', function ($scope, $http) {
         console.log(advertsPath+"/"+ed.id);
         $http.get(advertsPath+"/"+ed.id)
             .then(function (response) {
-                $scope.Advert  = response.data;
-                console.log($scope.Advert);
+                $scope.advEdit = response.data;
+                console.log($scope.advEdit); //Тут переменная видна
             });
+        console.log($scope.advEdit); //TODO А тут уже нет. Как расширить видимость на весь контроллер?
     };
 
     $http.get(advertsPath + "/types")
