@@ -26,7 +26,7 @@
                 <!--            <h5 class="card-title">Special title treatment</h5>-->
                 <p class="card-text">{{a.description}}</p>
                 <p class="card-text">{{a.type}}</p>
-                <a class="btn btn-outline-warning" href="#!/adverts_edit_form" ng-click="edit($index)">Редактировать</a>
+                <a class="btn btn-outline-warning" href="#!/adverts_edit_form?id={{a.id}}">Редактировать</a>
                 <a class="btn btn-outline-warning" href="" ng-click="delete($index)">Удалить</a>
                 <!--            <a href="#" class="btn btn-primary">Go somewhere</a>-->
             </div>

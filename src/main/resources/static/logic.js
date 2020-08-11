@@ -34,7 +34,7 @@ app.config(function ($routeProvider) {
 
         .when('/adverts_edit_form', {
             templateUrl: 'adverts_edit_form.html',
-            controller: 'advertsController'
+            controller: 'advertsEditController'
         })
 
 });
@@ -87,20 +87,31 @@ app.controller('advertsController', function ($scope, $http) {
 
     $scope.edit = function(index) {
         var ed = $scope.AdvertsList[index];
-
-        console.log(advertsPath+"/"+ed.id);
-        $http.get(advertsPath+"/"+ed.id)
-            .then(function (response) {
-                $scope.advEdit = response.data;
-                console.log($scope.advEdit); //Тут переменная видна
-            });
-        console.log($scope.advEdit); //TODO А тут уже нет. Как расширить видимость на весь контроллер?
+        // console.log(advertsPath+"/"+ed.id);
+        $http.get(contextPath + "/index.html#!/adverts/" + ed.id, {params: {id: ed.id}});
+        //     .then(function (response) {
+        //         $scope.advEdit = response.data;
+        //         console.log($scope.advEdit); //Тут переменная видна
+        //     });
+        // console.log($scope.advEdit); //TODO А тут уже нет. Как расширить видимость на весь контроллер?
     };
 
     $http.get(advertsPath + "/types")
         .then(function (response) {
             $scope.AdvertTypes  = response.data;
             console.log(response.data);
+        });
+});
+
+app.controller('advertsEditController', function ($scope, $http, $routeParams) {
+    const advertsPath = contextPath + '/api/v1/simple_adverts';
+    $http.get(advertsPath + '/' + $routeParams.id).then(function(response) {
+         $scope.advEdit = response.data;
+    });
+
+    $http.get(advertsPath + "/types")
+        .then(function (response) {
+            $scope.AdvertTypes  = response.data;
         });
 });
 

@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html ng-app="app" ng-controller="advertsController">
+<html ng-app='app' ng-controller='advertsController'>
 
 <head>
     <meta charset="utf-8">
@@ -14,10 +14,10 @@
 <body>
 
     <h1>Редактирование объявления</h1>
-
+    {{advEdit}}
     <form name="changeAdvert" novalidate  ng-submit="submitNew()">
             <div class="card">
-                <div class="card-body" ng-repeat="a in advEdit" >
+                <div class="card-body">
 <!--                    <div>-->
 <!--                        <label for="advIdCr">ИД</label>-->
 <!--                        <input type="text" ng-model="advNew.id" id="advIdCr">-->
@@ -30,17 +30,18 @@
 <!--                        <label for="advEndDateCr">Дата окончания</label>-->
 <!--                        <input type="text" ng-model="advNew.endDate" id="advEndDateCr">-->
 <!--                    </div>-->
+                    {{advEdit.title}}
                     <div>
                     <label for="advTitleCr">Заголовок</label>
-                    <input type="text" ng-model="a.title" id="advTitleCr">
+                    <input type="text" ng-model="advEdit.title" id="advTitleCr">
                     </div>
                     <div>
                     <label for="advTextCr">Описание</label>
-                    <input type="text" ng-model="a.description" id="advTextCr">
+                    <input type="text" ng-model="advEdit.description" id="advTextCr">
                     </div>
                     <div>
                     <label for="advAdvertTypeCr">Тип объявления</label>
-                        <select ng-model="a.type" id="advAdvertTypeCr">
+                        <select ng-model="advEdit.type" id="advAdvertTypeCr">
                             <option ng-repeat="t in AdvertTypes" value="{{t}}">{{t}}</option>
                         </select>
 <!--                    <input type="text" ng-model="advNew.type" id="advAdvertTypeCr">-->
