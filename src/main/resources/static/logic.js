@@ -27,8 +27,8 @@ app.config(function ($routeProvider) {
             controller: 'advCategoryController'
         })
 
-        .when('/advert', {
-            templateUrl: 'advert.html',
+        .when('/adverts_create_new_form', {
+            templateUrl: 'adverts_create_new_form.html',
             controller: 'advertsController'
         })
 
@@ -52,10 +52,10 @@ app.controller('profileController', function ($scope, $http) {
 });
 
 app.controller('advertsController', function ($scope, $http) {
-    const advPath = contextPath + '/api/v1/adverts';
+    const advertsPath = contextPath + '/api/v1/simple_adverts';
 
     fillTable = function () {
-        $http.get(advPath)
+        $http.get(advertsPath)
             .then(function (response) {
                 $scope.AdvertsList = response.data;
             });
@@ -64,19 +64,17 @@ app.controller('advertsController', function ($scope, $http) {
     fillTable();
 
     $scope.submitNew = function() {
-        $http.post(advPath, $scope.advNew)
-            .then(function(response) {
-                $scope.AdvertsList.push(response.data);
-            });
-
-        window.location.href = contextPath + '/index.html#!/adverts';
-        window.location.reload(true);
+        $http.post(contextPath + '/api/v1/adverts', $scope.advNew).then(function(response) {
+            console.log(response);
+        });
+        // window.location.href = contextPath + '/index.html#!/adverts';
+        // window.location.reload(true);
     };
 
     $scope.delete = function(index) {
         var del = $scope.AdvertsList[index];
 
-        $http.delete(advPath+"/"+del.id)
+        $http.delete(advertsPath + "/" + del.id)
             .then(function(success) {
                 $scope.AdvertsList.splice(index, 1);
             });
@@ -85,14 +83,19 @@ app.controller('advertsController', function ($scope, $http) {
     $scope.edit = function(index) {
         var ed = $scope.AdvertsList[index];
 
-        console.log(advPath+"/"+ed.id);
-        $http.get(advPath+"/"+ed.id)
+        console.log(advertsPath+"/"+ed.id);
+        $http.get(advertsPath+"/"+ed.id)
             .then(function (response) {
                 $scope.Advert  = response.data;
                 console.log($scope.Advert);
             });
-
     };
+
+    $http.get(advertsPath + "/types")
+        .then(function (response) {
+            $scope.AdvertTypes  = response.data;
+            console.log(response.data);
+        });
 });
 
 app.controller('advCategoryController', function($scope, $http) {

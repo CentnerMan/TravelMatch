@@ -34,7 +34,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "adverts")
 public class Advert {
-
     public enum AdvertType {SALE, BUY}
     public enum ProductType {PRODUCT, SERVICE}
     public enum ProductCondition {NEW, USED}
