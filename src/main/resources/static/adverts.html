@@ -20,12 +20,12 @@
     <div ng-repeat="a in AdvertsList">
         <div class="card">
             <div class="card-header">
-                {{a.id + ' ' + a.title}}
+                ID: {{a.id + '  Заголовок: ' +  a.title}}
             </div>
             <div class="card-body">
                 <!--            <h5 class="card-title">Special title treatment</h5>-->
-                <p class="card-text">{{a.description}}</p>
-                <p class="card-text">{{a.type}}</p>
+                <p class="card-text">Описание: {{a.description}}</p>
+                <p class="card-text">Тип: {{a.type}}</p>
                 <a class="btn btn-outline-warning" href="#!/adverts_edit_form?id={{a.id}}">Редактировать</a>
                 <a class="btn btn-outline-warning" href="" ng-click="delete($index)">Удалить</a>
                 <!--            <a href="#" class="btn btn-primary">Go somewhere</a>-->

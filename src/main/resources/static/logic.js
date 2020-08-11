@@ -87,13 +87,7 @@ app.controller('advertsController', function ($scope, $http) {
 
     $scope.edit = function(index) {
         var ed = $scope.AdvertsList[index];
-        // console.log(advertsPath+"/"+ed.id);
         $http.get(contextPath + "/index.html#!/adverts/" + ed.id, {params: {id: ed.id}});
-        //     .then(function (response) {
-        //         $scope.advEdit = response.data;
-        //         console.log($scope.advEdit); //Тут переменная видна
-        //     });
-        // console.log($scope.advEdit); //TODO А тут уже нет. Как расширить видимость на весь контроллер?
     };
 
     $http.get(advertsPath + "/types")
@@ -106,13 +100,21 @@ app.controller('advertsController', function ($scope, $http) {
 app.controller('advertsEditController', function ($scope, $http, $routeParams) {
     const advertsPath = contextPath + '/api/v1/simple_adverts';
     $http.get(advertsPath + '/' + $routeParams.id).then(function(response) {
-         $scope.advEdit = response.data;
+        $scope.advEdit = response.data;
     });
 
     $http.get(advertsPath + "/types")
         .then(function (response) {
             $scope.AdvertTypes  = response.data;
         });
+
+    $scope.submitNew = function() {
+        $http.post(advertsPath, $scope.advEdit).then(function(response) {
+            console.log(response);
+        });
+        window.location.href = contextPath + '/index.html#!/adverts';
+        window.location.reload(true);
+    };
 });
 
 app.controller('advCategoryController', function($scope, $http) {
