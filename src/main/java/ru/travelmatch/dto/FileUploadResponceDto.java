@@ -30,23 +30,25 @@ public class FileUploadResponceDto {
     private String fileName;
     private String fileType;
     private String created;
-    private List<String> urlFile;
+//    private List<String> urlFile;
+    private String urlFile;
 
     public FileUploadResponceDto(FileUpload fileUpload) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.YYYY");
         this.id = fileUpload.getId();
         this.fileName = fileUpload.getFileName();
         this.fileType = fileUpload.getFileType();
-        this.created = formatter.format(fileUpload.getCreated().toString());
-        this.urlFile = getUrls(fileUpload);
+        this.created = formatter.format(new Date());
+//        this.urlFile = getUrls(fileUpload);
+        this.urlFile = fileUpload.getUploadDir();
     }
 
-    private List<String> getUrls(FileUpload fileUpload) {
-        List<String> urlFile = new ArrayList<>();
-        urlFile.add(fileUpload.getUploadUrl().getSmUrl());
-        urlFile.add(fileUpload.getUploadUrl().getMidUrl());
-        urlFile.add(fileUpload.getUploadUrl().getXlUrl());
-        urlFile.add(fileUpload.getUploadUrl().getOriginUrl());
-        return urlFile;
-    }
+//    private List<String> getUrls(FileUpload fileUpload) {
+//        List<String> urlFile = new ArrayList<>();
+//        urlFile.add(fileUpload.getUploadUrl().getSmUrl());
+//        urlFile.add(fileUpload.getUploadUrl().getMidUrl());
+//        urlFile.add(fileUpload.getUploadUrl().getXlUrl());
+//        urlFile.add(fileUpload.getUploadUrl().getOriginUrl());
+//        return urlFile;
+//    }
 }

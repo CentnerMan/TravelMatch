@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -43,13 +44,16 @@ public class FileUpload {
     @Column(name = "created")
     private LocalDateTime created;
 
-    @Column(name = "upload_dir")
-    private Long uploadDir;
+//    @Column(name = "upload_dir")
+//    private Long uploadDir;
 
-    @JsonManagedReference
-    @OneToOne @JoinTable(name = "url_file",
-            joinColumns = @JoinColumn(name = "upload_dir"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
-    private UrlFile uploadUrl;
+    @Column(name = "upload_dir")
+    private String uploadDir;
+
+//    @JsonManagedReference
+//    @OneToOne @JoinTable(name = "url_file",
+//            joinColumns = @JoinColumn(name = "upload_dir"),
+//            inverseJoinColumns = @JoinColumn(name = "id"))
+//    private UrlFile uploadUrl;
 
 }
