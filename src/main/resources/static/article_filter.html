@@ -1,0 +1,158 @@
+<!doctype html>
+
+<!-- ng-app указывает что все блоки входящие в данный элемент обрабатываются ангуларом -->
+
+<!-- {{}} обрабатывает данные -->
+
+<!--создаем переменную hello и записывает туда все что пропишем в input-->
+<!--<input type="text" ng-model="hello" />-->
+<!--{{hello}}-->
+
+<!--$scope привязывается к контроллеру и не шарится между контроллерами-->
+
+<html ng-app="app" ng-controller="articleFilterController">
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <!--    <script src="logic.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<h1>Фильтр для списка статей:</h1>
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+    <tr>
+        <th>ID статьи</th>
+        <th>Заголовок статьи</th>
+    </tr>
+
+    <tbody>
+    <tr ng-repeat="article in articleList">
+        <td>{{article.id}}</td>
+        <td>{{article.title}}</td>
+    </tr>
+    </tbody>
+</table>
+<form name="filterForm" novalidate ng-submit="filterArticles()">
+    <button type="submit">Отфильтровать</button>
+
+    <p>page_number номер страницы, отсчет с 1. Значение по умолчанию 1:
+        <input id="page_number" name="page_number" type="text" ng-model="page_number" value="">
+
+    <p>page_size количество элементов на странице, значение по умолчанию = 20:
+        <input id="page_size" name="page_size" type="text" ng-model="page_size" value="">
+
+    <hr>
+
+    <p>order_direction направление сортировки, возможные значения ASC и DESC.
+        Значение по умолчанию ASC, регистронезависимая запись:
+        <input id="order_direction" name="order_direction" type="text" ng-model="order_direction" value="">
+
+    <p>order_by_properties список полей для сортировки.
+        Разрешенные значения: id,title,text,category,author,created,lastUpdated,city,language.
+        Можно перечислить несколько через запятую:
+        <input id="order_by_properties" name="order_by_properties" type="text" ng-model="order_by_properties" value="">
+
+    <hr>
+
+    <p> id статьи, точное соответствие:
+        <input id="id" name="id" type="text" ng-model="id" value="">
+
+    <p>author_id id автора статьи, точное соответствие:
+        <input id="author_id" name="author_id" type="text" ng-model="author_id" value="">
+
+    <p>category_id id категории статьи, точное соотвествие:
+        <input id="category_id" name="category_id" type="text" ng-model="category_id" value="">
+
+    <p>city_id id города, точное соответствие:
+        <input id="city_id" name="city_id" type="text" ng-model="city_id" value="">
+
+    <p>language_id id языка народов мира, точное соответствие:
+        <input id="language_id" name="language_id" type="text" ng-model="language_id" value="">
+
+    <hr>
+
+    <p>text, поиск по вхождению строки в текст статьи, регистронезависимый поиск:
+        <input id="text" name="text" type="text" ng-model="text" value="">
+
+    <p>title_equal название статьи, точное соответствие:
+        <input id="title_equal" name="title_equal" type="text" ng-model="title_equal" value="">
+
+    <p>title_contains поиск по вхождению строки в заголовок статьи:
+        <input id="title_contains" name="title_contains" type="text" ng-model="title_contains" value="">
+
+    <hr>
+
+    <p>created_equal дата создания, точное соответствие с учетом секунд, пример 2020-03-03T00:00:00:
+        <input id="created_equal" name="created_equal" type="text" ng-model="created_equal" value="">
+
+    <p>created_before дата создания, поиск статей, созданных до указанной даты, пример 2020-03-03T00:00:00:
+        <input id="created_before" name="created_before" type="text" ng-model="created_before" value="">
+
+    <p>created_after дата создания, поиск статей, созданных после указанной даты, пример 2020-03-03T00:00:00:
+        <input id="created_after" name="created_after" type="text" ng-model="created_after" value="">
+
+    <hr>
+    <p>updated_equal дата обновления статьи, точное соответствие с учетом секунд, пример 2020-03-03T00:00:00:
+        <input id="updated_equal" name="updated_equal" type="text" ng-model="updated_equal" value="">
+
+    <p>updated_before дата обновления, поиск статей, обновленных до указанной даты, пример 2020-03-03T00:00:00:
+        <input id="updated_before" name="updated_before" type="text" ng-model="updated_before" value="">
+
+    <p>updated_after дата обновления, поиск статей, обновленных после указанной даты, пример 2020-03-03T00:00:00:
+        <input id="updated_after" name="updated_after" type="text" ng-model="updated_after" value="">
+
+    <hr>
+    <p>likes_equal количество лайков на точное равенство:
+        <input id="likes_equal" name="likes_equal" type="text" ng-model="likes_equal" value="">
+
+    <p>likes_greaterOrEqual количество лайков, большее либо равное указанному значению:
+        <input id="likes_greaterOrEqual" name="likes_greaterOrEqual" type="text" ng-model="likes_greaterOrEqual" value="">
+
+    <p>likes_lessOrEqual количество лайков, меньшее либо равное указанному значению:
+        <input id="likes_lessOrEqual" name="likes_lessOrEqual" type="text" ng-model="likes_lessOrEqual" value="">
+
+    <hr>
+    <p>dislikes_equal количество дизлайков на точное равенство:
+        <input id="dislikes_equal" name="dislikes_equal" type="text" ng-model="dislikes_equal" value="">
+
+    <p>dislikes_greaterOrEqual количество дизлайков, большее либо равное указанному значению:
+        <input id="dislikes_greaterOrEqual" name="dislikes_greaterOrEqual" type="text" ng-model="dislikes_greaterOrEqual" value="">
+
+    <p>dislikes_lessOrEqual количество дизлайков, меньшее либо равное указанному значению:
+        <input id="dislikes_lessOrEqual" name="dislikes_lessOrEqual" type="text" ng-model="dislikes_lessOrEqual" value="">
+
+    <hr>
+    <p>rating_value_count_equal количество оценок для рейтинга на точное равенство:
+        <input id="rating_value_count_equal" name="rating_value_count_equal" type="text" ng-model="rating_value_count_equal" value="">
+
+    <p>rating_value_count_greaterOrEqual количество оценок для рейтинга, большее либо равное указанному значению:
+        <input id="rating_value_count_greaterOrEqual" name="rating_value_count_greaterOrEqual" type="text" ng-model="rating_value_count_greaterOrEqual"
+               value="">
+
+    <p>rating_value_count_lessOrEqual количество оценок для рейтинга, меньшее либо равное указанному значению:
+        <input id="rating_value_count_lessOrEqual" name="rating_value_count_lessOrEqual" type="text" ng-model="rating_value_count_lessOrEqual"
+               value="">
+
+    <hr>
+    <p>rating_equal средний рейтинг статьи на точное равенство:
+        <input id="rating_equal" name="rating_equal" type="text" ng-model="rating_equal" value="">
+
+    <p>rating_greaterOrEqual средний рейтинг статьи, больший либо равный указанному значению:
+        <input id="rating_greaterOrEqual" name="rating_greaterOrEqual" type="text" ng-model="rating_greaterOrEqual" value="">
+
+    <p>rating_lessOrEqual средний рейтинг статьи, меньший либо равный указанному значению:
+        <input id="rating_lessOrEqual" name="rating_lessOrEqual" type="text" ng-model="rating_lessOrEqual" value="">
+
+    <hr>
+    <p>tags_id список id тегов через запятую, подвязанных к статье.
+        Причем в отбор должны попадать лишь те статьи, к которым подвязан весь список тегов:
+        <input id="tags_id" name="tags_id" type="text" ng-model="tags_id" value="">
+
+
+</form>
+</body>
+</html>
