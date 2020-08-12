@@ -32,6 +32,87 @@ app.config(function ($routeProvider) {
             controller: 'advertsController'
         })
 
+        .when('/filters', {
+            templateUrl: 'filters.html',
+            controller: 'filterController'
+        })
+        .when('/article_filter', {
+            templateUrl: 'article_filter.html',
+            controller: 'articleFilterController'
+        });
+
+});
+
+app.controller('filterController', function () {
+
+});
+
+app.controller('articleFilterController', function ($scope, $http, globalFactory) {
+    $scope.globalFactory = globalFactory;
+    var stringParams = '';
+    var params = [
+        'page_number',
+        'page_size',
+        'order_direction',
+        'order_by_properties',
+        'id',
+        'author_id',
+        'category_id',
+        'city_id',
+        'language_id',
+        'text',
+        'title_equal',
+        'title_contains',
+        'created_equal',
+        'created_before',
+        'created_after',
+        'updated_equal',
+        'updated_before',
+        'updated_after',
+        'likes_equal',
+        'likes_greaterOrEqual',
+        'likes_lessOrEqual',
+        'dislikes_equal',
+        'dislikes_greaterOrEqual',
+        'dislikes_lessOrEqual',
+        'rating_value_count_equal',
+        'rating_value_count_greaterOrEqual',
+        'rating_value_count_lessOrEqual',
+        'rating_equal',
+        'rating_greaterOrEqual',
+        'rating_lessOrEqual',
+        'tags_id'
+    ];
+
+    fillTable = function () {
+        var path = contextPath + '/api/v1/filter/articles'
+            + (stringParams == '' ? '' : '?' + stringParams);
+        console.log(path);
+
+        $http.get(path)
+            .then(function (response) {
+                $scope.articleList = response.data;
+            })
+            .catch(function (response) {
+                // console.log(e);
+                alert(response.data.message);
+            })
+        }
+        ;
+
+    $scope.filterArticles = function () {
+        stringParams = '';
+
+        params.forEach(function (par) {
+            if ($scope[par] != undefined) {
+                stringParams = stringParams + (stringParams != '' ? '&' : '') + par + '=' + $scope[par];
+            }
+        });
+
+        fillTable();
+    };
+
+    fillTable();
 });
 
 app.controller('usersController', function ($scope, $http, globalFactory) {
