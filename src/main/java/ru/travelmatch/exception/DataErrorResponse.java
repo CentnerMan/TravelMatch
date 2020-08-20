@@ -7,35 +7,75 @@
 
 package ru.travelmatch.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+
+import java.util.*;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataErrorResponse {
-    private int status;
+
+    private Map<String, Object> status;
     private String message;
-    private long timestamp;
+    private String debugMessage;
+    private Date date;
 
-    public DataErrorResponse() {
+    private List<FieldValidationError> fieldValidationErrors;
+
+    DataErrorResponse() {
+        this.date = new Date();
     }
 
-    public int getStatus() {
-        return status;
+    DataErrorResponse(HttpStatus status) {
+        this.status = setStatus(status);
+        this.date = new Date();
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    DataErrorResponse(HttpStatus status, Throwable ex) {
+        this.date = new Date();
+        this.status = setStatus(status);
+        this.message = "Unexpected error";
+        this.setDebugMessage(ex.getLocalizedMessage());
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
+    DataErrorResponse(HttpStatus status, String message, Throwable ex) {
+        this.date = new Date();
+        this.status = setStatus(status);
         this.message = message;
+        this.setDebugMessage(ex.getLocalizedMessage());
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    void addValidationErrors(List<FieldError> fieldErrors) {
+        fieldErrors.forEach(error -> {
+            FieldValidationError subError = new FieldValidationError();
+            subError.setField(error.getField());
+            subError.setMessage(error.getDefaultMessage());
+            subError.setRejectedValue(error.getRejectedValue());
+            subError.setObject(error.getObjectName());
+            this.addSubError(subError);
+        });
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    private void addSubError(FieldValidationError subError) {
+        if (fieldValidationErrors == null) {
+            fieldValidationErrors = new ArrayList<>();
+        }
+        fieldValidationErrors.add(subError);
+    }
+
+    public Map<String, Object> setStatus(HttpStatus status) {
+        Map<String, Object> statusMap = new HashMap<>();
+        statusMap.put("value", status.value());
+        statusMap.put("reasonPhrase", status.getReasonPhrase());
+        statusMap.put("name", status.name());
+        statusMap.put("ordinal", status.ordinal());
+    return statusMap;
     }
 }

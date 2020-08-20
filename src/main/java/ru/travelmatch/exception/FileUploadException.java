@@ -7,7 +7,7 @@
 
 package ru.travelmatch.exception;
 
-public class FileUploadException extends RuntimeException {
+public class FileUploadException extends AbstractException {
 
     public FileUploadException(String message) {
         super(message);

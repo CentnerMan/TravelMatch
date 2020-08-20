@@ -72,7 +72,10 @@ App.controller('uploadContr',
                         // return deferred.promise;
                     },
                     function (errResponse) {
-                        alert(errResponse.data.errorMessage);
+                        alert(errResponse.data);
+                        console.log("downloadFileError:", errResponse);
+                        var json = '<pre>' + '<h5>Post</h5>' + JSON.stringify(errResponse, null, 5) + '<br>' + '</pre>';
+                        $rootScope.bindGet = $sce.trustAsHtml(json);
                     }
                 );
         };
@@ -88,7 +91,10 @@ App.controller('uploadContr',
                         uploadService.getAllData();
                     },
                     function (errResponse) {
-                        alert(errResponse.data.errorMessage);
+                        alert(errResponse.data);
+                        console.log("deleteFileError:", errResponse);
+                        var json = '<pre>' + '<h5>Post</h5>' + JSON.stringify(errResponse, null, 5) + '<br>' + '</pre>';
+                        $rootScope.bindGet = $sce.trustAsHtml(json);
                     }
                 );
         };

@@ -30,8 +30,11 @@ App.factory('uploadService', ['$rootScope' ,'$http', '$q', '$sce', 'urls', funct
                     getAllData();
                 },
                 function (errResponse) {
-                    alert(errResponse.data.errorMessage);
-                    deferred.reject(errResponse);
+                    alert(errResponse.data);
+                    // deferred.reject(errResponse);
+                    console.log("uploadPostError:", errResponse);
+                    var json = '<pre>' + '<h5>Post</h5>' + JSON.stringify(errResponse, null, 5) + '<br>' + '</pre>';
+                    $rootScope.bindPost = $sce.trustAsHtml(json);
                 }
             );
         return deferred.promise;
@@ -66,6 +69,9 @@ App.factory('uploadService', ['$rootScope' ,'$http', '$q', '$sce', 'urls', funct
                 function (errResponse) {
                     alert(errResponse.data.errorMessage);
                     deferred.reject(errResponse);
+                    console.log("GetDataError:", errResponse);
+                    var json = '<pre>' + '<h5>Post</h5>' + JSON.stringify(errResponse, null, 5) + '<br>' + '</pre>';
+                    $rootScope.bindGet = $sce.trustAsHtml(json);
                 }
             );
         return deferred.promise;

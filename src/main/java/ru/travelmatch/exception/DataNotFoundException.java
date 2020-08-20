@@ -7,8 +7,13 @@
 
 package ru.travelmatch.exception;
 
-public class DataNotFoundException extends RuntimeException {
+public class DataNotFoundException extends AbstractException {
+
     public DataNotFoundException(String message) {
         super(message);
+    }
+
+    public DataNotFoundException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

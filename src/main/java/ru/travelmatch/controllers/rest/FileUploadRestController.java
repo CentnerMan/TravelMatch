@@ -17,18 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.travelmatch.base.entities.FileUpload;
 import ru.travelmatch.dto.FileUploadResponceDto;
+import ru.travelmatch.exception.FileUploadException;
 import ru.travelmatch.services.FileUploadServiceImpl;
 import ru.travelmatch.services.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URI;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -54,16 +51,9 @@ public class FileUploadRestController implements Serializable {
 
     @GetMapping()
     public @ResponseBody List<FileUpload> getDocument() {
-        List<FileUpload> fileUpload = fileUploadService.findAll();
         return fileUploadService.findAll();
     }
 
-//    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-//    public @ResponseBody FileUploadResponceDto handleFileUpload(@RequestParam(value="file") MultipartFile file) throws IOException {
-//        return fileUploadService.save(file);
-//    }
-
-//, headers = ("content-type=multipart/*")
     @PostMapping(value = "/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
@@ -71,17 +61,23 @@ public class FileUploadRestController implements Serializable {
                                         @RequestParam(value = "userId", required = false) Long userId,
                                         @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
 //        Long userId = userService.findByUsername(request.getUserPrincipal().getName()).getId();
-        userId = 2L;
-        String fileName = fileUploadService.storeFile(file, userId);
+       if (userId==null) {
+           userId = 2L;
+       }
+        String fileName = null;
+       try {
+           fileName = fileUploadService.storeFile(file, userId);
+       } catch (NullPointerException ex) {
+           throw new FileUploadException("Could not store file " + fileName + ". Please try again!", ex);
+       }
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download")
                 .path(fileName)
                 .toUriString();
-        if (fileName.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        if (fileName.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         FileUpload fileUpload = fileUploadService.findByFileName(fileName);
         FileUploadResponceDto fileDto = new FileUploadResponceDto(fileUpload);
-
-        return new ResponseEntity<FileUploadResponceDto>(fileDto,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(fileDto,HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/download")
@@ -119,7 +115,6 @@ public class FileUploadRestController implements Serializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return new ResponseEntity<>(res, httpHeaders, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
@@ -130,12 +125,7 @@ public class FileUploadRestController implements Serializable {
     public ResponseEntity<?> deleteFile(@RequestParam(value = "id", required = false) Long id,
                                           @RequestParam(value = "fileName", required = false) String fileName,
                                           HttpServletRequest request) throws IOException {
-            try {
-                if(fileUploadService.deleteFile(id)) return new ResponseEntity<>(fileUploadService.findAll(), HttpStatus.OK);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>("Bad REQUEST!", HttpStatus.BAD_REQUEST);
+        fileUploadService.deleteFile(id);
+        return new ResponseEntity<>(fileUploadService.findAll(), HttpStatus.OK);
     }
 }

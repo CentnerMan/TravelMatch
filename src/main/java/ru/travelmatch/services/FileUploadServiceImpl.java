@@ -18,6 +18,7 @@ import ru.travelmatch.base.entities.FileUpload;
 import ru.travelmatch.base.repo.FileUploadRepository;
 import ru.travelmatch.base.repo.UserRepository;
 import ru.travelmatch.dto.FileUploadResponceDto;
+import ru.travelmatch.exception.EntityNotFoundException;
 import ru.travelmatch.exception.FileUploadException;
 
 import java.io.File;
@@ -99,10 +100,11 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public String storeFile(MultipartFile file, Long userId) {
         // Normalize file name
-        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileType = file.getContentType();
         String fileName = "";
         try {
+            String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+            String fileType = file.getContentType();
+
             // Check if the file's name contains invalid characters
             if (originalFileName.contains("..")) {
                 throw new FileUploadException("Sorry! Filename contains invalid path sequence " + originalFileName);
@@ -137,7 +139,8 @@ public class FileUploadServiceImpl implements FileUploadService {
                 fileUploadRepository.save(newFile);
             }
             return fileName;
-        } catch (IOException ex) {
+        } catch (NullPointerException | IOException ex) {
+            ex.printStackTrace();
             throw new FileUploadException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
@@ -159,7 +162,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     @Override
-    public boolean deleteFile(Long id) {
+    public boolean deleteFile(Long id) throws FileNotFoundException {
         FileUpload fileUpload = fileUploadRepository.findById(id).orElseGet(null);
         if (fileUpload != null) {
             String fileName = fileUpload.getFileName();
@@ -170,11 +173,11 @@ public class FileUploadServiceImpl implements FileUploadService {
                     fileUploadRepository.deleteById(id);
                     return true;
                 } else {
-                    throw new FileNotFoundException("File not found " + fileName);
+                    throw new FileNotFoundException("File '" + fileName + "' not found for delete!");
                 }
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
-                new FileNotFoundException("File not found " + fileName);
+                throw new FileNotFoundException("File '" + fileName + "' not found in path!");
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -11,13 +11,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.travelmatch.base.entities.FileUpload;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface FileUploadService {
 
     String storeFile(MultipartFile file, Long userId);
     Resource loadFileAsResource(String fileName);
-    boolean deleteFile(Long id);
+    boolean deleteFile(Long id) throws FileNotFoundException;
     String getFileName(Long userId, String fileType);
 
     FileUpload findById(Long id);
