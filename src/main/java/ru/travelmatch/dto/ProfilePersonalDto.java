@@ -54,6 +54,7 @@ public class ProfilePersonalDto {
     private List<MatchProfile> myMatchProfiles;
     private List<MatchRequest> myMatchRequests;
     private List<Article> myArticles;
+    private List<Article> articles;
     private List<Tag> tags;
     private List<Award> awards;
 
@@ -80,6 +81,7 @@ public class ProfilePersonalDto {
         this.myMatchProfiles = user.getMyMatchProfiles();
         this.myMatchRequests = user.getMyMatchRequests();
         this.myArticles = user.getMyArticles();
+        this.articles = user.getArticles();
         this.tags = user.getTags();
         this.awards = user.getAwards();
     }

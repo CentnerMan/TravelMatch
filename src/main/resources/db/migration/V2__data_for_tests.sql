@@ -59,12 +59,12 @@ VALUES
 (5,1,4),(5,2,5),(5,6,5),
 (6,1,3),(6,2,5),(6,6,4);
 -- запрос для просмотра тегов пользователей
-select users.id,users.username, tags.name, tags.id as tag_id from users as users
-	inner join users_tags as users_tags
-	on users_tags.user_id = users.id
-	inner join tags as tags
-	on users_tags.tag_id = tags.id
-	order by tags.name, users.id;
+-- select users.id,users.username, tags.name, tags.id as tag_id from travelmatch.users as users
+-- 	inner join travelmatch.users_tags as users_tags
+-- 	on users_tags.user_id = users.id
+-- 	inner join travelmatch.tags as tags
+-- 	on users_tags.tag_id = tags.id
+-- 	order by tags.name, users.id;
 
 INSERT INTO article_categories(
 	name, created, last_updated)
@@ -99,3 +99,12 @@ INSERT INTO article_categories(
 	(5,1,null,null)
 	;
 
+insert into advert_categories (name, product_type)
+values ('Other', 'PRODUCT');
+
+insert into adverts (begin_date, end_date, category_id, city_id, currency_id, created, is_actual, last_updated,
+                     language_id, price, product_type, product_condition, title, text, type, user_id)
+values (null, null, 1, null, 1, null, true, null, null, 100, 'PRODUCT', 'NEW', 'Java book',
+        'Best of the best java book', 'BUY', 1),
+       (null, null, 1, null, 1, null, true, null, null, 200, 'PRODUCT', 'NEW', 'Php book', 'Php book', 'BUY', 1),
+       (null, null, 1, null, 1, null, true, null, null, 300, 'PRODUCT', 'NEW', 'C# book', 'Book', 'BUY', 1);

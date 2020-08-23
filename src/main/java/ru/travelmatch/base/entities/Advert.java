@@ -34,7 +34,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "adverts")
 public class Advert {
-
     public enum AdvertType {SALE, BUY}
     public enum ProductType {PRODUCT, SERVICE}
     public enum ProductCondition {NEW, USED}
@@ -50,21 +49,38 @@ public class Advert {
     @Column(name = "text", length = 10000)
     private String text;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private AdvertType type;
+    @Column (name = "category_id")
+    private Long categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", insertable=false, updatable=false)
+    private AdvertCategory category;
+
+    @Column (name = "currency_id")
+    private Long currencyId;
+
+    @ManyToOne
+    @JoinColumn(name = "currency_id", insertable=false, updatable=false)
+    private Currency currency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_type", nullable = false)
     private ProductType productType;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private AdvertType type;
+
+    @Column (name = "user_id")
+    private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable=false, updatable=false)
+    private User user;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "product_condition")
     private ProductCondition productCondition;
-
-    @JsonManagedReference
-    @ManyToOne(optional = false)
-    private AdvertCategory category;
 
     @CreationTimestamp
     @Column(name = "created")
@@ -77,18 +93,20 @@ public class Advert {
     @Column(name = "price")
     private Long price;
 
-    @ManyToOne
-    private Currency currency;
-
+/*
+    @JsonManagedReference
     @ManyToOne
     private City city;
-
+ */
+    // @JsonManagedReference
+    //  @ManyToOne(optional = false)
+    //  private User user;
+/*
     @JsonManagedReference
-    @ManyToOne(optional = false)
-    private User user;
-
     @ManyToOne (optional = false)
     private Language language;
+
+ */
 
     @Column(name = "is_actual", nullable = false)
     private Boolean isActual;
@@ -109,14 +127,14 @@ public class Advert {
 //    private List<String> pictURLs;
 
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "advert", orphanRemoval = true)
-    private List<AdvertClaim> claims;
+    //   @JsonBackReference
+    //  @OneToMany(mappedBy = "advert", orphanRemoval = true)
+    //  private List<AdvertClaim> claims;
 
-    @ManyToMany
-    @JoinTable(name = "adverts_tags",
-            joinColumns = @JoinColumn(name = "advert_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    // @ManyToMany
+    //  @JoinTable(name = "adverts_tags",
+    //        joinColumns = @JoinColumn(name = "advert_id"),
+    //           inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    //   private List<Tag> tags;
 
 }

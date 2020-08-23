@@ -1,17 +1,13 @@
 package ru.travelmatch.base.repo.specifications;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import ru.travelmatch.base.entities.LanguageSkill;
-import ru.travelmatch.base.entities.Tag;
-import ru.travelmatch.base.entities.User;
-import ru.travelmatch.base.entities.User_;
+import ru.travelmatch.base.entities.*;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -229,5 +225,41 @@ public class UserSpecification {
                     criteriaBuilder.greaterThanOrEqualTo(languageRoot.get("value"),skill),
                     criteriaBuilder.isMember(languageRoot, languages));
         };
+    }
+
+    public static Specification<User> getAuthorsOfArticles(){
+        return (Specification<User>) (root, criteriaQuery, criteriaBuilder) -> {
+            root.join("articles", JoinType.INNER);
+            criteriaQuery
+                    .distinct(true)
+                    ;
+            addOrderBy(Arrays.asList(User_.lastName,User_.firstName),
+                    Sort.Direction.ASC,root,criteriaQuery,criteriaBuilder);
+            return criteriaQuery.getRestriction();
+
+        };
+    }
+
+    /**
+     * Метод заполняет список, по которому будет производиться сортировка выводимого результата
+     *
+     * @param orderAttributesList - список переданных полей для сортировки
+     * @param root
+     * @param criteriaQuery
+     * @param criteriaBuilder
+     */
+    private static void addOrderBy(List<SingularAttribute> orderAttributesList,
+                                   Sort.Direction directionSort,
+                                   Root<User> root,
+                                   CriteriaQuery<?> criteriaQuery,
+                                   CriteriaBuilder criteriaBuilder) {
+        List<Order> orderList = new ArrayList<>(orderAttributesList.size());
+        orderAttributesList.forEach(attr -> orderList.add(
+                directionSort == Sort.Direction.ASC ?
+                        criteriaBuilder.asc(root.get(attr)) :
+                        criteriaBuilder.desc(root.get(attr))
+                )
+        );
+        criteriaQuery.orderBy(orderList);
     }
 }

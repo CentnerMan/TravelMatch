@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.travelmatch.base.repo.filters.ArticleFilter;
+import ru.travelmatch.base.repo.filters.ArticleFilterSettings;
 import ru.travelmatch.base.repo.filters.UserFilter;
+import ru.travelmatch.base.repo.filters.UserFilterSettings;
 import ru.travelmatch.dto.ArticleSimpleDTO;
 import ru.travelmatch.dto.UserSimpleDTO;
 import ru.travelmatch.services.ArticleService;
@@ -36,17 +39,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/filter")
 @Api("Set of endpoints for select operations.")
+@AllArgsConstructor
 public class FilterRestController {
-
     private UserService userService;
-
     private ArticleService articleService;
-
-    @Autowired
-    public FilterRestController(UserService userService, ArticleService articleService) {
-        this.userService = userService;
-        this.articleService = articleService;
-    }
+    private UserFilterSettings userFilterSettings;
+    private ArticleFilterSettings articleFilterSettings;
 
     @GetMapping("users")
     @ApiOperation("Return list of Users, selected by some conditions. DON'T TEST! HAS ERRORS!")
@@ -261,5 +259,15 @@ public class FilterRestController {
                         .map(ArticleSimpleDTO::new)
                         .collect(Collectors.toList()));
     }
+    @ApiOperation("Return settings for User filter")
+    @GetMapping("/users/settings")
+    public ResponseEntity<UserFilterSettings> getUserFilterSettings(){
+        return ResponseEntity.ok(userFilterSettings);
+    }
 
+    @ApiOperation("Return settings for Article filter")
+    @GetMapping("/articles/settings")
+    public ResponseEntity<ArticleFilterSettings> getArticleFilterSettings(){
+        return ResponseEntity.ok(articleFilterSettings);
+    }
 }
