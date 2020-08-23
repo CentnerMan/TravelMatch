@@ -50,8 +50,10 @@ public class FileUploadRestController implements Serializable {
     }
 
     @GetMapping()
-    public @ResponseBody List<FileUpload> getDocument() {
-        return fileUploadService.findAll();
+    public @ResponseBody List<FileUpload> getFileList() {
+        List<FileUpload> fileList = fileUploadService.findAll();
+        logger.info("Get file list. List size = '{}'.", fileList.size());
+        return fileList;
     }
 
     @PostMapping(value = "/upload")
@@ -67,6 +69,7 @@ public class FileUploadRestController implements Serializable {
         String fileName = null;
        try {
            fileName = fileUploadService.storeFile(file, userId);
+           logger.info("File '{}' upload.", fileName);
        } catch (NullPointerException ex) {
            throw new FileUploadException("Could not store file " + fileName + ". Please try again!", ex);
        }
@@ -76,6 +79,7 @@ public class FileUploadRestController implements Serializable {
                 .toUriString();
 //        if (fileName.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         FileUpload fileUpload = fileUploadService.findByFileName(fileName);
+        logger.info("File '{}' save information  in DB. File= {}", fileName, fileUpload.toString());
         FileUploadResponceDto fileDto = new FileUploadResponceDto(fileUpload);
         return new ResponseEntity<>(fileDto,HttpStatus.ACCEPTED);
     }
@@ -90,15 +94,16 @@ public class FileUploadRestController implements Serializable {
         if(fileName !=null && !fileName.isEmpty()) {
             try {
                 resource = fileUploadService.loadFileAsResource(fileName);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                logger.error("Resource not load!{}", ex.toString());
             }
             // Try to determine file's content type
             String contentType = null;
             try {
                 contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
             } catch (IOException ex) {
-                //logger.info("Could not determine file type.");
+                logger.error("Could not determine file type!{}", ex.toString());
             }
             // Fallback to the default content type if type could not be determined
             if(contentType == null) {
@@ -108,14 +113,16 @@ public class FileUploadRestController implements Serializable {
             httpHeaders.setContentType(MediaType.parseMediaType(contentType));
             httpHeaders.setContentDisposition(ContentDisposition.parse("attachment; filename=\"" + resource.getFilename() + "\""));
 
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource res = resource.createRelative(fileName);
+//            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+//            Resource res = resource.createRelative(fileName);
             try {
-                logger.info("resource:" + res.contentLength());
-            } catch (IOException e) {
-                e.printStackTrace();
+                logger.info("File length: {} byte", resource.contentLength());
+//                logger.info("File length res: {} byte", res.contentLength());
+                logger.info("File '{}' send to download", resource.getFilename());
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-            return new ResponseEntity<>(res, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(resource, httpHeaders, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -125,7 +132,9 @@ public class FileUploadRestController implements Serializable {
     public ResponseEntity<?> deleteFile(@RequestParam(value = "id", required = false) Long id,
                                           @RequestParam(value = "fileName", required = false) String fileName,
                                           HttpServletRequest request) throws IOException {
+        String name = fileUploadService.findById(id).getFileName();
         fileUploadService.deleteFile(id);
+        logger.info("Delete file '{}' done.", name);
         return new ResponseEntity<>(fileUploadService.findAll(), HttpStatus.OK);
     }
 }

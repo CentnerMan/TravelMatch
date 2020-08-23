@@ -178,8 +178,6 @@ public class FileUploadServiceImpl implements FileUploadService {
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
                 throw new FileNotFoundException("File '" + fileName + "' not found in path!");
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         return false;

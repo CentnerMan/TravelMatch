@@ -8,9 +8,7 @@
 package ru.travelmatch.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
@@ -18,6 +16,8 @@ import java.util.*;
 
 @Setter
 @Getter
+//@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataErrorResponse {
@@ -77,5 +77,16 @@ public class DataErrorResponse {
         statusMap.put("name", status.name());
         statusMap.put("ordinal", status.ordinal());
     return statusMap;
+    }
+
+    @Override
+    public String toString() {
+        return "\n" + "DataErrorResponse{" + "\n" +
+                "status=" + status + "," + "\n" +
+                "message='" + message + "," + "\n" +
+                "debugMessage='" + debugMessage + "," + "\n" +
+                "date=" + date + "," + "\n" +
+                "fieldValidationErrors=" + fieldValidationErrors +
+                '}';
     }
 }

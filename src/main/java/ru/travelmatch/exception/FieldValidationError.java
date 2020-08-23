@@ -27,4 +27,14 @@ public class FieldValidationError {
         this.object = object;
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "\n" +  "FieldValidationError{" + "\n" +
+                "object='" + object + "," + "\n" +
+                "field='" + field + "," + "\n" +
+                "rejectedValue=" + rejectedValue + "," + "\n" +
+                "message='" + message +
+                '}';
+    }
 }
