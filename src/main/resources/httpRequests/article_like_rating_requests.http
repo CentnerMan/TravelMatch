@@ -1,0 +1,21 @@
+POST http://localhost:8199/tm/api/v1/article_like_ratings
+Content-Type: application/json
+
+{
+  "article": 1,
+  "user": 6,
+  "likeDislike": 1,
+  "rating": 5
+}
+
+###
+GET http://localhost:8199/tm/api/v1/article_like_ratings
+Accept: application/json
+
+###
+
+DELETE http://localhost:8199/tm/api/v1/article_like_ratings/article_id=1/user_id=2
+Accept: application/json
+
+###
+

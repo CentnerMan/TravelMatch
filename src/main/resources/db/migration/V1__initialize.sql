@@ -145,6 +145,9 @@ CREATE TABLE articles
     title        VARCHAR(255),
     text         VARCHAR(10000000),
     category_id  bigint NULL,
+    count_likes  bigint NULL,
+    count_dislikes bigint NULL,
+    rating       double precision NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (author_id) REFERENCES users (id),
     FOREIGN KEY (city_id) REFERENCES cities (id),
@@ -425,3 +428,74 @@ CREATE TABLE messages
     FOREIGN KEY (reason_id) REFERENCES message_objects (id)
 );
 
+-- эти скрипты должны выполняться до вставления тестовых данных из V__2_data_for_tests.sql
+-- создаем хранимую процедуру для расчета количества лайков/дизлайков/рейтинга статьи по ее id
+CREATE OR REPLACE FUNCTION get_article_values(IN art_id bigint)
+    RETURNS TABLE(count_likes bigint, count_dislikes bigint, avg_rating double precision)
+    LANGUAGE plpgsql
+    COST 100
+    VOLATILE
+    ROWS 1
+AS $BODY$
+begin
+    return query
+        SELECT
+            SUM(CASE
+                    WHEN coalesce(like_dislike,0)=1
+                        THEN 1
+                END) AS count_likes,
+            SUM(CASE
+                    WHEN coalesce(like_dislike,0)=-1
+                        THEN 1
+                END) AS count_dislikes,
+            CAST(AVG(rating) AS double precision) AS avg_rating
+        FROM article_likes_ratings
+        WHERE article_id=art_id;
+end;
+$BODY$;
+
+-- триггерная функция, вызываемая триггером после (insert, update, delete) таблицы article_likes_ratings
+-- и пересчитывающая вычисляемые поля count_likes, count_dislikes, rating в таблице articles
+CREATE OR REPLACE FUNCTION update_likes() RETURNS TRIGGER AS $update_likes_trig$
+DECLARE article_values RECORD;
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        article_values= get_article_values(NEW.article_id);
+        UPDATE articles SET
+                            count_likes = article_values.count_likes,
+                            count_dislikes = article_values.count_dislikes,
+                            rating = article_values.avg_rating
+        WHERE id = NEW.article_id;
+        RETURN NEW;
+    ELSIF (TG_OP = 'DELETE') THEN
+        article_values= get_article_values(OLD.article_id);
+        UPDATE articles SET
+                            count_likes = article_values.count_likes,
+                            count_dislikes = article_values.count_dislikes,
+                            rating = article_values.avg_rating
+        WHERE id = OLD.article_id;
+        RETURN OLD;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        article_values=get_article_values(NEW.article_id);
+        UPDATE articles SET
+                            count_likes = article_values.count_likes,
+                            count_dislikes = article_values.count_dislikes,
+                            rating = article_values.avg_rating
+        WHERE id = NEW.article_id;
+        IF (NEW.article_id!=OLD.article_id) THEN
+            UPDATE articles SET
+                                count_likes = article_values.count_likes,
+                                count_dislikes = article_values.count_dislikes,
+                                rating = article_values.avg_rating
+            WHERE id = OLD.article_id;
+        END IF;
+        RETURN NEW;
+    END IF;
+END
+$update_likes_trig$ LANGUAGE plpgsql;
+
+-- триггер, срабатывающий на изменение таблицы article_likes_ratings и вызывающий функцию пересчета
+-- вычисляемых полей count_likes, count_dislikes, rating в таблице articles
+CREATE TRIGGER update_likes_trig
+    AFTER INSERT OR UPDATE OR DELETE ON article_likes_ratings
+    FOR EACH ROW EXECUTE PROCEDURE update_likes();

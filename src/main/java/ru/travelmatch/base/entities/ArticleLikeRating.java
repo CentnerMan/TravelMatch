@@ -1,9 +1,6 @@
 package ru.travelmatch.base.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -36,10 +33,10 @@ public class ArticleLikeRating {
     private Long user;
 
     @Column(name = "like_dislike")
-    private int likeDislike;
+    private Integer likeDislike;
 
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
 
     @CreationTimestamp
     @Column(name = "created")
@@ -52,6 +49,8 @@ public class ArticleLikeRating {
     @EqualsAndHashCode
     @Access(value = AccessType.FIELD)
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ArticleLikeRatingId implements Serializable {
         private Long article;
         private Long user;

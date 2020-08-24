@@ -355,7 +355,8 @@ public class ArticleSpecification {
                     actualLongExpression = criteriaBuilder.sum(ratingValueCountExpression);
                     break;
                 case RATING_AVG:
-                    actualDoubleExpression = criteriaBuilder.avg(ratingAvgExpression);
+                 //   actualDoubleExpression = criteriaBuilder.avg(ratingAvgExpression);
+                    actualDoubleExpression = criteriaBuilder.coalesce(criteriaBuilder.avg(ratingAvgExpression),0D);
                     break;
                 default:
                     errorJoiner.add("Illegal argument of method likesDislikesComparison in ArticleSpecification.class." +

@@ -244,4 +244,26 @@ Accept: application/json
 GET http://localhost:8199/tm/api/v1/filter/articles?rating_greaterOrEqual=3&rating_lessOrEqual=5
 Accept: application/json
 
+#-------------------------------------------------------------
+#TEСТИРОВАНИЕ КАК СРАБОТАЛА ТРИГГЕРНАЯ ПРОЦЕДУРА
+###id =1
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_equal=1&dislikes_equal=2&rating_greaterOrEqual=3
+Accept: application/json
+
+###id =2
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_equal=2&dislikes_equal=2&rating_greaterOrEqual=3
+Accept: application/json
+
+###id =3
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_equal=3&dislikes_equal=0&rating_greaterOrEqual=4
+Accept: application/json
+
+###id =4
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_equal=0&dislikes_equal=4&rating_greaterOrEqual=1
+Accept: application/json
+
+###id =5
+GET http://localhost:8199/tm/api/v1/filter/articles?likes_equal=0&dislikes_equal=0&rating_equal=0
+Accept: application/json
+
 
