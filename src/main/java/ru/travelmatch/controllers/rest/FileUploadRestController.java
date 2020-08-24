@@ -7,6 +7,7 @@
 
 package ru.travelmatch.controllers.rest;
 
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,15 @@ import ru.travelmatch.services.FileUploadServiceImpl;
 import ru.travelmatch.services.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "api/v1/file")
@@ -49,30 +52,51 @@ public class FileUploadRestController implements Serializable {
         this.fileStorageLocation = Paths.get(pathUser).toAbsolutePath().normalize();
     }
 
+    /**
+     * Метод запроса списка файлов
+     *
+     * @return List<FileUpload>
+     * @return Exception
+     */
     @GetMapping()
+    @ApiOperation("Return list of file.")
     public @ResponseBody List<FileUpload> getFileList() {
         List<FileUpload> fileList = fileUploadService.findAll();
         logger.info("Get file list. List size = '{}'.", fileList.size());
         return fileList;
     }
 
+
+    /**
+     * Метод отправки файла на сервер
+     *
+     * @param request                           - HttpServletRequest запрос
+     * @param response                          - HttpServletResponse ответ
+     * @param userId                            - Long, user Id
+     * @param file                              - MultipartFile, formData for file
+     *
+     * Файл сохраняется с префиксом userId + название файла fileName: userId_fileName
+     * @return fileDto
+     * @return Exception
+     */
     @PostMapping(value = "/upload")
+    @ApiOperation("Upload file to server.")
     @Consumes(MediaType.MULTIPART_FORM_DATA_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> uploadFile(HttpServletRequest request,
+    public ResponseEntity<?> uploadFile(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "userId", required = false) Long userId,
                                         @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
 //        Long userId = userService.findByUsername(request.getUserPrincipal().getName()).getId();
-       if (userId==null) {
-           userId = 2L;
-       }
+        if (userId==null) {
+            userId = 2L;
+        }
         String fileName = null;
-       try {
-           fileName = fileUploadService.storeFile(file, userId);
-           logger.info("File '{}' upload.", fileName);
-       } catch (NullPointerException ex) {
-           throw new FileUploadException("Could not store file " + fileName + ". Please try again!", ex);
-       }
+        try {
+            fileName = fileUploadService.storeFile(file, userId);
+            logger.info("File '{}' upload.", fileName);
+        } catch (NullPointerException ex) {
+            throw new FileUploadException("Could not store file " + fileName + ". Please try again!", ex);
+        }
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download")
                 .path(fileName)
@@ -81,16 +105,36 @@ public class FileUploadRestController implements Serializable {
         FileUpload fileUpload = fileUploadService.findByFileName(fileName);
         logger.info("File '{}' save information  in DB. File= {}", fileName, fileUpload.toString());
         FileUploadResponceDto fileDto = new FileUploadResponceDto(fileUpload);
-        return new ResponseEntity<>(fileDto,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(fileDto,HttpStatus.CREATED);
     }
 
+    /**
+     * Метод загрузки файла с сервера
+     *
+     * @param request                           - HttpServletRequest запрос
+     * @param response                          - HttpServletResponse ответ
+     * @param userId                            - Long, user Id
+     * @param fileType                          - String, fileType from front-end
+     * @param fileName                          - String, fileName from front-end
+     * resource                                 - Resource, resource for download
+     *
+     * Загрузка файла осуществляется по имени - ищется соответствующий файл на сервере
+     * URI найденного файла и вся необходимая информация запаковывается в resource
+     * Front-end на основе полученного resource получает файл по указаному пути в URI
+     * @return resource
+     * @return FileNotFoundException
+     */
     @GetMapping(value = "/download")
-    public ResponseEntity<?> downloadFile(@RequestParam(value = "userId", required = false) Long userId,
-                                               @RequestParam(value = "fileType", required = false) String fileType,
-                                               @RequestParam(value = "fileName", required = false) String fileName,
-                                               HttpServletRequest request) throws IOException {
+    @ApiOperation("Download file from server.")
+    public ResponseEntity<?> downloadFile(HttpServletRequest request, HttpServletResponse response,
+                                          @RequestParam(value = "userId", required = false) Long userId,
+                                          @RequestParam(value = "fileType", required = false) String fileType,
+                                          @RequestParam(value = "fileId", required = false) Long fileId,
+                                          @RequestParam(value = "fileName", required = false) String fileName) throws IOException {
 //        String fileName = fileUploadService.getFileName(userId, fileType);
         Resource resource = null;
+        FileUpload file = getFile(fileId, fileName);
+        fileName = file.getFileName();
         if(fileName !=null && !fileName.isEmpty()) {
             try {
                 resource = fileUploadService.loadFileAsResource(fileName);
@@ -128,13 +172,49 @@ public class FileUploadRestController implements Serializable {
         }
     }
 
+    /**
+     * Метод удаления файла с сервера
+     *
+     * @param request                           - HttpServletRequest запрос
+     * @param fileId                            - Long, fileId from front-end
+     * @param fileName                          - String, fileName from front-end
+     * resource                                 - Resource, resource for download
+     *
+     * Для
+     * @return List<FileUpload>
+     * @return FileNotFoundException
+     */
     @DeleteMapping(value = "/delete")
-    public ResponseEntity<?> deleteFile(@RequestParam(value = "id", required = false) Long id,
-                                          @RequestParam(value = "fileName", required = false) String fileName,
-                                          HttpServletRequest request) throws IOException {
-        String name = fileUploadService.findById(id).getFileName();
-        fileUploadService.deleteFile(id);
-        logger.info("Delete file '{}' done.", name);
+    @ApiOperation("Delete file from server.")
+    public ResponseEntity<?> deleteFile(HttpServletRequest request,
+                                        @RequestParam(value = "fileId", required = false) Long fileId,
+                                        @RequestParam(value = "fileName", required = false) String fileName) throws IOException {
+        FileUpload file = getFile(fileId, fileName);
+        fileUploadService.deleteFile(file.getId());
+        logger.info("Delete file '{}' done.", file.getFileName());
         return new ResponseEntity<>(fileUploadService.findAll(), HttpStatus.OK);
+    }
+
+    /**
+     * Метод поиска файла по логину или имени
+     *
+     * @param id                                - Long, fileId from front-end
+     * @param name                              - String, fileName from front-end
+     *
+     * @return FileUpload file
+     * @return throw new FileNotFoundException()
+     */
+
+    public FileUpload getFile(Long id, String name) throws IOException{
+        FileUpload file;
+        if (id==null) {
+            if (name==null) {
+                throw new FileNotFoundException("File not found!");
+            } else {
+                file = fileUploadService.findByFileName(name);
+            }
+        }
+        file = fileUploadService.findById(id);
+        return file;
     }
 }
