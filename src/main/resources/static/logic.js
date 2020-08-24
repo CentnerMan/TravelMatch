@@ -27,11 +27,15 @@ app.config(function ($routeProvider) {
             controller: 'advCategoryController'
         })
 
-        .when('/advert', {
-            templateUrl: 'advert.html',
+        .when('/adverts_create_new_form', {
+            templateUrl: 'adverts_create_new_form.html',
             controller: 'advertsController'
         })
 
+        .when('/adverts_edit_form', {
+            templateUrl: 'adverts_edit_form.html',
+            controller: 'advertsEditController'
+        })
         .when('/filters', {
             templateUrl: 'filters.html',
             controller: 'filterController'
@@ -97,8 +101,8 @@ app.controller('articleFilterController', function ($scope, $http, globalFactory
                 // console.log(e);
                 alert(response.data.message);
             })
-        }
-        ;
+    }
+    ;
 
     $scope.filterArticles = function () {
         stringParams = '';
@@ -133,10 +137,10 @@ app.controller('profileController', function ($scope, $http) {
 });
 
 app.controller('advertsController', function ($scope, $http) {
-    const advPath = contextPath + '/api/v1/adverts';
+    const advertsPath = contextPath + '/api/v1/simple_adverts';
 
     fillTable = function () {
-        $http.get(advPath)
+        $http.get(advertsPath)
             .then(function (response) {
                 $scope.AdvertsList = response.data;
             });
@@ -145,11 +149,9 @@ app.controller('advertsController', function ($scope, $http) {
     fillTable();
 
     $scope.submitNew = function() {
-        $http.post(advPath, $scope.advNew)
-            .then(function(response) {
-                $scope.AdvertsList.push(response.data);
-            });
-
+        $http.post(advertsPath, $scope.advNew).then(function(response) {
+            console.log(response);
+        });
         window.location.href = contextPath + '/index.html#!/adverts';
         window.location.reload(true);
     };
@@ -157,7 +159,7 @@ app.controller('advertsController', function ($scope, $http) {
     $scope.delete = function(index) {
         var del = $scope.AdvertsList[index];
 
-        $http.delete(advPath+"/"+del.id)
+        $http.delete(advertsPath + "/" + del.id)
             .then(function(success) {
                 $scope.AdvertsList.splice(index, 1);
             });
@@ -165,14 +167,33 @@ app.controller('advertsController', function ($scope, $http) {
 
     $scope.edit = function(index) {
         var ed = $scope.AdvertsList[index];
+        $http.get(contextPath + "/index.html#!/adverts/" + ed.id, {params: {id: ed.id}});
+    };
 
-        console.log(advPath+"/"+ed.id);
-        $http.get(advPath+"/"+ed.id)
-            .then(function (response) {
-                $scope.Advert  = response.data;
-                console.log($scope.Advert);
-            });
+    $http.get(advertsPath + "/types")
+        .then(function (response) {
+            $scope.AdvertTypes  = response.data;
+            console.log(response.data);
+        });
+});
 
+app.controller('advertsEditController', function ($scope, $http, $routeParams) {
+    const advertsPath = contextPath + '/api/v1/simple_adverts';
+    $http.get(advertsPath + '/' + $routeParams.id).then(function(response) {
+        $scope.advEdit = response.data;
+    });
+
+    $http.get(advertsPath + "/types")
+        .then(function (response) {
+            $scope.AdvertTypes  = response.data;
+        });
+
+    $scope.submitNew = function() {
+        $http.post(advertsPath, $scope.advEdit).then(function(response) {
+            console.log(response);
+        });
+        window.location.href = contextPath + '/index.html#!/adverts';
+        window.location.reload(true);
     };
 });
 

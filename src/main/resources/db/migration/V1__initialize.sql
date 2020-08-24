@@ -428,6 +428,13 @@ CREATE TABLE messages
     FOREIGN KEY (reason_id) REFERENCES message_objects (id)
 );
 
+create table simple_adverts (
+    id bigserial primary key,
+    title varchar(255),
+    description varchar(5000),
+    type varchar(255)
+);
+insert into simple_adverts (title, description, type) values ('adv1', 'descr1', 'SERVICE');
 -- эти скрипты должны выполняться до вставления тестовых данных из V__2_data_for_tests.sql
 -- создаем хранимую процедуру для расчета количества лайков/дизлайков/рейтинга статьи по ее id
 CREATE OR REPLACE FUNCTION get_article_values(IN art_id bigint)
