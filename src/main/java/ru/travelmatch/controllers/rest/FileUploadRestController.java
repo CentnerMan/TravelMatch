@@ -56,7 +56,7 @@ public class FileUploadRestController implements Serializable {
      * Метод запроса списка файлов
      *
      * @return List<FileUpload>
-     * @return Exception
+     * @throws new Exception
      */
     @GetMapping()
     @ApiOperation("Return list of file.")
@@ -77,7 +77,7 @@ public class FileUploadRestController implements Serializable {
      *
      * Файл сохраняется с префиксом userId + название файла fileName: userId_fileName
      * @return fileDto
-     * @return Exception
+     * @throws new Exception
      */
     @PostMapping(value = "/upload")
     @ApiOperation("Upload file to server.")
@@ -122,7 +122,7 @@ public class FileUploadRestController implements Serializable {
      * URI найденного файла и вся необходимая информация запаковывается в resource
      * Front-end на основе полученного resource получает файл по указаному пути в URI
      * @return resource
-     * @return FileNotFoundException
+     * @throws new FileNotFoundException
      */
     @GetMapping(value = "/download")
     @ApiOperation("Download file from server.")
@@ -156,7 +156,6 @@ public class FileUploadRestController implements Serializable {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.parseMediaType(contentType));
             httpHeaders.setContentDisposition(ContentDisposition.parse("attachment; filename=\"" + resource.getFilename() + "\""));
-
 //            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
 //            Resource res = resource.createRelative(fileName);
             try {
@@ -182,12 +181,12 @@ public class FileUploadRestController implements Serializable {
      *
      * Для
      * @return List<FileUpload>
-     * @return FileNotFoundException
+     * @throws new FileNotFoundException
      */
     @DeleteMapping(value = "/delete")
     @ApiOperation("Delete file from server.")
     public ResponseEntity<?> deleteFile(HttpServletRequest request,
-                                        @RequestParam(value = "fileId", required = false) Long fileId,
+                                        @RequestParam(value = "id", required = false) Long fileId,
                                         @RequestParam(value = "fileName", required = false) String fileName) throws IOException {
         FileUpload file = getFile(fileId, fileName);
         fileUploadService.deleteFile(file.getId());
@@ -196,25 +195,25 @@ public class FileUploadRestController implements Serializable {
     }
 
     /**
-     * Метод поиска файла по логину или имени
+     * Метод поиска файла по fileId или fileName
+     * fileId в приоритете
      *
      * @param id                                - Long, fileId from front-end
      * @param name                              - String, fileName from front-end
      *
      * @return FileUpload file
-     * @return throw new FileNotFoundException()
+     * @throws new FileNotFoundException()
+     * @throws new NullPointerException()
      */
 
     public FileUpload getFile(Long id, String name) throws IOException{
-        FileUpload file;
         if (id==null) {
             if (name==null) {
                 throw new FileNotFoundException("File not found!");
             } else {
-                file = fileUploadService.findByFileName(name);
+                return fileUploadService.findByFileName(name);
             }
         }
-        file = fileUploadService.findById(id);
-        return file;
+        return fileUploadService.findById(id);
     }
 }

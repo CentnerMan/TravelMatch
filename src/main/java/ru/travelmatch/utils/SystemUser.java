@@ -2,31 +2,35 @@
 package ru.travelmatch.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-/**
- * GeekBrains Java, TravelMatch.
- *
- * @author Anatoly Lebedev
- * @fix 11.07.2020 Ostrovskiy Dmitriy
- * @version 1.0.1 11.06.2020
- * @link https://github.com/Centnerman
- */
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.travelmatch.base.entities.User;
-import ru.travelmatch.utils.validation.FieldMatch;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+/**
+ * @author Ostrovskiy Dmitriy
+ * @created 11.06.2020
+ * SystemUser
+ * Класс DTO для работы с системныи user
+ * @version v1.0
+ */
+
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 //@FieldMatch(first = "password", second = "matchingPassword", message = "The password fields must match")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SystemUser {
+public class SystemUser implements Serializable {
 
+    private static final long serialVersionUID = -90031449L;
     //For create user must be null, for update must be Not NULL
     private Long id;
 

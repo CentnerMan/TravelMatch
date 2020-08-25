@@ -20,6 +20,8 @@ target/
 *.ipr
 flyway.conf
 private.properties
+/logs
+/download/
 
 ### NetBeans ###
 /nbproject/private/

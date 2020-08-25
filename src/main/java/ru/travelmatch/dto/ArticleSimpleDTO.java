@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.travelmatch.base.entities.Article;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ArticleSimpleDTO {
+public class ArticleSimpleDTO implements Serializable {
+
+    private static final long serialVersionUID = -90000045L;
 
     private Long id;
 

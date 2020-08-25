@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import ru.travelmatch.base.entities.FileUpload;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,7 +23,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FileUploadResponceDto {
+public class FileUploadResponceDto implements Serializable {
+
+    private static final long serialVersionUID = -90000043L;
 
     private Long id;
     private String fileName;

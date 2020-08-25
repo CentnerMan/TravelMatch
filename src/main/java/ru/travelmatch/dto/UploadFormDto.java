@@ -8,10 +8,18 @@
 package ru.travelmatch.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
+
 @Data
-public class UploadFormDto {
+@ToString
+@EqualsAndHashCode
+public class UploadFormDto implements Serializable {
+
+    private static final long serialVersionUID = -90000089L;
 
     private String description;
 

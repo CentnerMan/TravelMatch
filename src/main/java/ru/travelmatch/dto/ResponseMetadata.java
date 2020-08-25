@@ -8,9 +8,17 @@
 package ru.travelmatch.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.io.Serializable;
 
 @Data
-public class ResponseMetadata {
+@ToString
+@EqualsAndHashCode
+public class ResponseMetadata implements Serializable {
+
+    private static final long serialVersionUID = -90000093L;
 
     private int status;
     private String message;
