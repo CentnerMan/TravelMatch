@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ArticleLikeRatingDTO implements Serializable {
 
+    private static final long serialVersionUID = 4384862063723384523L;
+
     @NotNull(message = "Article Id shouldn't be null!")
     private Long article;
 

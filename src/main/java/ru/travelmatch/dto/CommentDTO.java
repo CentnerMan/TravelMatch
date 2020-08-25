@@ -6,6 +6,7 @@ import lombok.Setter;
 import ru.travelmatch.base.entities.Comment;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,9 @@ import java.time.LocalDateTime;
  */
 @Getter
 @NoArgsConstructor
-public class CommentDTO {
+public class CommentDTO implements Serializable {
+
+    private static final long serialVersionUID = 1610454185455304647L;
 
     @Setter
     private Long id;
