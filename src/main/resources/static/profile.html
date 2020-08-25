@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="uploadApp" ng-controller="uploadContr">
 <head>
-    <meta charset="UTF-8">
-    <title>Travel</title>
+    <meta http-equiv="Content-Type">
+    <meta charset="utf8">
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet"  type="text/css" media="all" crossorigin="anonymous">
+    <script src="js/bootstrap/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap/popper.min.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+    <title>My Profile</title>
 </head>
 <body>
 <dev class="container">
@@ -10,6 +15,71 @@
     <p>
         Все обо мне
     </p>
+    <div class="col">
+        <div class="row">
+            <h4>Upload Document</h4>
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="input_file" aria-describedby="inputGroupFileAddon04" file-model="file">
+                    <label class="custom-file-label" id="label_file" for="input_file">{{file.name}}</label>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" id="inputGroupFileAddon04" ng-click="upload()">Upload</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-sm table-responsive" >
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>File Name</th>
+                        <th>File Type</th>
+                        <th>File Format</th>
+                        <th>Created</th>
+                        <th width="200">URL</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="upload in docList">
+                        <td><a href={{upload.uploadDir}}>{{upload.id}}</a></td>
+                        <td><a href={{upload.uploadDir}}">{{upload.userId}}</a></td>
+                        <td><a href={{upload.uploadDir}}">{{upload.fileName}}</a></td>
+                        <td><a href={{upload.uploadDir}}">{{upload.fileType}}</a></td>
+                        <td><a href={{upload.uploadDir}}">{{upload.fileFormat}}</a></td>
+                        <td><a href={{upload.uploadDir}}">{{upload.created}}</a></td>
+                        <td width="200"><a href={{upload.uploadDir}}">{{upload.uploadDir}}</a></td>
+                        <td>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <button type="button" class="btn btn-outline-primary" id="uploadFile" ng-click="downloadFile(upload.fileName)" name="fileUpload" value="{{upload.fileName}}">Upload</button>
+                                <button type="button" class="btn btn-outline-secondary" id="deleteFile" ng-click="deleteFile(upload.id)" name="fileDelete" value="{{upload.id}}">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div><h4>Json Get Response</h4>
+                    <p ng-bind-html="bindGet"></p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div><h4>Json Post Response</h4>
+                    <p ng-bind-html="bindPost"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </dev>
+<script src="js/angular.min.js"></script>
+<script src="js/uploadService.js"></script>
+<script src="js/upload.js"></script>
 </body>
 </html>
