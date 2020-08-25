@@ -1,4 +1,4 @@
-POST http://localhost:8199/tm/api/v1/article_like_ratings
+POST http://localhost:8189/travel/api/v1/article_like_ratings
 Content-Type: application/json
 
 {
@@ -9,12 +9,12 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8199/tm/api/v1/article_like_ratings
+GET http://localhost:8189/travel/api/v1/article_like_ratings
 Accept: application/json
 
 ###
 
-DELETE http://localhost:8199/tm/api/v1/article_like_ratings/article_id=1/user_id=2
+DELETE http://localhost:8189/travel/api/v1/article_like_ratings/article_id=1/user_id=2
 Accept: application/json
 
 ###
