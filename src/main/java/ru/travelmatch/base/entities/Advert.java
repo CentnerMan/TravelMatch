@@ -18,10 +18,6 @@ import java.util.List;
  * Created 08/06/2020
  * v1.0
  * Сущность для хранения объявлений купли-продажи товаров и услуг.
- * AdvertType - деление объявлений на куплю/продам
- * ProductType - деление объявлений на товары и услуги
- * ProductCondition - деление товаров на новые и б/у
- * beginDate, endDate - период актуальности объявления
  * isActual - деление объявлений на актуальные и нет.
  * Актуальность может менять владелец объявления, может сбрасывать админ в случае жалоб (см.AdvertClaim),
  * флаг может сбрасываться по истечение периода актуальности
@@ -34,9 +30,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "adverts")
 public class Advert {
-    public enum AdvertType {SALE, BUY}
-    public enum ProductType {PRODUCT, SERVICE}
-    public enum ProductCondition {NEW, USED}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,30 +39,11 @@ public class Advert {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "text", length = 10000)
-    private String text;
+    @Column(name = "short_text", length = 2000)
+    private String shortText;
 
-    @Column (name = "category_id")
-    private Long categoryId;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", insertable=false, updatable=false)
-    private AdvertCategory category;
-
-    @Column (name = "currency_id")
-    private Long currencyId;
-
-    @ManyToOne
-    @JoinColumn(name = "currency_id", insertable=false, updatable=false)
-    private Currency currency;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "product_type", nullable = false)
-    private ProductType productType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private AdvertType type;
+    @Column(name = "long_text", length = 10000)
+    private String longText;
 
     @Column (name = "user_id")
     private Long userId;
@@ -77,10 +51,6 @@ public class Advert {
     @ManyToOne
     @JoinColumn(name = "user_id", insertable=false, updatable=false)
     private User user;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "product_condition")
-    private ProductCondition productCondition;
 
     @CreationTimestamp
     @Column(name = "created")
@@ -90,32 +60,31 @@ public class Advert {
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
 
+    @Column (name = "city_id")
+    private Long cityId;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", insertable=false, updatable=false)
+    private City city;
+
     @Column(name = "price")
     private Long price;
 
-/*
-    @JsonManagedReference
-    @ManyToOne
-    private City city;
- */
-    // @JsonManagedReference
-    //  @ManyToOne(optional = false)
-    //  private User user;
-/*
-    @JsonManagedReference
-    @ManyToOne (optional = false)
-    private Language language;
+    @Column (name = "currency_id")
+    private Long currencyId;
 
- */
+    @ManyToOne
+    @JoinColumn(name = "currency_id", insertable=false, updatable=false)
+    private Currency currency;
 
     @Column(name = "is_actual", nullable = false)
     private Boolean isActual;
 
-    @Column(name = "begin_date")
-    private LocalDate beginDate;
+    //   @Column(name = "begin_date")
+    //   private LocalDate beginDate;
 
-    @Column(name = "end_date")
-    private LocalDate endDate;
+    //   @Column(name = "end_date")
+    //  private LocalDate endDate;
 
     //    //список ссылок на фотографии товара
 // не получилось, hibernate ругается:

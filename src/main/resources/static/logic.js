@@ -22,11 +22,6 @@ app.config(function ($routeProvider) {
             templateUrl: 'dictionaries.html'
         })
 
-        .when('/advcategory', {
-            templateUrl: 'advcategory.html',
-            controller: 'advCategoryController'
-        })
-
         .when('/adverts_create_new_form', {
             templateUrl: 'adverts_create_new_form.html',
             controller: 'advertsController'
@@ -137,7 +132,9 @@ app.controller('profileController', function ($scope, $http) {
 });
 
 app.controller('advertsController', function ($scope, $http) {
-    const advertsPath = contextPath + '/api/v1/simple_adverts';
+    const advertsPath = contextPath + '/api/v1/adverts';
+    const citiesPath = contextPath + '/api/v1/cities';
+    const currenciesPath = contextPath + '/api/v1/currencies';
 
     fillTable = function () {
         $http.get(advertsPath)
@@ -147,6 +144,18 @@ app.controller('advertsController', function ($scope, $http) {
     };
 
     fillTable();
+
+    $http.get(citiesPath)
+        .then(function (response) {
+            $scope.Cities  = response.data;
+            console.log(response.data);
+        });
+
+    $http.get(currenciesPath)
+        .then(function (response) {
+            $scope.Currencies = response.data;
+            console.log(response.data);
+        });
 
     $scope.submitNew = function() {
         $http.post(advertsPath, $scope.advNew).then(function(response) {
@@ -170,23 +179,14 @@ app.controller('advertsController', function ($scope, $http) {
         $http.get(contextPath + "/index.html#!/adverts/" + ed.id, {params: {id: ed.id}});
     };
 
-    $http.get(advertsPath + "/types")
-        .then(function (response) {
-            $scope.AdvertTypes  = response.data;
-            console.log(response.data);
-        });
 });
 
 app.controller('advertsEditController', function ($scope, $http, $routeParams) {
-    const advertsPath = contextPath + '/api/v1/simple_adverts';
+    const advertsPath = contextPath + '/api/v1/adverts';
     $http.get(advertsPath + '/' + $routeParams.id).then(function(response) {
         $scope.advEdit = response.data;
     });
 
-    $http.get(advertsPath + "/types")
-        .then(function (response) {
-            $scope.AdvertTypes  = response.data;
-        });
 
     $scope.submitNew = function() {
         $http.post(advertsPath, $scope.advEdit).then(function(response) {
@@ -195,44 +195,6 @@ app.controller('advertsEditController', function ($scope, $http, $routeParams) {
         window.location.href = contextPath + '/index.html#!/adverts';
         window.location.reload(true);
     };
-});
-
-app.controller('advCategoryController', function($scope, $http) {
-    const advCategoryPath = contextPath + '/api/v1/advcategory';
-
-    fillTable = function() {
-        $http.get(advCategoryPath)
-            .then(function(response) {
-                $scope.advCategoryArray = response.data;
-            });
-    };
-
-    fillTable();
-
-    $scope.submitNew = function() {
-        $http.post(advCategoryPath, $scope.advCategoryNew)
-            .then(function(response) {
-                $scope.advCategoryArray.push(response.data);
-            });
-    };
-
-    $scope.delete = function(index) {
-        var del = $scope.advCategoryArray[index];
-
-        $http.delete(advCategoryPath + "/" + del.id)
-            .then(function(success) {
-                $scope.advCategoryArray.splice(index, 1);
-            });
-    };
-
-    $scope.save = function(index) {
-        var sav = $scope.advCategoryArray[index];
-
-        $http.put(advCategoryPath,sav)
-            .then(function(success) {
-            });
-    };
-
 });
 
 app.factory('globalFactory', function() {
