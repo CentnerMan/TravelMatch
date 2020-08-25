@@ -60,6 +60,18 @@ public class Article {
     @ManyToOne
     private Language language;
 
+    @Column(name = "count_likes")
+    private Long countLikes;
+
+    @Column(name = "count_dislikes")
+    private Long countDislikes;
+
+    @Column
+    private Double rating;
+
+    @Column(name = "count_comments")
+    private Long countComments;
+
     @JsonBackReference
     @OneToMany(mappedBy = "article",
             cascade = CascadeType.ALL,

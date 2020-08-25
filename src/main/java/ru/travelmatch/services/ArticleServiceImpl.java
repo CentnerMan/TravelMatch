@@ -27,4 +27,9 @@ public class ArticleServiceImpl implements ArticleService{
     public Page<Article> findAll(Specification<Article> specification, PageRequest pageRequest) {
         return articleRepository.findAll(specification, pageRequest);
     }
+
+    @Override
+    public Article findById(Long id) {
+        return articleRepository.findById(id).orElse(null);
+    }
 }

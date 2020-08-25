@@ -13,4 +13,5 @@ import ru.travelmatch.base.entities.Article;
 
 public interface ArticleService {
     Page<Article> findAll(Specification<Article> specification, PageRequest pageRequest);
+    Article findById(Long id);
 }

@@ -27,12 +27,20 @@
     <tr>
         <th>ID статьи</th>
         <th>Заголовок статьи</th>
+        <th>Количество лайков</th>
+        <th>Количество дизлайков</th>
+        <th>Рейтинг (средняя оценка)</th>
+        <th>Количество комментариев</th>
     </tr>
 
     <tbody>
     <tr ng-repeat="article in articleList">
         <td>{{article.id}}</td>
         <td>{{article.title}}</td>
+        <td>{{article.countLikes}}</td>
+        <td>{{article.countDislikes}}</td>
+        <td>{{article.rating}}</td>
+        <td>{{article.countСomments}}</td>
     </tr>
     </tbody>
 </table>

@@ -1,5 +1,6 @@
 package ru.travelmatch.services;
 
+import org.springframework.http.ResponseEntity;
 import ru.travelmatch.base.entities.ArticleLikeRating;
 import ru.travelmatch.dto.ArticleLikeRatingDTO;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
  * v1.0
  */
 public interface ArticleLikeRatingService {
-    ArticleLikeRating save(ArticleLikeRatingDTO articleLikeRating);
+    ResponseEntity save(ArticleLikeRatingDTO articleLikeRating);
     List<ArticleLikeRatingDTO> getAll();
     void delete(Long article_id,Long user_id);
 }

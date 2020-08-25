@@ -1,0 +1,55 @@
+#создание новой сущности
+POST http://localhost:8199/tm/api/v1/article/comments
+Content-Type: application/json
+
+{
+"articleId": 1,
+"userId": 1,
+"text": "Не очень крутая статья!!!",
+  "parentId": 234
+}
+
+###
+
+POST http://localhost:8199/tm/api/v1/article/comments
+Content-Type: application/json
+
+{
+  "articleId": 1,
+  "userId": 1,
+  "text": "Исправлено на 12!!!",
+  "parentId": 1,
+  "id": 12
+}
+
+###
+
+PUT http://localhost:8199/tm/api/v1/article/comments
+Content-Type: application/json
+
+{
+  "articleId": 1,
+  "userId": 1,
+  "text": "Исправлено на 12!!!",
+  "parentId": 1,
+  "id": 12
+}
+
+
+###
+GET http://localhost:8199/tm/api/v1/article/comments
+Accept: application/json
+
+###
+
+GET http://localhost:8199/tm/api/v1/article/comments/1
+Accept: application/json
+
+###
+
+DELETE http://localhost:8199/tm/api/v1/article/comments/1
+Accept: application/json
+
+###
+
+

@@ -2,7 +2,7 @@ POST http://localhost:8199/tm/api/v1/article_like_ratings
 Content-Type: application/json
 
 {
-  "article": 1,
+  "article": 5,
   "user": 6,
   "likeDislike": 1,
   "rating": 5

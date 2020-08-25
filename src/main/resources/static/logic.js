@@ -43,6 +43,18 @@ app.config(function ($routeProvider) {
         .when('/article_filter', {
             templateUrl: 'article_filter.html',
             controller: 'articleFilterController'
+        })
+        .when('/impressions', {
+            templateUrl: 'impressions.html',
+            controller: 'articleController'
+        })
+        .when('/article_like_ratings', {
+            templateUrl: 'article_like_ratings.html',
+            controller: 'articleController'
+        })
+        .when('/article_like_ratings_new', {
+            templateUrl: 'article_like_ratings_new.html',
+            controller: 'articleController'
         });
 
 });
@@ -231,6 +243,39 @@ app.controller('advCategoryController', function($scope, $http) {
         $http.put(advCategoryPath,sav)
             .then(function(success) {
             });
+    };
+
+});
+
+app.controller('articleController', function ($scope, $http) {
+    const likePath = contextPath + '/api/v1/article_like_ratings';
+
+    fillTable = function () {
+        $http.get(likePath)
+            .then(function (response) {
+                $scope.likeList = response.data;
+            });
+    };
+
+    fillTable();
+
+    $scope.submitNew = function() {
+        $http.post(likePath, $scope.likeNew).then(function(response) {
+            console.log(response);
+        });
+        window.location.href = contextPath + '/index.html#!/article_like_ratings';
+        window.location.reload(true);
+    };
+
+    $scope.delete = function(index) {
+        var del = $scope.likeList[index];
+
+        $http.delete(likePath + "/article_id="+del.article+"/user_id="+del.user)
+            .then(function(success) {
+                $scope.likeList.splice(index, 1);
+            });
+        window.location.href = contextPath + '/index.html#!/article_like_ratings';
+        window.location.reload(true);
     };
 
 });

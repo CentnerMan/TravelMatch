@@ -1,5 +1,6 @@
 package ru.travelmatch.base.entities;
 
+import javax.persistence.Column;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -24,6 +25,10 @@ public class Article_ {
     public static volatile SingularAttribute<Article, LocalDateTime> lastUpdated;
     public static volatile SingularAttribute<Article, City> city;
     public static volatile SingularAttribute<Article, Language> language;
+    public static volatile SingularAttribute<Article, Long> countLikes;
+    public static volatile SingularAttribute<Article, Long> countDislikes;
+    public static volatile SingularAttribute<Article, Long> countComments;
+    public static volatile SingularAttribute<Article, Double> rating;
     public static volatile ListAttribute<Article, List<Comment>> comments;
     public static volatile ListAttribute<Article, List<ArticleLikeRating>> likes;
     public static volatile ListAttribute<Article, List<Tag>> tags;

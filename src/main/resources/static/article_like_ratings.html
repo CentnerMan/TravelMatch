@@ -1,0 +1,49 @@
+<!doctype html>
+
+<html ng-app="app" ng-controller="articleController">
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="logic.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<h1>Список лайков/рейтингов:</h1>
+<a class="btn btn-outline-warning" href="#!/article_like_ratings_new" ng-click="new()">Создать новое</a>
+<hr>
+
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+
+    <tr>
+        <th>ID статьи</th>
+        <th>ID пользователя</th>
+        <th>Лайк/дизлайк</th>
+        <th>Рейтинг</th>
+        <th>Дата создания</th>
+        <th>Дата редактирования</th>
+        <th>Действия</th>
+
+    </tr>
+
+    <tbody>
+    <tr ng-repeat="like in likeList">
+        <td>{{like.article}}</td>
+        <td>{{like.user}}</td>
+        <td>{{like.likeDislike}}</td>
+        <td>{{like.rating}}</td>
+        <td>{{like.created}}</td>
+        <td>{{like.lastUpdated}}</td>
+        <td>
+<!--                <a class="btn btn-outline-warning" style="display: inline-block" href="#!/likes_edit_form?id={{a.id}}">Редактировать</a>-->
+                <a class="btn btn-outline-warning"href="" ng-click="delete($index)">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>

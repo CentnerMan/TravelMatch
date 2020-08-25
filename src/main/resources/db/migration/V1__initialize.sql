@@ -148,6 +148,7 @@ CREATE TABLE articles
     count_likes  bigint NULL,
     count_dislikes bigint NULL,
     rating       double precision NULL,
+    count_comments bigint NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (author_id) REFERENCES users (id),
     FOREIGN KEY (city_id) REFERENCES cities (id),
