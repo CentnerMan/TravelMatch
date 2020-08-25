@@ -3,6 +3,8 @@ package ru.travelmatch.dto;
 import lombok.Getter;
 import ru.travelmatch.base.entities.Award;
 
+import java.io.Serializable;
+
 /**
  * @Author Farida Gareeva
  * Created 03.08.2020
@@ -10,7 +12,10 @@ import ru.travelmatch.base.entities.Award;
  */
 
 @Getter
-public class AwardDTO {
+public class AwardDTO implements Serializable {
+
+    private static final long serialVersionUID = -90000059L;
+
     private Long id;
     private String title;
 

@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.travelmatch.base.entities.Article;
 
+import java.io.Serializable;
+
 /**
  * @Author Farida Gareeva
  * Created 19.07.2020
@@ -14,9 +16,12 @@ import ru.travelmatch.base.entities.Article;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ArticleSimpleDTO {
+public class ArticleSimpleDTO implements Serializable {
+
+    private static final long serialVersionUID = -90000045L;
 
     private Long id;
+
     private String title;
 //    private String text;
 //    private Long categoryId;

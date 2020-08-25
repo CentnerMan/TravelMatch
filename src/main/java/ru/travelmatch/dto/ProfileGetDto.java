@@ -7,24 +7,27 @@
 
 package ru.travelmatch.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.ToString;
 import ru.travelmatch.base.entities.*;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 @RequiredArgsConstructor
-public class ProfileGetDto {
+public class ProfileGetDto implements Serializable {
+
+    private static final long serialVersionUID = -90000006L;
 
     @NotNull(message = "Заполните все поля")
     @Size(min = 4, max = 100, message = "Имя пользователя от 4 до 100 символов")

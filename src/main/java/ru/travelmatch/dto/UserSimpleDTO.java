@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.travelmatch.base.entities.User;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -18,7 +19,10 @@ import java.time.Period;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserSimpleDTO {
+public class UserSimpleDTO implements Serializable {
+
+    private static final long serialVersionUID = -90000089L;
+
     private Long id;
     private LocalDate birthday;
     private String sex;

@@ -3,13 +3,18 @@ package ru.travelmatch.dto;
 import lombok.Getter;
 import ru.travelmatch.base.entities.City;
 
+import java.io.Serializable;
+
 /**
  * @Author Farida Gareeva
  * Created 03.08.2020
  * v1.0
  */
 @Getter
-public class CityDTO {
+public class CityDTO implements Serializable {
+
+    private static final long serialVersionUID = -90000070L;
+
     private Long cityId;
     private String cityName;
     private String countryName;

@@ -8,16 +8,24 @@
 
 package ru.travelmatch.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import ru.travelmatch.base.entities.*;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 @RequiredArgsConstructor
-public class ProfilePersonalDto {
+public class ProfilePersonalDto implements Serializable {
+
+    private static final long serialVersionUID = -90000064L;
 
     //For create user must be null, for update must be Not NULL
     private Long id;

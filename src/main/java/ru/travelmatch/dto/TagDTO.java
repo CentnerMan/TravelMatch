@@ -3,6 +3,8 @@ package ru.travelmatch.dto;
 import lombok.Getter;
 import ru.travelmatch.base.entities.Tag;
 
+import java.io.Serializable;
+
 /**
  * @Author Farida Gareeva
  * Created 03.08.2020
@@ -10,7 +12,10 @@ import ru.travelmatch.base.entities.Tag;
  */
 
 @Getter
-public class TagDTO {
+public class TagDTO implements Serializable {
+
+    private static final long serialVersionUID = -517992994245L;
+
     private Long id;
     private String name;
 
