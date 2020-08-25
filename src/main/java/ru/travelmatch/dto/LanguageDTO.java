@@ -3,6 +3,8 @@ package ru.travelmatch.dto;
 import lombok.Getter;
 import ru.travelmatch.base.entities.Language;
 
+import java.io.Serializable;
+
 /**
  * @Author Farida Gareeva
  * Created 03.08.2020
@@ -10,7 +12,10 @@ import ru.travelmatch.base.entities.Language;
  */
 
 @Getter
-public class LanguageDTO {
+public class LanguageDTO implements Serializable {
+
+    private static final long serialVersionUID = -90031364L;
+
     private Long id;
     private String name;
 

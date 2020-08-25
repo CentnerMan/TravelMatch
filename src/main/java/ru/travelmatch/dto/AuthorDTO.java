@@ -3,6 +3,8 @@ package ru.travelmatch.dto;
 import lombok.Getter;
 import ru.travelmatch.base.entities.User;
 
+import java.io.Serializable;
+
 /**
  * @Author Farida Gareeva
  * Created 03.08.2020
@@ -12,7 +14,10 @@ import ru.travelmatch.base.entities.User;
  */
 
 @Getter
-public class AuthorDTO {
+public class AuthorDTO implements Serializable {
+
+    private static final long serialVersionUID = -90000082L;
+
     private Long id;
     private String firstName;
     private String lastName;
