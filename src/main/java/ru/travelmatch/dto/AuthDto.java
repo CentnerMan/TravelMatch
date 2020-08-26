@@ -18,16 +18,15 @@ import java.io.Serializable;
 
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class AuthDto implements Serializable {
 
     private static final long serialVersionUID = -90000021L;
 
     @NotNull(message = "Field must not be empty!")
     @Size(min = 4, max = 100, message = "Too short <4!")
-    private String username;
+    private final String username;
 
     @NotNull(message = "Field must not be empty!")
     @Size(min = 4, max = 100, message = "Too short <4!")
-    private String password;
+    private final String password;
 }
