@@ -9,6 +9,7 @@ package ru.travelmatch.dto;
  */
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
@@ -17,15 +18,16 @@ import java.io.Serializable;
 
 @Getter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class AuthDto implements Serializable {
 
     private static final long serialVersionUID = -90000021L;
 
     @NotNull(message = "Field must not be empty!")
     @Size(min = 4, max = 100, message = "Too short <4!")
-    private final String username;
+    private String username;
 
     @NotNull(message = "Field must not be empty!")
     @Size(min = 4, max = 100, message = "Too short <4!")
-    private final String password;
+    private String password;
 }
