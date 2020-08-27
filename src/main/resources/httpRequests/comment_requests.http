@@ -1,5 +1,5 @@
 #создание новой сущности
-POST http://8189/travel/api/v1/article/comments
+POST http://8189/travel/api/v1/articles/comments
 Content-Type: application/json
 
 {
@@ -11,43 +11,43 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8189/travel/api/v1/article/comments
+POST http://localhost:8189/travel/api/v1/articles/comments
 Content-Type: application/json
 
 {
   "articleId": 1,
   "userId": 1,
-  "text": "Исправлено на 12!!!",
-  "parentId": 1,
+  "text": "Коммент 1",
+  "parentId": 890,
   "id": 12
 }
 
 ###
 
-PUT http://localhost:8189/travel/api/v1/article/comments
+PUT http://localhost:8189/travel/api/v1/articles/comments
 Content-Type: application/json
 
 {
-  "articleId": 1,
+  "articleId": 2,
   "userId": 1,
-  "text": "Исправлено на 12!!!",
-  "parentId": 1,
-  "id": 12
+  "text": "Исправлено на 2!!!",
+  "parentId": 178,
+  "id": 2
 }
 
 
 ###
-GET http://localhost:8189/travel/api/v1/article/comments
+GET http://localhost:8189/travel/api/v1/articles/comments
 Accept: application/json
 
 ###
 
-GET http://localhost:8189/travel/api/v1/article/comments/1
+GET http://localhost:8189/travel/api/v1/articles/comments/id=9
 Accept: application/json
 
 ###
 
-DELETE http://localhost:8189/travel/api/v1/article/comments/1
+DELETE http://localhost:8189/travel/api/v1/articles/comments/id=8
 Accept: application/json
 
 ###

@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html ng-app="app" ng-controller="articleLikeController">
+<html ng-app="app" ng-controller="articleCommentController">
 
 <head>
     <meta charset="utf-8">
@@ -12,17 +12,18 @@
 </head>
 <body>
 
-<h1>Список лайков/рейтингов:</h1>
-<a class="btn btn-outline-warning" href="#!/article_like_ratings_new" ng-click="new()">Создать новый</a>
+<h1>Список комментариев к статьям:</h1>
+<a class="btn btn-outline-warning" href="#!/article_comment_new" ng-click="new()">Создать новый</a>
 <hr>
 
 <table class="table table-hover" cellpadding="0" cellspacing="0">
 
     <tr>
+        <th>ID</th>
         <th>ID статьи</th>
-        <th>ID пользователя</th>
-        <th>Лайк/дизлайк</th>
-        <th>Рейтинг</th>
+        <th>ID автора</th>
+        <th>ID родительского комментария</th>
+        <th>Текст комментария</th>
         <th>Дата создания</th>
         <th>Дата редактирования</th>
         <th>Действия</th>
@@ -30,15 +31,16 @@
     </tr>
 
     <tbody>
-    <tr ng-repeat="like in likeList">
-        <td>{{like.article}}</td>
-        <td>{{like.user}}</td>
-        <td>{{like.likeDislike}}</td>
-        <td>{{like.rating}}</td>
+    <tr ng-repeat="like in commList">
+        <td>{{like.id}}</td>
+        <td>{{like.articleId}}</td>
+        <td>{{like.userId}}</td>
+        <td>{{like.parentId}}</td>
+        <td>{{like.text}}</td>
         <td>{{like.created}}</td>
         <td>{{like.lastUpdated}}</td>
         <td>
-<!--                <a class="btn btn-outline-warning" style="display: inline-block" href="#!/likes_edit_form?id={{a.id}}">Редактировать</a>-->
+                <a class="btn btn-outline-warning" style="display: inline-block" href="#!/article_comment_edit?id={{like.id}}">Редактировать</a>
                 <a class="btn btn-outline-warning"href="" ng-click="delete($index)">Удалить</a>
         </td>
     </tr>

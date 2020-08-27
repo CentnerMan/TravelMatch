@@ -50,12 +50,25 @@ app.config(function ($routeProvider) {
         })
         .when('/article_like_ratings', {
             templateUrl: 'article_like_ratings.html',
-            controller: 'articleController'
+            controller: 'articleLikeController'
         })
         .when('/article_like_ratings_new', {
             templateUrl: 'article_like_ratings_new.html',
-            controller: 'articleController'
-        });
+            controller: 'articleLikeController'
+        })
+        .when('/article_comments', {
+            templateUrl: 'article_comments.html',
+            controller: 'articleCommentController'
+        })
+        .when('/article_comment_new', {
+            templateUrl: 'article_comment_new.html',
+            controller: 'articleCommentController'
+        })
+        .when('/article_comment_edit', {
+            templateUrl: 'article_comment_edit.html',
+            controller: 'articleCommentEditController'
+        })
+    ;
 
 });
 
@@ -110,7 +123,7 @@ app.controller('articleFilterController', function ($scope, $http, globalFactory
                 $scope.articleList = response.data;
             })
             .catch(function (response) {
-                // console.log(e);
+                console.log(response);
                 alert(response.data.message);
             })
     }
@@ -247,8 +260,8 @@ app.controller('advCategoryController', function($scope, $http) {
 
 });
 
-app.controller('articleController', function ($scope, $http) {
-    const likePath = contextPath + '/api/v1/article_like_ratings';
+app.controller('articleLikeController', function ($scope, $http) {
+    const likePath = contextPath + '/api/v1/articles/likes';
 
     fillTable = function () {
         $http.get(likePath)
@@ -260,9 +273,14 @@ app.controller('articleController', function ($scope, $http) {
     fillTable();
 
     $scope.submitNew = function() {
-        $http.post(likePath, $scope.likeNew).then(function(response) {
+        $http.post(likePath, $scope.likeNew).then(function (response) {
             console.log(response);
-        });
+        })
+            .catch(function (response) {
+                console.log(response);
+                alert(response.data.message);
+            })
+        ;
         window.location.href = contextPath + '/index.html#!/article_like_ratings';
         window.location.reload(true);
     };
@@ -270,17 +288,85 @@ app.controller('articleController', function ($scope, $http) {
     $scope.delete = function(index) {
         var del = $scope.likeList[index];
 
-        $http.delete(likePath + "/article_id="+del.article+"/user_id="+del.user)
-            .then(function(success) {
+        $http.delete(likePath + "/article_id=" + del.article + "/user_id=" + del.user)
+            .then(function (success) {
                 $scope.likeList.splice(index, 1);
+            })
+            .catch(function (response) {
+                console.log(response);
+                alert(response.data.message);
             });
-        window.location.href = contextPath + '/index.html#!/article_like_ratings';
         window.location.reload(true);
     };
 
 });
 
-app.factory('globalFactory', function() {
+app.controller('articleController', function () {
+
+});
+
+app.controller('articleCommentController', function ($scope, $http) {
+    const commPath = contextPath + '/api/v1/articles/comments';
+
+    fillTable = function () {
+        $http.get(commPath)
+            .then(function (response) {
+                $scope.commList = response.data;
+            });
+    };
+
+    fillTable();
+
+    $scope.submitNew = function () {
+        $http.post(commPath, $scope.commNew)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (response) {
+                console.log(response);
+                alert(response.data.message);
+            });
+        window.location.href = contextPath + '/index.html#!/article_comments';
+        window.location.reload(true);
+    };
+
+    $scope.delete = function (index) {
+        var del = $scope.commList[index];
+
+        $http.delete(commPath + "/id=" + del.id)
+            .then(function (success) {
+                $scope.commList.splice(index, 1);
+            })
+            .catch(function (response) {
+                console.log(response);
+                alert(response.data.message);
+            });
+        //window.location.href = contextPath + '/index.html#!/article_comments';
+        window.location.reload(true);
+    };
+
+});
+
+app.controller('articleCommentEditController', function ($scope, $http, $routeParams) {
+    const commPath = contextPath + '/api/v1/articles/comments';
+    $http.get(commPath + '/id=' + $routeParams.id).then(function(response) {
+        $scope.comm = response.data;
+    });
+
+    $scope.submitUpdate = function() {
+        $http.put(commPath, $scope.comm).then(function(response) {
+            console.log(response);
+        })
+            .catch(function (response) {
+                console.log(response);
+                alert(response.data.message);
+            });
+        window.location.href = contextPath + '/index.html#!/article_comments';
+        window.location.reload(true);
+    };
+});
+
+app.factory('globalFactory', function () {
     return {
         varA: 'hello'
     }

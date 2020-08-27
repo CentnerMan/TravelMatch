@@ -15,7 +15,7 @@ import ru.travelmatch.services.CommentService;
  * v1.0
  */
 @RestController
-@RequestMapping(value = "api/v1/article/comments")
+@RequestMapping(value = "api/v1/articles/comments")
 @AllArgsConstructor
 @Api("Set of endpoints for crud operation over article comments")
 public class CommentRestController {
@@ -30,13 +30,13 @@ public class CommentRestController {
     }
 
     @ApiOperation("GET article comment by id")
-    @GetMapping(value = "/{id}",produces = "application/json")
+    @GetMapping(value = "/id={id}",produces = "application/json")
     public ResponseEntity findById(@PathVariable Long id){
         return commentService.findById(id);
     }
 
     @ApiOperation("DELETE article comment by id")
-    @DeleteMapping(value = "/{id}",produces = "application/json")
+    @DeleteMapping(value = "/id={id}",produces = "application/json")
     public ResponseEntity deleteById(@PathVariable Long id){
         return commentService.delete(id);
     }

@@ -20,7 +20,7 @@ import java.util.List;
  * v1.0
  */
 @RestController
-@RequestMapping(value = "api/v1/article_like_ratings")
+@RequestMapping(value = "api/v1/articles/likes")
 @AllArgsConstructor
 @Api("Set of endpoints for crud operation over likes, dislikes and article ratings.")
 public class ArticleLikeRatingRestController {

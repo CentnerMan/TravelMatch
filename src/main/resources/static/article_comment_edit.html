@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html ng-app="app" ng-controller="articleLikeController">
+<html ng-app="app" ng-controller="articleCommentEditController">
 
 <head>
     <meta charset="utf-8">
@@ -13,27 +13,30 @@
 
 <body>
 
-<h1>Новый лайк/рейтинг</h1>
-
-<form name="addLike" novalidate ng-submit="submitNew()">
+<h2>Редактировать комментарий к статье</h2>
+{{comm}}
+<form name="addComment" novalidate ng-submit="submitUpdate()">
     <div class="card">
         <div class="card-body">
+            ID: {{comm.id}}
             <div>
                 <label for="articleId">Id статьи</label>
-                <input type="number" ng-model="likeNew.article" id="articleId">
+                <input type="number" ng-model="comm.articleId" id="articleId">
             </div>
             <div>
                 <label for="userId">Id пользователя</label>
-                <input type="number" ng-model="likeNew.user" id="userId">
+                <input type="number" ng-model="comm.userId" id="userId">
             </div>
             <div>
-                <label for="likeDislike">Лайк/дизлайк (1 или -1)</label>
-                <input type="number" ng-model="likeNew.likeDislike" id="likeDislike">
+                <label for="parentId">Id родительского комментария (для корневых не заполнять)</label>
+                <input type="number" ng-model="comm.parentId" id="parentId">
             </div>
             <div>
-                <label for="rating">Рейтинг (1-5)</label>
-                <input type="number" ng-model="likeNew.rating" id="rating">
+                <label for="text">Текст комментария</label>
+                <input type="text" ng-model="comm.text" id="text">
             </div>
+           Data create:{{comm.created}}
+           Data last update: {{comm.lastUpdated}}
 
             <div>
                 <button type="submit" href="">Сохранить</button>
