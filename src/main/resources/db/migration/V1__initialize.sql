@@ -491,6 +491,7 @@ BEGIN
                             rating = article_values.avg_rating
         WHERE id = NEW.article_id;
         IF (NEW.article_id!=OLD.article_id) THEN
+            article_values=get_article_values(OLD.article_id);
             UPDATE articles SET
                                 count_likes = article_values.count_likes,
                                 count_dislikes = article_values.count_dislikes,
